@@ -1,0 +1,1678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>SurvCalc Pro — Field Survey Calculator</title>
+<style>
+/* Fonts: loads from Google if online, falls back gracefully offline */
+@font-face {
+  font-family: 'Share Tech Mono';
+  src: local('Courier New'), local('Courier');
+}
+@font-face {
+  font-family: 'Barlow Condensed';
+  src: local('Arial Narrow'), local('Arial');
+}
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow+Condensed:wght@300;400;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:#0a0c0f;color:#c8d8e8;font-family:'Barlow Condensed',sans-serif;min-height:100vh;
+background-image:linear-gradient(rgba(255,140,0,.025)1px,transparent 1px),linear-gradient(90deg,rgba(255,140,0,.025)1px,transparent 1px);background-size:40px 40px}
+.hdr{background:linear-gradient(180deg,#111418,#0d1014);border-bottom:2px solid #ff8c00;padding:12px 22px;
+display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:200}
+.hx{width:44px;height:44px;background:#ff8c00;clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);
+display:flex;align-items:center;justify-content:center;font-size:20px;color:#0a0c0f;flex-shrink:0}
+.ht{font-size:26px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:#ff8c00;line-height:1}
+.hs{font-family:'Share Tech Mono',monospace;font-size:10px;color:#4a6070;letter-spacing:2px;margin-top:3px}
+.nav{display:flex;flex-wrap:wrap;gap:2px;padding:8px 14px;background:#0d1014;border-bottom:1px solid #182028;position:sticky;top:68px;z-index:199}
+.tnb{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
+padding:6px 12px;border:1px solid #182028;background:transparent;color:#4a6070;cursor:pointer;transition:all .15s;white-space:nowrap}
+.tnb:hover,.tnb.active{border-color:#ff8c00;color:#ff8c00}
+.tnb.active{background:#ff8c00;color:#0a0c0f}
+.wrap{padding:20px 18px;max-width:980px;margin:0 auto}
+.ts{display:none}.ts.active{display:block}
+.panel{background:#0d1014;border:1px solid #182028;border-top:3px solid #ff8c00;padding:22px;margin-bottom:18px}
+.pt{font-size:17px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#ff8c00;margin-bottom:18px;
+padding-bottom:10px;border-bottom:1px solid #182028;display:flex;align-items:center;gap:10px}
+.pt::before{content:'';width:8px;height:8px;background:#ff8c00;transform:rotate(45deg);flex-shrink:0}
+.stabs{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:16px}
+.sb{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;
+padding:5px 13px;border:1px solid #182028;background:transparent;color:#4a6070;cursor:pointer;transition:all .15s}
+.sb:hover,.sb.active{border-color:#ff8c00;color:#ff8c00}
+.sb.active{background:rgba(255,140,0,.15)}
+.ss{display:none}.ss.active{display:block}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:13px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:11px}
+.g5{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+.f{display:flex;flex-direction:column;gap:5px}
+.f label{font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#4a6070}
+.f input,.f select{font-family:'Share Tech Mono',monospace;font-size:14px;background:#060809;border:1px solid #182028;
+border-bottom:2px solid #222e3a;color:#ddeeff;padding:9px 11px;outline:none;transition:border-color .15s;width:100%}
+.f input:focus,.f select:focus{border-color:#ff8c00;border-bottom-color:#ff8c00}
+.f select option{background:#0d1014}
+.btn{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+padding:10px 26px;background:#ff8c00;border:none;color:#0a0c0f;cursor:pointer;transition:background .15s;
+clip-path:polygon(7px 0%,100% 0%,calc(100% - 7px) 100%,0% 100%)}
+.btn:hover{background:#ffaa33}
+.bto{background:none;border:1px solid #ff8c00;color:#ff8c00;clip-path:none}
+.bto:hover{background:rgba(255,140,0,.1)}
+.btd{background:none;border:none;color:#ff4444;cursor:pointer;font-size:18px;padding:2px 6px;line-height:1}
+.arb{font-family:'Share Tech Mono',monospace;font-size:11px;background:transparent;border:1px dashed #222e3a;
+color:#4a6070;padding:7px;cursor:pointer;transition:all .15s;width:100%;margin-top:8px}
+.arb:hover{border-color:#ff8c00;color:#ff8c00}
+.rg{display:grid;grid-template-columns:repeat(auto-fill,minmax(175px,1fr));gap:9px;margin-top:14px}
+.rc{background:#060809;border:1px solid #182028;border-left:3px solid #ff8c00;padding:12px 13px}
+.rl{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#4a6070;margin-bottom:5px}
+.rv{font-family:'Share Tech Mono',monospace;font-size:15px;color:#ddeeff}
+.rv.hi{color:#ff8c00;font-size:18px}
+.rbox{background:#060809;border:1px solid #222e3a;border-left:4px solid #ff8c00;padding:13px 17px;margin-top:13px}
+.rbox .rl{margin-bottom:5px}
+.rbox .rv{font-size:20px;color:#ff8c00}
+.rbox .rs{font-family:'Share Tech Mono',monospace;font-size:12px;color:#6a8098;margin-top:4px}
+.tw{overflow-x:auto;margin-top:13px}
+table{width:100%;border-collapse:collapse;font-family:'Share Tech Mono',monospace;font-size:12px}
+th{background:#111418;color:#ff8c00;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;padding:8px 10px;text-align:left;border:1px solid #182028}
+td{padding:6px 10px;border:1px solid #182028;color:#c8d8e8}
+tr:nth-child(even) td{background:#080b0e}
+.ii{font-family:'Share Tech Mono',monospace;font-size:12px;background:#080b0e;border:1px solid #182028;color:#ddeeff;padding:5px 7px;width:100%;outline:none}
+.ii:focus{border-color:#ff8c00}
+.note{font-family:'Share Tech Mono',monospace;font-size:11px;color:#2e4050;padding:8px 11px;border:1px dashed #182028;margin-bottom:14px}
+.err{background:rgba(255,60,60,.08);border:1px solid rgba(255,80,80,.3);color:#ff6868;padding:9px 13px;font-family:'Share Tech Mono',monospace;font-size:12px;margin-top:11px}
+.act{display:flex;gap:11px;align-items:center;margin-top:16px;flex-wrap:wrap}
+.sep{height:1px;background:#182028;margin:16px 0}
+.sl{font-family:'Share Tech Mono',monospace;font-size:11px;color:#4a6070;letter-spacing:1px;margin:12px 0 9px}
+.ftr{font-family:'Share Tech Mono',monospace;font-size:10px;color:#182028;text-align:center;letter-spacing:2px;padding:14px}
+details>summary{outline:none}
+details summary::-webkit-details-marker{display:none}
+details[open]>summary{color:#ff8c00!important;border-bottom:1px solid #182028}
+.stbox{margin-top:14px}
+.stsum{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;
+  text-transform:uppercase;color:#4a6070;cursor:pointer;padding:8px 11px;
+  background:#080b0e;border:1px solid #182028;list-style:none;display:block}
+.st-lbl{color:#4a6070;font-size:10px;letter-spacing:1px;text-transform:uppercase;
+  padding:6px 10px;border:1px solid #182028;white-space:nowrap;vertical-align:top}
+.st-expr{color:#6a9cb8;font-family:'Share Tech Mono',monospace;font-size:11px;
+  padding:6px 10px;border:1px solid #182028;word-break:break-all}
+.st-val{color:#ff8c00;font-family:'Share Tech Mono',monospace;font-size:13px;
+  padding:6px 10px;border:1px solid #182028;font-weight:700;white-space:nowrap}
+@media(max-width:620px){.g2,.g3,.g4,.g5{grid-template-columns:1fr}.wrap{padding:12px 9px}}
+@media(max-width:800px){
+  .f input,.f select,.ii{font-size:16px!important;padding:11px 12px!important;min-height:44px}
+  .btn{padding:13px 22px!important;font-size:14px!important;min-height:48px}
+  .sb{padding:8px 14px!important;font-size:12px!important;min-height:40px}
+  .tnb{padding:8px 13px!important;font-size:11px!important;min-height:38px}
+  .rg{grid-template-columns:1fr 1fr!important}
+  .rc .rv.hi{font-size:20px!important}
+}
+</style></head><body>
+<div class="hdr"><div class="hx">&#8853;</div>
+<div><div class="ht">SurvCalc Pro</div><div class="hs">Complete Field Survey Calculator &bull; 10 Modules &bull; v3.0</div></div></div>
+<nav class="nav">
+<button class="tnb active" onclick="sT('ang',this)">&#9312; Angles</button>
+<button class="tnb" onclick="sT('dist',this)">&#9313; Distance</button>
+<button class="tnb" onclick="sT('conv',this)">&#9314; Conversions</button>
+<button class="tnb" onclick="sT('lev',this)">&#9315; Leveling</button>
+<button class="tnb" onclick="sT('curv',this)">&#9316; Curves</button>
+<button class="tnb" onclick="sT('cogo',this)">&#9317; COGO</button>
+<button class="tnb" onclick="sT('trav',this)">&#9318; Traverse</button>
+<button class="tnb" onclick="sT('tri',this)">&#9319; Triangles</button>
+<button class="tnb" onclick="sT('earth',this)">&#9320; Earthwork</button>
+<button class="tnb" onclick="sT('stake',this)">&#9321; Staking</button>
+</nav>
+<div class="wrap">
+
+<!-- TAB 1: ANGLES -->
+<div id="tab-ang" class="ts active"><div class="panel"><div class="pt">Angles &amp; Direction</div>
+<div class="stabs">
+<button class="sb active" onclick="sS('ang','a1',this)">Azimuth &rarr; Bearing</button>
+<button class="sb" onclick="sS('ang','a2',this)">Bearing &rarr; Azimuth</button>
+<button class="sb" onclick="sS('ang','a3',this)">Mag Declination</button>
+<button class="sb" onclick="sS('ang','a4',this)">Add/Subtract Angles</button>
+<button class="sb" onclick="sS('ang','a5',this)">Angle Unit Conversion</button>
+</div>
+<div id="ang-a1" class="ss active">
+<div class="note">Enter azimuth 0&deg;&ndash;360&deg; in D-M-S. Returns bearing, back azimuth, and decimal equivalents.</div>
+<div class="g3">
+<div class="f"><label>Degrees</label><input id="a1d" type="number" inputmode="decimal" placeholder="0"></div>
+<div class="f"><label>Minutes</label><input id="a1m" type="number" inputmode="decimal" placeholder="0" min="0" max="59"></div>
+<div class="f"><label>Seconds</label><input id="a1s" type="number" inputmode="decimal" placeholder="0.0000" step=".0001"></div>
+</div>
+<div class="act"><button class="btn" onclick="cA1()">Convert</button></div>
+<div id="a1r"></div></div>
+<div id="ang-a2" class="ss">
+<div class="note">Select quadrant, enter bearing angle 0&deg;&ndash;90&deg;.</div>
+<div class="g4">
+<div class="f"><label>Quadrant</label><select id="a2q"><option value="NE">N&hellip;E</option><option value="SE">S&hellip;E</option><option value="SW">S&hellip;W</option><option value="NW">N&hellip;W</option></select></div>
+<div class="f"><label>Degrees</label><input id="a2d" type="number" inputmode="decimal" placeholder="0"></div>
+<div class="f"><label>Minutes</label><input id="a2m" type="number" inputmode="decimal" placeholder="0"></div>
+<div class="f"><label>Seconds</label><input id="a2s" type="number" inputmode="decimal" placeholder="0.0000" step=".0001"></div>
+</div>
+<div class="act"><button class="btn" onclick="cA2()">Convert</button></div>
+<div id="a2r"></div></div>
+<div id="ang-a3" class="ss">
+<div class="note">Apply magnetic declination to get true azimuth. East declination adds (+), West subtracts (&minus;).</div>
+<p class="sl">Magnetic Azimuth:</p>
+<div class="g3">
+<div class="f"><label>Degrees</label><input id="a3ad" type="number" inputmode="decimal" placeholder="0"></div>
+<div class="f"><label>Minutes</label><input id="a3am" type="number" inputmode="decimal" placeholder="0"></div>
+<div class="f"><label>Seconds</label><input id="a3as" type="number" inputmode="decimal" placeholder="0.0000"></div>
+</div>
+<p class="sl" style="margin-top:13px">Declination:</p>
+<div class="g4">
+<div class="f"><label>Degrees</label><input id="a3dd" type="number" inputmode="decimal" placeholder="0"></div>
+<div class="f"><label>Minutes</label><input id="a3dm" type="number" inputmode="decimal" placeholder="0"></div>
+<div class="f"><label>Seconds</label><input id="a3ds" type="number" inputmode="decimal" placeholder="0.0000"></div>
+<div class="f"><label>Direction</label><select id="a3dir"><option value="E">East (+)</option><option value="W">West (&minus;)</option></select></div>
+</div>
+<div class="act"><button class="btn" onclick="cA3()">Apply Declination</button></div>
+<div id="a3r"></div></div>
+<div id="ang-a4" class="ss">
+<div class="note">Add or subtract horizontal angles in DMS. Result normalized 0&deg;&ndash;360&deg;.</div>
+<div class="tw"><table><thead><tr><th>#</th><th>Op</th><th>Degrees</th><th>Minutes</th><th>Seconds</th><th></th></tr></thead>
+<tbody id="a4tb"></tbody></table></div>
+<button class="arb" onclick="a4Add()">+ Add Angle</button>
+<div class="act"><button class="btn" onclick="cA4()">Calculate Sum</button></div>
+<div id="a4r"></div></div>
+<div id="ang-a5" class="ss">
+<div class="note">Convert between decimal degrees, DMS, radians, grads/gons, and mils.</div>
+<div class="g2">
+<div class="f"><label>Input Value</label><input id="a5v" type="number" inputmode="decimal" step="any" placeholder="0.0000"></div>
+<div class="f"><label>Input Unit</label><select id="a5u"><option value="dd">Decimal Degrees</option><option value="rad">Radians</option><option value="grad">Grads / Gons</option><option value="mil">Mils (6400)</option></select></div>
+</div>
+<div class="sep"></div>
+<p class="sl">&mdash; OR &mdash; Enter DMS directly:</p>
+<div class="g3">
+<div class="f"><label>Degrees</label><input id="a5dd" type="number" inputmode="decimal" placeholder="0"></div>
+<div class="f"><label>Minutes</label><input id="a5dm" type="number" inputmode="decimal" placeholder="0"></div>
+<div class="f"><label>Seconds</label><input id="a5ds" type="number" inputmode="decimal" placeholder="0.0000"></div>
+</div>
+<div class="act"><button class="btn" onclick="cA5()">Convert All Units</button></div>
+<div id="a5r"></div></div>
+</div></div>
+
+<!-- TAB 2: DISTANCE & TAPE -->
+<div id="tab-dist" class="ts"><div class="panel"><div class="pt">Distance &amp; Tape Corrections</div>
+<div class="stabs">
+<button class="sb active" onclick="sS('dist','d1',this)">Steel Tape Corrections</button>
+<button class="sb" onclick="sS('dist','d2',this)">Slope &rarr; Horizontal</button>
+<button class="sb" onclick="sS('dist','d3',this)">Stadia Reduction</button>
+<button class="sb" onclick="sS('dist','d4',this)">EDM Atmospheric</button>
+</div>
+<div id="dist-d1" class="ss active">
+<div class="note">All four corrections: temperature, pull/tension, sag, and sea-level reduction. Sum added to measured distance for true length.</div>
+<div class="g3">
+<div class="f"><label>Measured Distance</label><input id="tcL" type="number" inputmode="decimal" step=".0001" placeholder="500.00"></div>
+<div class="f"><label>Units</label><select id="tcu"><option value="ft">Feet (std 68&deg;F)</option><option value="m">Meters (std 20&deg;C)</option></select></div>
+<div class="f"></div>
+</div>
+<div class="sep"></div>
+<p class="sl">Temperature Correction &mdash; Ct = &alpha;(T&minus;T&sub;0;)&middot;L:</p>
+<div class="g3">
+<div class="f"><label>Field Temperature</label><input id="tcTf" type="number" inputmode="decimal" step=".1" placeholder="85"></div>
+<div class="f"><label>Standard Temp (68&deg;F / 20&deg;C)</label><input id="tcT0" type="number" inputmode="decimal" step=".1" placeholder="68"></div>
+<div class="f"></div>
+</div>
+<p class="sl" style="margin-top:13px">Pull Correction &mdash; Cp = (P&minus;P&sub;0;)&middot;L / (A&middot;E):</p>
+<div class="g4">
+<div class="f"><label>Field Pull (lbs)</label><input id="tcP" type="number" inputmode="decimal" step=".1" placeholder="25"></div>
+<div class="f"><label>Std Pull (lbs)</label><input id="tcP0" type="number" inputmode="decimal" step=".1" placeholder="15"></div>
+<div class="f"><label>Tape Area (in&sup2;)</label><input id="tcA" type="number" inputmode="decimal" step=".0001" placeholder="0.0035"></div>
+<div class="f"><label>Modulus E (psi)</label><input id="tcE" type="number" inputmode="decimal" placeholder="29000000"></div>
+</div>
+<p class="sl" style="margin-top:13px">Sag Correction &mdash; Cs = &minus;w&sup2;L&sup3; / (24P&sup2;) per span:</p>
+<div class="g3">
+<div class="f"><label>Weight/ft (lbs/ft)</label><input id="tcw" type="number" inputmode="decimal" step=".0001" placeholder="0.0132"></div>
+<div class="f"><label>Span Length (ft)</label><input id="tcsp" type="number" inputmode="decimal" step=".01" placeholder="100"></div>
+<div class="f"><label>Applied Pull (lbs)</label><input id="tcPs" type="number" inputmode="decimal" step=".1" placeholder="25"></div>
+</div>
+<p class="sl" style="margin-top:13px">Sea-Level Reduction &mdash; Csl = &minus;H&middot;L / R:</p>
+<div class="g2">
+<div class="f"><label>Elevation (ft or m)</label><input id="tcH" type="number" inputmode="decimal" step="1" placeholder="1500"></div>
+<div class="f"><label>Earth Radius (auto-fills)</label><input id="tcR" type="number" inputmode="decimal" placeholder="20906000" readonly style="opacity:.5"></div>
+</div>
+<div class="act"><button class="btn" onclick="cTC()">Compute All Corrections</button></div>
+<div id="tcr"></div></div>
+<div id="dist-d2" class="ss">
+<div class="note">Reduce slope distance to true horizontal. Use vertical angle or elevation difference method.</div>
+<div class="stabs" style="margin-bottom:12px">
+<button class="sb active" onclick="sS('slm','sm1',this)">By Vertical Angle</button>
+<button class="sb" onclick="sS('slm','sm2',this)">By Elev Difference</button>
+</div>
+<div id="slm-sm1" class="ss active">
+<div class="g3">
+<div class="f"><label>Slope Distance (ft)</label><input id="sm1S" type="number" inputmode="decimal" step=".0001" placeholder="250.00"></div>
+<div class="f"><label>Vertical Angle (&deg; decimal)</label><input id="sm1a" type="number" inputmode="decimal" step=".0001" placeholder="+5.2500"></div>
+<div class="f"><label>Angle Type</label><select id="sm1t"><option value="h">Horizontal (+ = up)</option><option value="z">Zenith (from straight up)</option></select></div>
+</div>
+<div class="act"><button class="btn" onclick="cSM1()">Compute</button></div>
+<div id="sm1r"></div></div>
+<div id="slm-sm2" class="ss">
+<div class="g2">
+<div class="f"><label>Slope Distance (ft)</label><input id="sm2S" type="number" inputmode="decimal" step=".0001" placeholder="250.00"></div>
+<div class="f"><label>Elevation Difference h (ft)</label><input id="sm2h" type="number" inputmode="decimal" step=".0001" placeholder="22.50"></div>
+</div>
+<div class="act"><button class="btn" onclick="cSM2()">Compute</button></div>
+<div id="sm2r"></div></div>
+</div>
+<div id="dist-d3" class="ss">
+<div class="note">Stadia tachymetry &mdash; H = Ks&middot;cos&sup2;&alpha; + C&middot;cos&alpha; &nbsp;|&nbsp; V = (Ks/2)&middot;sin(2&alpha;) &nbsp;|&nbsp; Elev = IE + HI + V &minus; mid</div>
+<div class="g4">
+<div class="f"><label>Upper Rod (ft)</label><input id="stU" type="number" inputmode="decimal" step=".001" placeholder="6.42"></div>
+<div class="f"><label>Middle Rod (ft)</label><input id="stM" type="number" inputmode="decimal" step=".001" placeholder="5.00"></div>
+<div class="f"><label>Lower Rod (ft)</label><input id="stL" type="number" inputmode="decimal" step=".001" placeholder="3.58"></div>
+<div class="f"><label>Vertical Angle (&deg;)</label><input id="sta" type="number" inputmode="decimal" step=".0001" placeholder="0.0000"></div>
+</div>
+<div class="g4" style="margin-top:11px">
+<div class="f"><label>K Constant</label><input id="stK" type="number" inputmode="decimal" placeholder="100"></div>
+<div class="f"><label>C Factor</label><input id="stC" type="number" inputmode="decimal" placeholder="0"></div>
+<div class="f"><label>HI (ft)</label><input id="stHI" type="number" inputmode="decimal" step=".001" placeholder="5.00"></div>
+<div class="f"><label>Inst. Elevation</label><input id="stIE" type="number" inputmode="decimal" step=".0001" placeholder="500.0000"></div>
+</div>
+<div class="f" style="margin-top:11px"><label>Angle Type</label><select id="stat"><option value="h">Horizontal angle (+ = up)</option><option value="z">Zenith angle</option></select></div>
+<div class="act"><button class="btn" onclick="cStadia()">Compute Stadia</button></div>
+<div id="str"></div></div>
+<div id="dist-d4" class="ss">
+<div class="note">First velocity EDM correction. ppm = 281.8 &minus; 0.29535P/(1+0.003661T) &minus; 11.27e/(1+0.003661T)</div>
+<div class="g4">
+<div class="f"><label>Measured Dist (ft)</label><input id="edmD" type="number" inputmode="decimal" step=".0001" placeholder="2500.00"></div>
+<div class="f"><label>Temperature (&deg;C)</label><input id="edmT" type="number" inputmode="decimal" step=".1" placeholder="20.0"></div>
+<div class="f"><label>Pressure (mmHg)</label><input id="edmP" type="number" inputmode="decimal" step=".1" placeholder="760.0"></div>
+<div class="f"><label>Humidity (%)</label><input id="edmH" type="number" inputmode="decimal" step="1" placeholder="60" min="0" max="100"></div>
+</div>
+<div class="act"><button class="btn" onclick="cEDM()">Compute Correction</button></div>
+<div id="edmr"></div></div>
+</div></div>
+
+<!-- TAB 3: CONVERSIONS -->
+<div id="tab-conv" class="ts"><div class="panel"><div class="pt">Unit Conversions</div>
+<div class="stabs">
+<button class="sb active" onclick="sS('conv','cv1',this)">Length</button>
+<button class="sb" onclick="sS('conv','cv2',this)">Ft &harr; In/Fractions</button>
+<button class="sb" onclick="sS('conv','cv3',this)">Area</button>
+<button class="sb" onclick="sS('conv','cv4',this)">Volume</button>
+</div>
+<div id="conv-cv1" class="ss active">
+<div class="note">Type in any field &mdash; all others update instantly. Surveying and engineering units included.</div>
+<div class="g2">
+<div class="f"><label>Feet (ft)</label><input id="lft" type="number" inputmode="decimal" step="any" placeholder="0" oninput="cLen('lft')"></div>
+<div class="f"><label>Meters (m)</label><input id="lm" type="number" inputmode="decimal" step="any" placeholder="0" oninput="cLen('lm')"></div>
+<div class="f"><label>Inches (in)</label><input id="lin" type="number" inputmode="decimal" step="any" placeholder="0" oninput="cLen('lin')"></div>
+<div class="f"><label>Chains (Gunter, ch)</label><input id="lch" type="number" inputmode="decimal" step="any" placeholder="0" oninput="cLen('lch')"></div>
+<div class="f"><label>Links (lk)</label><input id="llk" type="number" inputmode="decimal" step="any" placeholder="0" oninput="cLen('llk')"></div>
+<div class="f"><label>Rods / Poles (rd)</label><input id="lrd" type="number" inputmode="decimal" step="any" placeholder="0" oninput="cLen('lrd')"></div>
+<div class="f"><label>Varas (TX, va)</label><input id="lva" type="number" inputmode="decimal" step="any" placeholder="0" oninput="cLen('lva',1/0.84667*0.3048)"></div>
+<div class="f"><label>Miles (mi)</label><input id="lmi" type="number" inputmode="decimal" step="any" placeholder="0" oninput="cLen('lmi')"></div>
+<div class="f"><label>Kilometers (km)</label><input id="lkm" type="number" inputmode="decimal" step="any" placeholder="0" oninput="cLen('lkm')"></div>
+<div class="f"><label>Furlongs (fur)</label><input id="lfur" type="number" inputmode="decimal" step="any" placeholder="0" oninput="cLen('lfur')"></div>
+</div></div>
+<div id="conv-cv2" class="ss">
+<div class="note">Convert decimal feet to ft-in-fractions for construction layout. Also builds a tenths reference table.</div>
+<div class="g2">
+<div>
+<p class="sl">Decimal Feet &rarr; Ft&ndash;In&ndash;Fraction:</p>
+<div class="f"><label>Decimal Feet</label><input id="fid" type="number" inputmode="decimal" step=".001" placeholder="12.875"></div>
+<div class="f" style="margin-top:10px"><label>Fraction Denominator</label><select id="fiden"><option value="2">Halves</option><option value="4">Quarters</option><option value="8" selected>Eighths (1/8&quot;)</option><option value="16">Sixteenths</option><option value="32">32nds</option><option value="64">64ths</option></select></div>
+<div class="act"><button class="btn" onclick="cFI1()">Convert</button></div>
+<div id="fi1r"></div>
+</div>
+<div>
+<p class="sl">Ft&ndash;In&ndash;Fraction &rarr; Decimal Feet:</p>
+<div class="g3">
+<div class="f"><label>Feet</label><input id="fi2ft" type="number" inputmode="decimal" placeholder="12"></div>
+<div class="f"><label>Inches</label><input id="fi2in" type="number" inputmode="decimal" placeholder="10"></div>
+<div class="f"><label>Fraction (e.g. 0.5)</label><input id="fi2fr" type="number" inputmode="decimal" step=".0001" placeholder="0.5"></div>
+</div>
+<div class="act"><button class="btn" onclick="cFI2()">Convert</button></div>
+<div id="fi2r"></div>
+</div>
+</div>
+<div class="sep"></div>
+<p class="sl">Surveying Tenths Reference (0.00&ndash;0.99 ft):</p>
+<div class="tw"><table><thead><tr><th>Dec Ft</th><th>Total Inches</th><th>Nearest 1/8&quot;</th><th>Nearest 1/16&quot;</th></tr></thead><tbody id="ttb"></tbody></table></div>
+</div>
+<div id="conv-cv3" class="ss">
+<div class="note">Type in any field to convert all area units simultaneously.</div>
+<div class="g2">
+<div class="f"><label>Square Feet (ft&sup2;)</label><input id="asf" type="number" inputmode="decimal" step="any" placeholder="0" oninput="cArea('asf')"></div>
+<div class="f"><label>Acres (ac)</label><input id="aac" type="number" inputmode="decimal" step="any" placeholder="0" oninput="cArea('aac')"></div>
+<div class="f"><label>Square Meters (m&sup2;)</label><input id="asm" type="number" inputmode="decimal" step="any" placeholder="0" oninput="cArea('asm')"></div>
+<div class="f"><label>Hectares (ha)</label><input id="aha" type="number" inputmode="decimal" step="any" placeholder="0" oninput="cArea('aha')"></div>
+<div class="f"><label>Square Chains (sq ch)</label><input id="asc" type="number" inputmode="decimal" step="any" placeholder="0" oninput="cArea('asc')"></div>
+<div class="f"><label>Square Miles (mi&sup2;)</label><input id="asmi" type="number" inputmode="decimal" step="any" placeholder="0" oninput="cArea('asmi')"></div>
+<div class="f"><label>Square Yards (yd&sup2;)</label><input id="asy" type="number" inputmode="decimal" step="any" placeholder="0" oninput="cArea('asy')"></div>
+<div class="f"><label>Square Kilometers (km&sup2;)</label><input id="askm" type="number" inputmode="decimal" step="any" placeholder="0" oninput="cArea('askm')"></div>
+</div></div>
+<div id="conv-cv4" class="ss">
+<div class="note">Type in any field to convert all volume units simultaneously.</div>
+<div class="g2">
+<div class="f"><label>Cubic Yards (CY)</label><input id="vcy" type="number" inputmode="decimal" step="any" placeholder="0" oninput="cVol('vcy')"></div>
+<div class="f"><label>Cubic Feet (CF)</label><input id="vcf" type="number" inputmode="decimal" step="any" placeholder="0" oninput="cVol('vcf')"></div>
+<div class="f"><label>Cubic Meters (m&sup3;)</label><input id="vcm" type="number" inputmode="decimal" step="any" placeholder="0" oninput="cVol('vcm')"></div>
+<div class="f"><label>Acre-Feet (ac&middot;ft)</label><input id="vaf" type="number" inputmode="decimal" step="any" placeholder="0" oninput="cVol('vaf')"></div>
+<div class="f"><label>US Gallons</label><input id="vga" type="number" inputmode="decimal" step="any" placeholder="0" oninput="cVol('vga')"></div>
+<div class="f"><label>Liters (L)</label><input id="vli" type="number" inputmode="decimal" step="any" placeholder="0" oninput="cVol('vli')"></div>
+</div></div>
+</div></div>
+
+<!-- TAB 4: LEVELING -->
+<div id="tab-lev" class="ts"><div class="panel"><div class="pt">Differential Leveling</div>
+<div class="stabs">
+<button class="sb active" onclick="sS('lev','lv1',this)">HI Method</button>
+<button class="sb" onclick="sS('lev','lv2',this)">Loop Closure</button>
+</div>
+<div id="lev-lv1" class="ss active">
+<div class="note">HI = BM Elev + BS &nbsp;|&nbsp; Elev(pt) = HI &minus; Rod. Set TP type to update HI and continue run.</div>
+<div class="g3">
+<div class="f"><label>BM Elevation</label><input id="lvbm" type="number" inputmode="decimal" step=".0001" placeholder="100.0000"></div>
+<div class="f"><label>Backsight (BS) to BM</label><input id="lvbs" type="number" inputmode="decimal" step=".0001" placeholder="5.42"></div>
+<div class="f"><label>HI Override (leave blank = auto)</label><input id="lvhi" type="number" inputmode="decimal" step=".0001" placeholder="auto"></div>
+</div>
+<div id="lvbox"></div>
+<div class="tw"><table><thead><tr><th>#</th><th>Station</th><th>Type</th><th>Rod Reading</th><th>Elevation</th><th></th></tr></thead><tbody id="lvtb"></tbody></table></div>
+<button class="arb" onclick="lvAdd()">+ Add Rod Reading</button>
+<div class="act"><button class="btn" onclick="cLV()">Compute Elevations</button></div>
+</div>
+<div id="lev-lv2" class="ss">
+<div class="note">Enter each benchmark or TP with observed elevation and cumulative distance. Misclosure distributed proportionally.</div>
+<div class="g3">
+<div class="f"><label>Starting BM Elevation</label><input id="lpbm1" type="number" inputmode="decimal" step=".0001" placeholder="500.0000"></div>
+<div class="f"><label>Closing BM Elevation</label><input id="lpbm2" type="number" inputmode="decimal" step=".0001" placeholder="500.0000"></div>
+<div class="f"><label>Allowable Misclosure (ft)</label><input id="lptol" type="number" inputmode="decimal" step=".001" placeholder="0.050"></div>
+</div>
+<div class="tw"><table><thead><tr><th>#</th><th>Station</th><th>Obs Elevation</th><th>Dist from Start (ft)</th><th>Correction</th><th>Adj Elevation</th><th></th></tr></thead><tbody id="lptb"></tbody></table></div>
+<button class="arb" onclick="lpAdd()">+ Add Point</button>
+<div class="act"><button class="btn" onclick="cLP()">Compute Loop Closure</button></div>
+<div id="lpr"></div></div>
+</div></div>
+
+<!-- TAB 5: CURVES -->
+<div id="tab-curv" class="ts"><div class="panel"><div class="pt">Horizontal &amp; Vertical Curves</div>
+<div class="stabs">
+<button class="sb active" onclick="sS('curv','cr1',this)">Horiz (by R)</button>
+<button class="sb" onclick="sS('curv','cr2',this)">Horiz (by D&deg;)</button>
+<button class="sb" onclick="sS('curv','cr3',this)">HC Station Table</button>
+<button class="sb" onclick="sS('curv','cr4',this)">Vertical Curve</button>
+<button class="sb" onclick="sS('curv','cr5',this)">VC Station Table</button>
+</div>
+<div id="curv-cr1" class="ss active">
+<div class="note">Simple circular arc. T = R&middot;tan(&Delta;/2) &nbsp;|&nbsp; L = R&middot;&Delta;(rad) &nbsp;|&nbsp; LC = 2R&middot;sin(&Delta;/2)</div>
+<div class="g3">
+<div class="f"><label>Intersection Angle &Delta; (&deg;)</label><input id="cr1d" type="number" inputmode="decimal" step=".0001" placeholder="30.0000"></div>
+<div class="f"><label>Radius R (ft)</label><input id="cr1r" type="number" inputmode="decimal" step=".001" placeholder="1000.00"></div>
+<div class="f"><label>PC Station (optional)</label><input id="cr1pc" type="number" inputmode="decimal" step="1" placeholder="0"></div>
+</div>
+<div class="act"><button class="btn" onclick="cCR1()">Compute Curve</button></div>
+<div id="cr1r"></div></div>
+<div id="curv-cr2" class="ss">
+<div class="note">Degree of curvature D&deg; definition (arc): R = 5729.578 / D</div>
+<div class="g3">
+<div class="f"><label>Intersection Angle &Delta; (&deg;)</label><input id="cr2d" type="number" inputmode="decimal" step=".0001" placeholder="30.0000"></div>
+<div class="f"><label>Degree of Curve D&deg;</label><input id="cr2D" type="number" inputmode="decimal" step=".0001" placeholder="5.7296"></div>
+<div class="f"><label>PC Station (optional)</label><input id="cr2pc" type="number" inputmode="decimal" step="1" placeholder="0"></div>
+</div>
+<div class="act"><button class="btn" onclick="cCR2()">Compute Curve</button></div>
+<div id="cr2r"></div></div>
+<div id="curv-cr3" class="ss">
+<div class="note">Deflection angles and chord lengths for field staking from PC.</div>
+<div class="g4">
+<div class="f"><label>PC Station</label><input id="cr3pc" type="number" inputmode="decimal" step="1" placeholder="1000"></div>
+<div class="f"><label>Radius R (ft)</label><input id="cr3r" type="number" inputmode="decimal" step=".001" placeholder="1000"></div>
+<div class="f"><label>Delta &Delta; (&deg;)</label><input id="cr3d" type="number" inputmode="decimal" step=".0001" placeholder="30.0"></div>
+<div class="f"><label>Station Interval (ft)</label><input id="cr3i" type="number" inputmode="decimal" step="1" placeholder="50"></div>
+</div>
+<div class="act"><button class="btn" onclick="cCR3()">Generate Table</button></div>
+<div id="cr3r"></div></div>
+<div id="curv-cr4" class="ss">
+<div class="note">Equal-tangent parabolic VC. Enter PVI data. PVC/PVT are computed automatically. Shows step-by-step solution.</div>
+<div class="g3">
+<div class="f"><label>Curve Length L (ft)</label><input id="vcL" type="number" inputmode="decimal" step="1" placeholder="600"></div>
+<div class="f"><label>Incoming Grade g&#x2081; (%)</label><input id="vcg1" type="number" inputmode="decimal" step=".001" placeholder="+2.5"></div>
+<div class="f"><label>Outgoing Grade g&#x2082; (%)</label><input id="vcg2" type="number" inputmode="decimal" step=".001" placeholder="-1.8"></div>
+<div class="f"><label>PVI Elevation</label><input id="vcpvie" type="number" inputmode="decimal" step=".0001" placeholder="450.00"></div>
+<div class="f"><label>PVI Station</label><input id="vcpvis" type="number" inputmode="decimal" step="1" placeholder="1000"></div>
+<div class="f"><label>Station Interval (ft)</label><input id="vcint" type="number" inputmode="decimal" step="1" placeholder="50"></div>
+</div>
+<div class="sep"></div>
+<p class="sl">Optional overrides (leave blank to auto-compute from PVI):</p>
+<div class="g2">
+<div class="f"><label>PVC Station (auto = PVI&minus;L/2)</label><input id="vcpvcs" type="number" inputmode="decimal" step="1" placeholder="auto"></div>
+<div class="f"><label>PVC Elevation (auto)</label><input id="vcpvce" type="number" inputmode="decimal" step=".0001" placeholder="auto"></div>
+</div>
+<div class="act"><button class="btn" onclick="cVC1()">Compute Curve + Steps</button></div>
+<div id="vcr1"></div></div>
+<div id="curv-cr5" class="ss">
+<div class="note">Enter specific stations (comma-separated) to get elevations anywhere along the curve. Shows full step-by-step for each station.</div>
+<div class="g3">
+<div class="f"><label>Curve Length L (ft)</label><input id="vc2L" type="number" inputmode="decimal" step="1" placeholder="600"></div>
+<div class="f"><label>g&#x2081; (%)</label><input id="vc2g1" type="number" inputmode="decimal" step=".001" placeholder="+2.5"></div>
+<div class="f"><label>g&#x2082; (%)</label><input id="vc2g2" type="number" inputmode="decimal" step=".001" placeholder="-1.8"></div>
+<div class="f"><label>PVI Elevation</label><input id="vc2pvie" type="number" inputmode="decimal" step=".0001" placeholder="450.00"></div>
+<div class="f"><label>PVI Station</label><input id="vc2pvis" type="number" inputmode="decimal" step="1" placeholder="1000"></div>
+<div class="f"></div>
+</div>
+<div class="f" style="margin-top:12px"><label>Stations to compute (comma-separated)</label><input id="vc2offs" placeholder="700, 750, 800, 847.5, 900, 1000, 1100, 1200, 1300"></div>
+<div class="act"><button class="btn" onclick="cVC2()">Compute Table + Steps</button></div>
+<div id="vcr2"></div></div>
+</div></div>
+
+<!-- TAB 6: COGO -->
+<div id="tab-cogo" class="ts"><div class="panel"><div class="pt">Coordinate Geometry &mdash; COGO</div>
+<div class="stabs">
+<button class="sb active" onclick="sS('cogo','cg1',this)">Inverse</button>
+<button class="sb" onclick="sS('cogo','cg2',this)">Traverse Point</button>
+<button class="sb" onclick="sS('cogo','cg3',this)">Area by Coords</button>
+<button class="sb" onclick="sS('cogo','cg4',this)">Line Intersection</button>
+<button class="sb" onclick="sS('cogo','cg5',this)">Resection</button>
+</div>
+<div id="cogo-cg1" class="ss active">
+<div class="note">Compute azimuth, bearing, and distance from Point 1 to Point 2.</div>
+<div class="g2">
+<div><p class="sl">POINT 1</p><div class="g2">
+<div class="f"><label>Northing N1</label><input id="cg1n1" type="number" inputmode="decimal" step=".0001" placeholder="0.0000"></div>
+<div class="f"><label>Easting E1</label><input id="cg1e1" type="number" inputmode="decimal" step=".0001" placeholder="0.0000"></div>
+</div></div>
+<div><p class="sl">POINT 2</p><div class="g2">
+<div class="f"><label>Northing N2</label><input id="cg1n2" type="number" inputmode="decimal" step=".0001" placeholder="0.0000"></div>
+<div class="f"><label>Easting E2</label><input id="cg1e2" type="number" inputmode="decimal" step=".0001" placeholder="0.0000"></div>
+</div></div>
+</div>
+<div class="act"><button class="btn" onclick="cCG1()">Compute Inverse</button></div>
+<div id="cg1r"></div></div>
+<div id="cogo-cg2" class="ss">
+<div class="note">Compute new point coordinates from known point + azimuth + distance (direct traverse).</div>
+<div class="g2">
+<div class="f"><label>Start Northing</label><input id="cg2n" type="number" inputmode="decimal" step=".0001" placeholder="1000.0000"></div>
+<div class="f"><label>Start Easting</label><input id="cg2e" type="number" inputmode="decimal" step=".0001" placeholder="1000.0000"></div>
+<div class="f"><label>Azimuth (&deg; decimal)</label><input id="cg2az" type="number" inputmode="decimal" step=".0001" placeholder="45.0000"></div>
+<div class="f"><label>Distance</label><input id="cg2d" type="number" inputmode="decimal" step=".0001" placeholder="250.0000"></div>
+</div>
+<div class="act"><button class="btn" onclick="cCG2()">Compute New Point</button></div>
+<div id="cg2r"></div></div>
+<div id="cogo-cg3" class="ss">
+<div class="note">Shoelace / coordinate area method. Enter corners in traverse order (CW or CCW).</div>
+<div class="tw"><table><thead><tr><th>#</th><th>Point ID</th><th>Northing</th><th>Easting</th><th></th></tr></thead><tbody id="cg3tb"></tbody></table></div>
+<button class="arb" onclick="cg3Add()">+ Add Point</button>
+<div class="act"><button class="btn" onclick="cCG3()">Compute Area</button></div>
+<div id="cg3r"></div></div>
+<div id="cogo-cg4" class="ss">
+<div class="note">Find intersection of two lines, each defined by a point and azimuth.</div>
+<div class="g2">
+<div><p class="sl">LINE 1</p>
+<div class="g2"><div class="f"><label>N1</label><input id="cg4n1" type="number" inputmode="decimal" step=".0001" placeholder="0"></div><div class="f"><label>E1</label><input id="cg4e1" type="number" inputmode="decimal" step=".0001" placeholder="0"></div></div>
+<div class="f" style="margin-top:10px"><label>Azimuth 1 (&deg;)</label><input id="cg4az1" type="number" inputmode="decimal" step=".0001" placeholder="45.0"></div></div>
+<div><p class="sl">LINE 2</p>
+<div class="g2"><div class="f"><label>N2</label><input id="cg4n2" type="number" inputmode="decimal" step=".0001" placeholder="0"></div><div class="f"><label>E2</label><input id="cg4e2" type="number" inputmode="decimal" step=".0001" placeholder="100"></div></div>
+<div class="f" style="margin-top:10px"><label>Azimuth 2 (&deg;)</label><input id="cg4az2" type="number" inputmode="decimal" step=".0001" placeholder="315.0"></div></div>
+</div>
+<div class="act"><button class="btn" onclick="cCG4()">Compute Intersection</button></div>
+<div id="cg4r"></div></div>
+<div id="cogo-cg5" class="ss">
+<div class="note">3-point resection (Tienstra method). Observer at unknown point P measures horizontal angles between 3 known points A, B, C.</div>
+<div class="g2">
+<div><p class="sl">KNOWN POINT A</p><div class="g2"><div class="f"><label>NA</label><input id="rsna" type="number" inputmode="decimal" step=".0001" placeholder="0"></div><div class="f"><label>EA</label><input id="rsea" type="number" inputmode="decimal" step=".0001" placeholder="0"></div></div></div>
+<div><p class="sl">KNOWN POINT B</p><div class="g2"><div class="f"><label>NB</label><input id="rsnb" type="number" inputmode="decimal" step=".0001" placeholder="100"></div><div class="f"><label>EB</label><input id="rseb" type="number" inputmode="decimal" step=".0001" placeholder="0"></div></div></div>
+<div><p class="sl">KNOWN POINT C</p><div class="g2"><div class="f"><label>NC</label><input id="rsnc" type="number" inputmode="decimal" step=".0001" placeholder="50"></div><div class="f"><label>EC</label><input id="rsec" type="number" inputmode="decimal" step=".0001" placeholder="100"></div></div></div>
+<div><p class="sl">ANGLES FROM P</p><div class="g2"><div class="f"><label>Angle &alpha; (A&ndash;P&ndash;B, &deg;)</label><input id="rsa" type="number" inputmode="decimal" step=".0001" placeholder="45.0"></div><div class="f"><label>Angle &beta; (B&ndash;P&ndash;C, &deg;)</label><input id="rsb" type="number" inputmode="decimal" step=".0001" placeholder="45.0"></div></div></div>
+</div>
+<div class="act"><button class="btn" onclick="cRS()">Compute Resection</button></div>
+<div id="rsr"></div></div>
+</div></div>
+
+<!-- TAB 7: TRAVERSE -->
+<div id="tab-trav" class="ts"><div class="panel"><div class="pt">Traverse Closure &amp; Adjustment</div>
+<div class="stabs">
+<button class="sb active" onclick="sS('trav','tv1',this)">Closure &amp; Bowditch</button>
+<button class="sb" onclick="sS('trav','tv2',this)">Lat / Dep Summary</button>
+</div>
+<div id="trav-tv1" class="ss active">
+<div class="note">Enter courses by azimuth + distance. Computes linear error, precision ratio, and Compass Rule (Bowditch) adjusted coordinates.</div>
+<div class="g2">
+<div class="f"><label>Starting Northing</label><input id="tvn0" type="number" inputmode="decimal" step=".0001" placeholder="1000.0000"></div>
+<div class="f"><label>Starting Easting</label><input id="tve0" type="number" inputmode="decimal" step=".0001" placeholder="1000.0000"></div>
+</div>
+<div class="tw"><table><thead><tr><th>#</th><th>Course Name</th><th>Azimuth (&deg;)</th><th>Distance (ft)</th><th></th></tr></thead><tbody id="tvtb"></tbody></table></div>
+<button class="arb" onclick="tvAdd()">+ Add Course</button>
+<div class="act"><button class="btn" onclick="cTV()">Compute Closure</button></div>
+<div id="tvr"></div></div>
+<div id="trav-tv2" class="ss">
+<div class="note">Run Closure &amp; Bowditch first to populate this table.</div>
+<div id="tv2r"><p class="sl" style="color:#1a2830">Run closure calculation first.</p></div>
+</div>
+</div></div>
+
+<!-- TAB 8: TRIANGLES -->
+<div id="tab-tri" class="ts"><div class="panel"><div class="pt">Triangle Solutions</div>
+<div class="stabs">
+<button class="sb active" onclick="sS('tri','tr1',this)">SSS</button>
+<button class="sb" onclick="sS('tri','tr2',this)">SAS</button>
+<button class="sb" onclick="sS('tri','tr3',this)">ASA</button>
+<button class="sb" onclick="sS('tri','tr4',this)">AAS</button>
+<button class="sb" onclick="sS('tri','tr5',this)">Right Triangle</button>
+</div>
+<div id="tri-tr1" class="ss active">
+<div class="note">SSS &mdash; Three sides known. Law of cosines: cos A = (b&sup2;+c&sup2;&minus;a&sup2;)/(2bc)</div>
+<div class="g3"><div class="f"><label>Side a</label><input id="s1a" type="number" inputmode="decimal" step=".0001" placeholder="0"></div><div class="f"><label>Side b</label><input id="s1b" type="number" inputmode="decimal" step=".0001" placeholder="0"></div><div class="f"><label>Side c</label><input id="s1c" type="number" inputmode="decimal" step=".0001" placeholder="0"></div></div>
+<div class="act"><button class="btn" onclick="sSSS()">Solve</button></div><div id="tr1r"></div></div>
+<div id="tri-tr2" class="ss">
+<div class="note">SAS &mdash; Two sides and included angle. Law of cosines: c&sup2; = a&sup2;+b&sup2;&minus;2ab&middot;cos C</div>
+<div class="g3"><div class="f"><label>Side a</label><input id="s2a" type="number" inputmode="decimal" step=".0001" placeholder="0"></div><div class="f"><label>Included Angle C (&deg;)</label><input id="s2C" type="number" inputmode="decimal" step=".0001" placeholder="0"></div><div class="f"><label>Side b</label><input id="s2b" type="number" inputmode="decimal" step=".0001" placeholder="0"></div></div>
+<div class="act"><button class="btn" onclick="sSAS()">Solve</button></div><div id="tr2r"></div></div>
+<div id="tri-tr3" class="ss">
+<div class="note">ASA &mdash; Two angles and included side. Law of sines: a/sin A = b/sin B = c/sin C</div>
+<div class="g3"><div class="f"><label>Angle A (&deg;)</label><input id="s3A" type="number" inputmode="decimal" step=".0001" placeholder="0"></div><div class="f"><label>Side c (included)</label><input id="s3c" type="number" inputmode="decimal" step=".0001" placeholder="0"></div><div class="f"><label>Angle B (&deg;)</label><input id="s3B" type="number" inputmode="decimal" step=".0001" placeholder="0"></div></div>
+<div class="act"><button class="btn" onclick="sASA()">Solve</button></div><div id="tr3r"></div></div>
+<div id="tri-tr4" class="ss">
+<div class="note">AAS &mdash; Two angles and non-included side. C = 180&deg;&minus;A&minus;B, then law of sines.</div>
+<div class="g3"><div class="f"><label>Angle A (&deg;)</label><input id="s4A" type="number" inputmode="decimal" step=".0001" placeholder="0"></div><div class="f"><label>Angle B (&deg;)</label><input id="s4B" type="number" inputmode="decimal" step=".0001" placeholder="0"></div><div class="f"><label>Side a (opp A)</label><input id="s4a" type="number" inputmode="decimal" step=".0001" placeholder="0"></div></div>
+<div class="act"><button class="btn" onclick="sAAS()">Solve</button></div><div id="tr4r"></div></div>
+<div id="tri-tr5" class="ss">
+<div class="note">Right triangle &mdash; enter any two knowns. C = 90&deg;, sides a (opposite A), b (adjacent to A), hypotenuse c.</div>
+<div class="g4">
+<div class="f"><label>Leg a</label><input id="rta" type="number" inputmode="decimal" step=".0001" placeholder="—"></div>
+<div class="f"><label>Leg b</label><input id="rtb" type="number" inputmode="decimal" step=".0001" placeholder="—"></div>
+<div class="f"><label>Hypotenuse c</label><input id="rtc" type="number" inputmode="decimal" step=".0001" placeholder="—"></div>
+<div class="f"><label>Angle A (&deg;)</label><input id="rtA" type="number" inputmode="decimal" step=".0001" placeholder="—"></div>
+</div>
+<div class="act"><button class="btn" onclick="sRT()">Solve</button></div><div id="rtr"></div></div>
+</div></div>
+
+<!-- TAB 9: EARTHWORK -->
+<div id="tab-earth" class="ts"><div class="panel"><div class="pt">Earthwork &amp; Volume</div>
+<div class="stabs">
+<button class="sb active" onclick="sS('earth','ew1',this)">End Area Method</button>
+<button class="sb" onclick="sS('earth','ew2',this)">Prismoidal Formula</button>
+<button class="sb" onclick="sS('earth','ew3',this)">Borrow Pit Grid</button>
+<button class="sb" onclick="sS('earth','ew4',this)">Cross-Section Area</button>
+<button class="sb" onclick="sS('earth','ew5',this)">Swell / Shrink</button>
+</div>
+<div id="earth-ew1" class="ss active">
+<div class="note">V = (L/2)(A&sub;1;+A&sub;2;) per segment. Add sections in station order. Outputs ft&sup3; and CY.</div>
+<div class="tw"><table><thead><tr><th>#</th><th>Station</th><th>Cross-Section Area (ft&sup2;)</th><th></th></tr></thead><tbody id="ew1tb"></tbody></table></div>
+<button class="arb" onclick="ew1Add()">+ Add Cross-Section</button>
+<div class="act"><button class="btn" onclick="cEW1()">Compute Volume</button></div>
+<div id="ew1r"></div></div>
+<div id="earth-ew2" class="ss">
+<div class="note">V = (L/6)(A&sub;1; + 4A&sub;m; + A&sub;2;) &mdash; prismoidal formula, more accurate for regular sections.</div>
+<div class="g4">
+<div class="f"><label>Length L (ft)</label><input id="ew2L" type="number" inputmode="decimal" step=".01" placeholder="100"></div>
+<div class="f"><label>Area A&sub;1; (ft&sup2;)</label><input id="ew2A1" type="number" inputmode="decimal" step=".01" placeholder="0"></div>
+<div class="f"><label>Mid-Area A&sub;m; (ft&sup2;)</label><input id="ew2Am" type="number" inputmode="decimal" step=".01" placeholder="0"></div>
+<div class="f"><label>Area A&sub;2; (ft&sup2;)</label><input id="ew2A2" type="number" inputmode="decimal" step=".01" placeholder="0"></div>
+</div>
+<div class="act"><button class="btn" onclick="cEW2()">Compute</button></div>
+<div id="ew2r"></div></div>
+<div id="earth-ew3" class="ss">
+<div class="note">Grid method. V = (cell area/4)&times;(1&middot;&Sigma;h&sub;1; + 2&middot;&Sigma;h&sub;2; + 4&middot;&Sigma;h&sub;4;) where subscripts = number of cells sharing that node.</div>
+<div class="g3">
+<div class="f"><label>Grid Rows (cells)</label><input id="bprows" type="number" inputmode="decimal" min="1" max="12" placeholder="3" value="3"></div>
+<div class="f"><label>Grid Columns (cells)</label><input id="bpcols" type="number" inputmode="decimal" min="1" max="12" placeholder="3" value="3"></div>
+<div class="f"><label>Cell Size (ft)</label><input id="bpcs" type="number" inputmode="decimal" step=".01" placeholder="10"></div>
+</div>
+<div class="act"><button class="btn bto" onclick="genBP()">Generate Grid</button></div>
+<div id="bpgrid"></div>
+<div id="bpact" style="display:none"><div class="act"><button class="btn" onclick="cBP()">Compute Volume</button></div></div>
+<div id="bpr"></div></div>
+<div id="earth-ew4" class="ss">
+<div class="stabs" style="margin-bottom:12px">
+<button class="sb active" onclick="sS('xss','xs1',this)">Level Section</button>
+<button class="sb" onclick="sS('xss','xs2',this)">Three-Level</button>
+<button class="sb" onclick="sS('xss','xs3',this)">Five-Level</button>
+</div>
+<div id="xss-xs1" class="ss active">
+<div class="note">A = (b + s&middot;d)&middot;d where b = road base width, s = side slope (H:V), d = center cut/fill depth</div>
+<div class="g3"><div class="f"><label>Base Width b (ft)</label><input id="xs1b" type="number" inputmode="decimal" step=".01" placeholder="24"></div><div class="f"><label>Side Slope s (H:V)</label><input id="xs1s" type="number" inputmode="decimal" step=".1" placeholder="1.5"></div><div class="f"><label>Center Depth d (ft)</label><input id="xs1d" type="number" inputmode="decimal" step=".01" placeholder="5.0"></div></div>
+<div class="act"><button class="btn" onclick="cXS1()">Compute Area</button></div><div id="xs1r"></div></div>
+<div id="xss-xs2" class="ss">
+<div class="note">Three-level notes: d/x at left, center, right. x = b/2 + s&middot;d (auto). Area by coordinate polygon.</div>
+<div class="g3">
+<div class="f"><label>Base Width b (ft)</label><input id="xs2b" type="number" inputmode="decimal" step=".01" placeholder="24"></div>
+<div class="f"><label>Side Slope s (H:V)</label><input id="xs2s" type="number" inputmode="decimal" step=".1" placeholder="1.5"></div><div class="f"></div>
+<div class="f"><label>Left Depth d&sub;L;</label><input id="xs2dL" type="number" inputmode="decimal" step=".01" placeholder="3.5"></div>
+<div class="f"><label>Center Depth d&sub;C;</label><input id="xs2dC" type="number" inputmode="decimal" step=".01" placeholder="5.0"></div>
+<div class="f"><label>Right Depth d&sub;R;</label><input id="xs2dR" type="number" inputmode="decimal" step=".01" placeholder="4.2"></div>
+</div>
+<div class="act"><button class="btn" onclick="cXS2()">Compute Area</button></div><div id="xs2r"></div></div>
+<div id="xss-xs3" class="ss">
+<div class="note">Five-level: two intermediate points between center and catch points for irregular ground.</div>
+<div class="g5">
+<div class="f"><label>Left Catch d&sub;L;</label><input id="xs3dL" type="number" inputmode="decimal" step=".01" placeholder="3.5"></div>
+<div class="f"><label>Left Flank d&sub;FL;</label><input id="xs3dFL" type="number" inputmode="decimal" step=".01" placeholder="4.0"></div>
+<div class="f"><label>Center d&sub;C;</label><input id="xs3dC" type="number" inputmode="decimal" step=".01" placeholder="5.0"></div>
+<div class="f"><label>Right Flank d&sub;FR;</label><input id="xs3dFR" type="number" inputmode="decimal" step=".01" placeholder="4.3"></div>
+<div class="f"><label>Right Catch d&sub;R;</label><input id="xs3dR" type="number" inputmode="decimal" step=".01" placeholder="3.8"></div>
+</div>
+<div class="g3" style="margin-top:11px">
+<div class="f"><label>Base Width b (ft)</label><input id="xs3b" type="number" inputmode="decimal" step=".01" placeholder="24"></div>
+<div class="f"><label>Side Slope s (H:V)</label><input id="xs3s" type="number" inputmode="decimal" step=".1" placeholder="1.5"></div>
+<div class="f"><label>Flank X from CL (ft)</label><input id="xs3xf" type="number" inputmode="decimal" step=".01" placeholder="8"></div>
+</div>
+<div class="act"><button class="btn" onclick="cXS3()">Compute Area</button></div><div id="xs3r"></div></div>
+</div>
+<div id="earth-ew5" class="ss">
+<div class="note">Convert Bank (in-place), Loose (excavated), and Compacted (fill) volumes using swell and shrinkage factors.</div>
+<div class="g3">
+<div class="f"><label>Bank Volume (BCY)</label><input id="swbcy" type="number" inputmode="decimal" step=".01" placeholder="1000"></div>
+<div class="f"><label>Swell Factor (%)</label><input id="swsf" type="number" inputmode="decimal" step=".1" placeholder="25"></div>
+<div class="f"><label>Shrinkage Factor (%)</label><input id="swsh" type="number" inputmode="decimal" step=".1" placeholder="10"></div>
+</div>
+<div class="act"><button class="btn" onclick="cSW()">Compute</button></div>
+<div id="swr"></div></div>
+</div></div>
+
+<!-- TAB 10: STAKING -->
+<div id="tab-stake" class="ts"><div class="panel"><div class="pt">Staking &amp; Layout</div>
+<div class="stabs">
+<button class="sb active" onclick="sS('stake','sk1',this)">Offset Staking</button>
+<button class="sb" onclick="sS('stake','sk2',this)">Cut / Fill at Point</button>
+<button class="sb" onclick="sS('stake','sk3',this)">Slope Staking</button>
+<button class="sb" onclick="sS('stake','sk4',this)">Station + Offset</button>
+</div>
+<div id="stake-sk1" class="ss active">
+<div class="note">Compute coordinates of a point offset from centerline, perpendicular to CL azimuth.</div>
+<div class="g2">
+<div class="f"><label>CL Northing</label><input id="sk1n" type="number" inputmode="decimal" step=".0001" placeholder="1000.0000"></div>
+<div class="f"><label>CL Easting</label><input id="sk1e" type="number" inputmode="decimal" step=".0001" placeholder="1000.0000"></div>
+<div class="f"><label>CL Azimuth (&deg;)</label><input id="sk1az" type="number" inputmode="decimal" step=".0001" placeholder="45.0000"></div>
+<div class="f"><label>Offset Distance (ft)</label><input id="sk1od" type="number" inputmode="decimal" step=".0001" placeholder="25.00"></div>
+</div>
+<div class="f" style="margin-top:12px"><label>Offset Direction</label><select id="sk1dir"><option value="R">Right of CL</option><option value="L">Left of CL</option></select></div>
+<div class="act"><button class="btn" onclick="cSK1()">Compute Offset Point</button></div>
+<div id="sk1r"></div></div>
+<div id="stake-sk2" class="ss">
+<div class="note">Enter design and ground elevations. Positive = CUT (remove), Negative = FILL (add material).</div>
+<div class="tw"><table><thead><tr><th>#</th><th>Station / Point</th><th>Design Elev</th><th>Ground Elev</th><th>Cut (+) / Fill (&minus;)</th><th></th></tr></thead><tbody id="sk2tb"></tbody></table></div>
+<button class="arb" onclick="sk2Add()">+ Add Point</button>
+<div class="act"><button class="btn" onclick="cSK2()">Compute Cut / Fill</button></div></div>
+<div id="stake-sk3" class="ss">
+<div class="note">Catch point where slope template intersects natural ground. Assumes uniform side slope on ground. x&sub;c; = b/2 + s&middot;d&sub;c; (solved analytically).</div>
+<div class="g3">
+<div class="f"><label>Design CL Elevation</label><input id="sk3cl" type="number" inputmode="decimal" step=".0001" placeholder="500.00"></div>
+<div class="f"><label>Road Half-Width b/2 (ft)</label><input id="sk3b2" type="number" inputmode="decimal" step=".01" placeholder="12.0"></div>
+<div class="f"><label>Road Cross-Slope c (%)</label><input id="sk3c" type="number" inputmode="decimal" step=".01" placeholder="2.0"></div>
+</div>
+<div class="g2" style="margin-top:14px">
+<div><p class="sl">LEFT SIDE</p>
+<div class="g2">
+<div class="f"><label>Slope H:V</label><input id="sk3sL" type="number" inputmode="decimal" step=".1" placeholder="2.0"></div>
+<div class="f"><label>Type</label><select id="sk3tL"><option value="cut">Cut</option><option value="fill">Fill</option></select></div>
+</div>
+<div class="f" style="margin-top:9px"><label>Ground Slope Left (%, + = uphill from CL)</label><input id="sk3gL" type="number" inputmode="decimal" step=".01" placeholder="0.0"></div>
+<div class="f" style="margin-top:9px"><label>Ground Elevation at CL</label><input id="sk3EgL" type="number" inputmode="decimal" step=".0001" placeholder="500.00"></div>
+</div>
+<div><p class="sl">RIGHT SIDE</p>
+<div class="g2">
+<div class="f"><label>Slope H:V</label><input id="sk3sR" type="number" inputmode="decimal" step=".1" placeholder="2.0"></div>
+<div class="f"><label>Type</label><select id="sk3tR"><option value="cut">Cut</option><option value="fill">Fill</option></select></div>
+</div>
+<div class="f" style="margin-top:9px"><label>Ground Slope Right (%, + = uphill from CL)</label><input id="sk3gR" type="number" inputmode="decimal" step=".01" placeholder="0.0"></div>
+<div class="f" style="margin-top:9px"><label>Ground Elevation at CL</label><input id="sk3EgR" type="number" inputmode="decimal" step=".0001" placeholder="500.00"></div>
+</div>
+</div>
+<div class="act"><button class="btn" onclick="cSK3()">Compute Slope Stakes</button></div>
+<div id="sk3r"></div></div>
+<div id="stake-sk4" class="ss">
+<div class="note">Compute station and offset of any point relative to a defined alignment (start point + azimuth).</div>
+<div class="g2">
+<div><p class="sl">ALIGNMENT</p>
+<div class="g2">
+<div class="f"><label>Start N</label><input id="sk4ns" type="number" inputmode="decimal" step=".0001" placeholder="1000"></div>
+<div class="f"><label>Start E</label><input id="sk4es" type="number" inputmode="decimal" step=".0001" placeholder="1000"></div>
+</div>
+<div class="g2" style="margin-top:10px">
+<div class="f"><label>Azimuth (&deg;)</label><input id="sk4az" type="number" inputmode="decimal" step=".0001" placeholder="90.0"></div>
+<div class="f"><label>Start Station (ft)</label><input id="sk4st0" type="number" inputmode="decimal" step="1" placeholder="0"></div>
+</div></div>
+<div><p class="sl">POINT TO LOCATE</p>
+<div class="g2">
+<div class="f"><label>Point N</label><input id="sk4np" type="number" inputmode="decimal" step=".0001" placeholder="1050"></div>
+<div class="f"><label>Point E</label><input id="sk4ep" type="number" inputmode="decimal" step=".0001" placeholder="1200"></div>
+</div></div>
+</div>
+<div class="act"><button class="btn" onclick="cSK4()">Compute Station + Offset</button></div>
+<div id="sk4r"></div></div>
+</div></div>
+
+<div class="ftr">SURVCALC PRO v3.0 &bull; VERIFY ALL CRITICAL CALCULATIONS WITH A LICENSED PROFESSIONAL SURVEYOR</div>
+</div>
+
+<script>
+// ============================================================
+// CORE UTILITIES
+// ============================================================
+const PI=Math.PI,R2D=180/PI,D2R=PI/180;
+const tR=d=>d*D2R,tD=r=>r*R2D;
+const g=id=>document.getElementById(id);
+const gv=id=>parseFloat(g(id)&&g(id).value)||0;
+const gs=id=>g(id)?g(id).value:'';
+function dms2d(d,m,s){const sg=d<0?-1:1;return sg*(Math.abs(+d)+(+m)/60+(+s)/3600);}
+function d2dms(v){const sg=v<0?-1:1,a=Math.abs(v),d=Math.floor(a),m=Math.floor((a-d)*60),s=+((a-d-m/60)*3600).toFixed(5);return{d:sg*d,m,s};}
+function fdms(v){const{d,m,s}=d2dms(v);return d+"° "+m+"' "+s+'"';}
+function normAz(a){return((a%360)+360)%360;}
+function az2b(az){const a=normAz(az);
+  if(a<0.00001||a>359.99999)return'Due North';
+  if(a<90)return'N '+fdms(a)+' E';
+  if(a<180)return'S '+fdms(180-a)+' E';
+  if(a<270)return'S '+fdms(a-180)+' W';
+  return'N '+fdms(360-a)+' W';}
+function b2az(q,ang){return{NE:ang,SE:180-ang,SW:180+ang,NW:360-ang}[q]||ang;}
+function RG(items){return'<div class="rg">'+items.map(([l,v,h])=>'<div class="rc"><div class="rl">'+l+'</div><div class="rv'+(h?' hi':'')+'">'+v+'</div></div>').join('')+'</div>';}
+function ERR(m){return'<div class="err">&#9888; '+m+'</div>';}
+function shoelace(pts){let s=0,n=pts.length;for(let i=0;i<n;i++){const j=(i+1)%n;s+=pts[i][0]*pts[j][1]-pts[j][0]*pts[i][1];}return Math.abs(s)/2;}
+
+// ============================================================
+// NAVIGATION
+// ============================================================
+function sT(id,btn){
+  document.querySelectorAll('.ts').forEach(e=>e.classList.remove('active'));
+  document.querySelectorAll('.tnb').forEach(e=>e.classList.remove('active'));
+  g('tab-'+id).classList.add('active');btn.classList.add('active');
+}
+function sS(grp,id,btn){
+  const p=btn.closest('.panel')||btn.closest('.ss')||document.body;
+  const prefix=grp+'-';
+  document.querySelectorAll('[id^="'+prefix+'"]').forEach(e=>{if(e.classList.contains('ss'))e.classList.remove('active');});
+  btn.closest('.stabs').querySelectorAll('.sb').forEach(b=>b.classList.remove('active'));
+  g(prefix+id).classList.add('active');btn.classList.add('active');
+}
+
+// ============================================================
+// TAB 1: ANGLES
+// ============================================================
+function cA1(){
+  const az=normAz(dms2d(gv('a1d'),gv('a1m'),gv('a1s')));
+  const ba=az<90?az:az<180?180-az:az<270?az-180:360-az;
+  g('a1r').innerHTML=RG([['Azimuth (decimal°)',az.toFixed(8)+'°',true],['Azimuth DMS',fdms(az),false],
+    ['Bearing',az2b(az),true],['Bearing Angle',fdms(ba),false],
+    ['Quadrant',az<90?'NE':az<180?'SE':az<270?'SW':'NW',false],
+    ['Back Azimuth',normAz(az+180).toFixed(6)+'°',false]]);
+}
+function cA2(){
+  const ang=dms2d(gv('a2d'),gv('a2m'),gv('a2s')),az=normAz(b2az(gs('a2q'),ang));
+  g('a2r').innerHTML=RG([['Azimuth (decimal°)',az.toFixed(8)+'°',true],['Azimuth DMS',fdms(az),false],
+    ['Back Azimuth',normAz(az+180).toFixed(6)+'°',false],['Bearing Check',az2b(az),false]]);
+}
+function cA3(){
+  const mag=dms2d(gv('a3ad'),gv('a3am'),gv('a3as'));
+  const dc=dms2d(gv('a3dd'),gv('a3dm'),gv('a3ds'));
+  const dir=gs('a3dir'),tr=normAz(dir==='E'?mag+dc:mag-dc);
+  g('a3r').innerHTML=RG([['Magnetic Azimuth',mag.toFixed(6)+'°',false],
+    ['Declination ('+dir+')',dc.toFixed(6)+'°',false],
+    ['True Azimuth',tr.toFixed(6)+'°',true],['True DMS',fdms(tr),false],['True Bearing',az2b(tr),true]]);
+}
+let a4rows=[];
+function a4Add(){
+  const i=a4rows.length;a4rows.push({op:'+',d:0,m:0,s:0});
+  const tr=document.createElement('tr');tr.id='a4r'+i;
+  tr.innerHTML='<td style="color:#4a6070">'+(i+1)+'</td>'
+    +'<td><select class="ii" style="width:55px" onchange="a4rows['+i+'].op=this.value"><option>+</option><option>−</option></select></td>'
+    +'<td><input class="ii" type="number" inputmode="decimal" placeholder="0" oninput="a4rows['+i+'].d=+this.value"></td>'
+    +'<td><input class="ii" type="number" inputmode="decimal" placeholder="0" min="0" max="59" oninput="a4rows['+i+'].m=+this.value"></td>'
+    +'<td><input class="ii" type="number" inputmode="decimal" placeholder="0.0000" step=".0001" oninput="a4rows['+i+'].s=+this.value"></td>'
+    +'<td><button class="btd" onclick="a4Del('+i+')">&#215;</button></td>';
+  g('a4tb').appendChild(tr);
+}
+function a4Del(i){const el=g('a4r'+i);if(el)el.remove();a4rows[i]=null;}
+function cA4(){
+  const rows=a4rows.filter(Boolean);
+  if(!rows.length){g('a4r').innerHTML=ERR('Add at least one angle');return;}
+  let tot=0;rows.forEach(r=>{const v=dms2d(r.d,r.m,r.s);tot+=r.op==='+'?v:-v;});
+  const norm=normAz(tot);
+  g('a4r').innerHTML=RG([['Raw Sum',tot.toFixed(8)+'°',false],['Sum DMS',fdms(tot),false],
+    ['Normalized 0–360°',norm.toFixed(8)+'°',true],['Normalized DMS',fdms(norm),false],
+    ['Back Azimuth',normAz(norm+180).toFixed(6)+'°',false]]);
+}
+a4Add();a4Add();
+function cA5(){
+  let dd;
+  const dv=gv('a5dd'),dm=gv('a5dm'),ds=gv('a5ds');
+  if(dv||dm||ds){dd=dms2d(dv,dm,ds);}
+  else{const v=parseFloat(g('a5v').value),u=gs('a5u');
+    if(isNaN(v)){g('a5r').innerHTML=ERR('Enter a value');return;}
+    dd=u==='dd'?v:u==='rad'?tD(v):u==='grad'?v*0.9:v*(360/6400);}
+  const rad=tR(dd),grad=dd/0.9,mil=dd*(6400/360),{d,m,s}=d2dms(dd);
+  g('a5r').innerHTML=RG([['Decimal Degrees',dd.toFixed(10)+'°',true],
+    ['DMS',d+"° "+m+"' "+s+'"',false],['Radians',rad.toFixed(10),false],
+    ['Grads / Gons',grad.toFixed(8),false],['Mils (6400)',mil.toFixed(6),false],
+    ['Back Azimuth',normAz(dd+180).toFixed(6)+'°',false]]);
+}
+
+// ============================================================
+// TAB 2: DISTANCE & TAPE
+// ============================================================
+function cTC(){
+  const L=gv('tcL'),u=gs('tcu');if(!L){g('tcr').innerHTML=ERR('Enter measured distance');return;}
+  const isF=u==='ft',alpha=isF?6.45e-6:1.16e-5,T0def=isF?68:20,Rearth=isF?20906000:6372000;
+  const Tf=parseFloat(g('tcTf').value)||T0def,T0=parseFloat(g('tcT0').value)||T0def;
+  const P=gv('tcP'),P0=gv('tcP0'),A=gv('tcA')||0.0035,E=gv('tcE')||29000000;
+  const w=gv('tcw'),span=gv('tcsp'),Psag=gv('tcPs');
+  const H=gv('tcH');
+  const Ct=alpha*(Tf-T0)*L;
+  const Cp=P&&P0?(P-P0)*L/(A*E):0;
+  const Cs=w&&span&&Psag?-(w*w*span*span*span)/(24*Psag*Psag):0;
+  const Csl=H?-H*L/Rearth:0;
+  const tot=Ct+Cp+Cs+Csl;
+  const unit=isF?'ft':'m';
+  let html=RG([
+    ['Temp Correction Ct',Ct.toFixed(6)+' '+unit,Math.abs(Ct)>0.001],
+    ['Pull Correction Cp',Cp.toFixed(6)+' '+unit,false],
+    ['Sag Correction Cs',Cs.toFixed(6)+' '+unit,false],
+    ['Sea Level Csl',Csl.toFixed(6)+' '+unit,false],
+    ['TOTAL CORRECTION',tot.toFixed(6)+' '+unit,true],
+    ['CORRECTED DISTANCE',(L+tot).toFixed(5)+' '+unit,true],
+    ['PPM Applied',((tot/L)*1e6).toFixed(2)+' ppm',false]]);
+  html+=STEPS('Steel Tape Corrections',[
+    ['Given','Measured L = '+L+' '+unit+'  |  Field T = '+Tf+'  |  Std T₀ = '+T0,''],
+    ['Temp Correction','Ct = α·(T−T₀)·L = '+alpha.toExponential(3)+'·('+Tf+'−'+T0+')·'+L,Ct.toFixed(6)+' '+unit],
+    ['Pull Correction',P&&P0?'Cp = (P−P₀)·L/(A·E) = ('+P+'−'+P0+')·'+L+'/('+A+'·'+E+')':'Not entered',Cp.toFixed(6)+' '+unit],
+    ['Sag Correction',w&&span&&Psag?'Cs = −w²·L³/(24·P²) = −'+w+'²·'+span+'³/(24·'+Psag+'²)':'Not entered',Cs.toFixed(6)+' '+unit],
+    ['Sea Level','Csl = −H·L/R = −'+H+'·'+L+'/'+Rearth,Csl.toFixed(6)+' '+unit],
+    ['Sum Corrections','Ct + Cp + Cs + Csl = '+Ct.toFixed(5)+'+'+Cp.toFixed(5)+'+'+Cs.toFixed(5)+'+'+Csl.toFixed(5),tot.toFixed(6)+' '+unit],
+    ['Corrected Length','L + Σcorrections = '+L+' + '+tot.toFixed(6),(L+tot).toFixed(5)+' '+unit],
+  ]);
+  g('tcr').innerHTML=html;
+}
+function cSM1(){
+  const S=gv('sm1S'),a=gv('sm1a'),t=gs('sm1t');if(!S){g('sm1r').innerHTML=ERR('Enter slope distance');return;}
+  const alpha=t==='z'?90-a:a;
+  const H=S*Math.cos(tR(alpha)),V=S*Math.sin(tR(alpha));
+  let html=RG([['Slope Distance',S.toFixed(5),false],['Vertical Angle',alpha.toFixed(6)+'°',false],
+    ['HORIZONTAL DIST',H.toFixed(5),true],['Vertical Dist',V.toFixed(5),false],
+    ['Slope (%)',(V/H*100).toFixed(4)+'%',false],['Elev Diff h',V.toFixed(5),false]]);
+  html+=STEPS('Slope → Horizontal',[
+    ['Given',t==='z'?'Zenith angle = '+a+'°  (converted: α = 90−'+a+')':'Horiz angle α = '+a+'°  ('+( a>0?'above':'below')+' horizontal)',''],
+    ['Horiz angle α','α = '+(t==='z'?'90 − '+a:a),alpha.toFixed(6)+'°'],
+    ['Horizontal Dist','H = S·cos(α) = '+S.toFixed(4)+'·cos('+alpha.toFixed(4)+'°)',H.toFixed(5)+' ft'],
+    ['Vertical Dist','V = S·sin(α) = '+S.toFixed(4)+'·sin('+alpha.toFixed(4)+'°)',V.toFixed(5)+' ft'],
+    ['Check','H² + V² = S²?  '+H.toFixed(4)+'² + '+V.toFixed(4)+'² = '+(H*H+V*V).toFixed(4),'S² = '+(S*S).toFixed(4)],
+  ]);
+  g('sm1r').innerHTML=html;
+}
+function cSM2(){
+  const S=gv('sm2S'),h=gv('sm2h');if(!S){g('sm2r').innerHTML=ERR('Enter slope distance');return;}
+  if(Math.abs(h)>S){g('sm2r').innerHTML=ERR('h cannot exceed slope distance');return;}
+  const H=Math.sqrt(S*S-h*h),alpha=tD(Math.asin(h/S));
+  g('sm2r').innerHTML=RG([['Slope Distance',S.toFixed(5),false],['Elevation Diff h',h.toFixed(5),false],
+    ['HORIZONTAL DIST',H.toFixed(5),true],['Vertical Angle',alpha.toFixed(6)+'°',false],
+    ['Slope (%)',(h/H*100).toFixed(4)+'%',false]]);
+}
+function cStadia(){
+  const U=gv('stU'),M=gv('stM'),Lo=gv('stL'),a=gv('sta');
+  const K=gv('stK')||100,C=gv('stC')||0,HI=gv('stHI')||5,IE=gv('stIE')||0,t=gs('stat');
+  if(!U||!M||!Lo){g('str').innerHTML=ERR('Enter upper, middle, and lower rod readings');return;}
+  const s=U-Lo,alpha=t==='z'?90-a:a;
+  const H=K*s*Math.cos(tR(alpha))**2+C*Math.cos(tR(alpha));
+  const V=(K*s/2)*Math.sin(tR(2*alpha));
+  const elev=IE+HI+V-M;
+  let stHTML=RG([['Rod Intercept s',s.toFixed(4),false],['HORIZ DISTANCE H',H.toFixed(4),true],
+    ['Vertical Distance V',V.toFixed(4),false],['Slope Dist approx',(K*s+C).toFixed(4),false],
+    ['ELEVATION of Point',elev.toFixed(4),true],['Vertical Angle',alpha.toFixed(6)+'°',false]]);
+  stHTML+=STEPS('Stadia Reduction',[
+    ['Given','Upper='+U+', Middle='+M+', Lower='+Lo+'  |  α='+alpha.toFixed(4)+'°',''],
+    ['Rod Intercept s','s = Upper − Lower = '+U+' − '+Lo,s.toFixed(4)+' ft'],
+    ['Horiz Distance H','H = K·s·cos²(α) + C·cos(α) = '+K+'·'+s.toFixed(4)+'·cos²('+alpha.toFixed(4)+'°) + '+C+'·cos('+alpha.toFixed(4)+'°)',H.toFixed(4)+' ft'],
+    ['Vertical Distance V','V = (K·s/2)·sin(2α) = ('+K+'·'+s.toFixed(4)+'/2)·sin(2·'+alpha.toFixed(4)+'°)',V.toFixed(4)+' ft'],
+    ['Elev of Point','Elev = IE + HI + V − M_rod = '+IE+' + '+HI+' + '+V.toFixed(4)+' − '+M,elev.toFixed(4)+' ft'],
+  ]);
+  g('str').innerHTML=stHTML;
+}
+function cEDM(){
+  const D=gv('edmD'),T=gv('edmT'),P=gv('edmP'),H=gv('edmH')||60;
+  if(!D||!P){g('edmr').innerHTML=ERR('Enter distance and pressure');return;}
+  const e=H/100*Math.pow(10,(7.5*T/(237.3+T)+0.7858));
+  const ppm=281.8-(0.29535*P)/(1+0.003661*T)-(11.27*e)/(1+0.003661*T);
+  const dD=D*ppm/1e6;
+  let edmHTML=RG([['Temperature',T.toFixed(1)+'°C',false],['Pressure',P.toFixed(1)+' mmHg',false],
+    ['Humidity',H.toFixed(0)+'%',false],['PPM Correction',ppm.toFixed(3)+' ppm',true],
+    ['Distance Correction',dD.toFixed(5)+' ft',false],['CORRECTED DISTANCE',(D+dD).toFixed(5)+' ft',true]]);
+  edmHTML+=STEPS('EDM Atmospheric Correction',[
+    ['Formula','ppm = 281.8 − 0.29535P/(1+0.003661T) − 11.27e/(1+0.003661T)',''],
+    ['Saturation vapor e','e = (H/100) × 10^(7.5T/(237.3+T)+0.7858)',e.toFixed(4)+' mmHg'],
+    ['Pressure term','0.29535 × '+P.toFixed(1)+' / (1 + 0.003661 × '+T.toFixed(1)+')',(0.29535*P/(1+0.003661*T)).toFixed(4)],
+    ['Humidity term','11.27 × '+e.toFixed(4)+' / (1 + 0.003661 × '+T.toFixed(1)+')',(11.27*e/(1+0.003661*T)).toFixed(4)],
+    ['PPM','281.8 − '+( 0.29535*P/(1+0.003661*T)).toFixed(4)+' − '+(11.27*e/(1+0.003661*T)).toFixed(4),ppm.toFixed(4)+' ppm'],
+    ['Distance correction','dD = D × ppm / 1,000,000 = '+D.toFixed(4)+' × '+ppm.toFixed(4)+' / 1,000,000',dD.toFixed(6)+' ft'],
+    ['Corrected distance','D + dD = '+D.toFixed(4)+' + '+dD.toFixed(6),(D+dD).toFixed(5)+' ft'],
+  ]);
+  g('edmr').innerHTML=edmHTML;
+}
+
+// ============================================================
+// TAB 3: CONVERSIONS
+// ============================================================
+// All length fields stored as {id, factor to ft}
+// Length conversion: all values in feet per unit
+const LFT={lft:1,lm:0.3048,lin:1/12,lch:66,llk:0.66,lrd:5.0292,lva:0.84667,lmi:1609.344,lkm:1000,lfur:201.168};
+function cLen(fromId){
+  const v=parseFloat(g(fromId).value);if(isNaN(v))return;
+  const ftV=v*LFT[fromId];
+  Object.keys(LFT).forEach(k=>{if(k!==fromId){const el=g(k);if(el)el.value=+(ftV/LFT[k]).toFixed(9);}});
+}
+window.addEventListener('DOMContentLoaded',()=>{
+  Object.keys(LFT).forEach(k=>{const el=g(k);if(el)el.oninput=()=>cLen(k);});
+  Object.keys(AFTAB).forEach(k=>{const el=g(k);if(el)el.oninput=()=>cArea(k);});
+  Object.keys(VFTAB).forEach(k=>{const el=g(k);if(el)el.oninput=()=>cVol(k);});
+  buildTenths();
+});
+const AFTAB={asf:1,aac:43560,asm:10.7639104,aha:107639.104,asc:4356,asmi:27878400,asy:9,askm:10763910.4};
+function cArea(fromId){
+  const v=parseFloat(g(fromId).value);if(isNaN(v))return;
+  const sf=v*AFTAB[fromId];
+  Object.keys(AFTAB).forEach(k=>{if(k!==fromId){const el=g(k);if(el)el.value=+(sf/AFTAB[k]).toFixed(9);}});
+}
+const VFTAB={vcy:27,vcf:1,vcm:35.3147,vaf:43560,vga:7.48052,vli:0.0353147};
+function cVol(fromId){
+  const v=parseFloat(g(fromId).value);if(isNaN(v))return;
+  const cf=v*VFTAB[fromId];
+  Object.keys(VFTAB).forEach(k=>{if(k!==fromId){const el=g(k);if(el)el.value=+(cf/VFTAB[k]).toFixed(9);}});
+}
+function cFI1(){
+  const df=parseFloat(g('fid').value);if(isNaN(df)){g('fi1r').innerHTML=ERR('Enter decimal feet');return;}
+  const den=parseInt(gs('fiden'))||8;
+  const ft=Math.floor(df),inTot=(df-ft)*12,inWh=Math.floor(inTot),inFr=inTot-inWh;
+  const fn=Math.round(inFr*den);const gcd=(a,b)=>b?gcd(b,a%b):a;
+  const g2=gcd(fn,den)||1;const sn=fn/g2,sd=den/g2;
+  g('fi1r').innerHTML=RG([['Decimal Feet',df.toFixed(6),true],
+    ['Total Inches',(inTot).toFixed(5)+'"',false],
+    ['Ft – In – Fraction',ft+"' "+inWh+" "+sn+"/"+sd+'"',true],
+    ['Nearest 0.01 ft',(Math.round(df*100)/100).toFixed(2),false]]);
+}
+function cFI2(){
+  const ft=gv('fi2ft'),inc=gv('fi2in'),fr=gv('fi2fr');
+  const df=ft+(inc+fr)/12;
+  g('fi2r').innerHTML=RG([['DECIMAL FEET',df.toFixed(6),true],['Decimal Inches',((inc+fr)).toFixed(6)+'"',false]]);
+}
+function buildTenths(){
+  const b=g('ttb');if(!b)return;
+  for(let i=0;i<=99;i++){
+    const df=i/100,inT=df*12,inW=Math.floor(inT),inF=inT-inW;
+    const fn8=Math.round(inF*8),fn16=Math.round(inF*16);
+    const gcd=(a,b2)=>b2?gcd(b2,a%b2):a;
+    const fmt=(n,d)=>{if(n===0)return inW+'"';if(n===d)return(inW+1)+'"+0';const g2=gcd(n,d);return inW+'-'+n/g2+'/'+(d/g2)+'"';};
+    const tr=document.createElement('tr');
+    tr.innerHTML='<td>0.'+(i<10?'0':'')+i+'</td><td>'+inT.toFixed(4)+'"</td><td>'+fmt(fn8,8)+'</td><td>'+fmt(fn16,16)+'</td>';
+    b.appendChild(tr);
+  }
+}
+
+// ============================================================
+// TAB 4: LEVELING
+// ============================================================
+let lvRows=[];
+function lvAdd(){
+  const i=lvRows.length;lvRows.push({sta:'',type:'IFS',rod:0});
+  const tr=document.createElement('tr');tr.id='lvr'+i;
+  tr.innerHTML='<td style="color:#4a6070">'+(i+1)+'</td>'
+    +'<td><input class="ii" type="text" placeholder="STA '+(i+1)+'" style="width:90px" oninput="lvRows['+i+'].sta=this.value"></td>'
+    +'<td><select class="ii" style="width:65px" onchange="lvRows['+i+'].type=this.value"><option>IFS</option><option>TP</option><option>FS</option></select></td>'
+    +'<td><input class="ii" type="number" inputmode="decimal" step=".0001" placeholder="rod ft" oninput="lvRows['+i+'].rod=+this.value"></td>'
+    +'<td id="lve'+i+'" style="color:#4a6070">—</td>'
+    +'<td><button class="btd" onclick="lvDel('+i+')">&#215;</button></td>';
+  g('lvtb').appendChild(tr);
+}
+function lvDel(i){const el=g('lvr'+i);if(el)el.remove();lvRows[i]=null;}
+function cLV(){
+  const bm=parseFloat(g('lvbm').value),bs=parseFloat(g('lvbs').value);
+  if(isNaN(bm)||isNaN(bs)){g('lvbox').innerHTML=ERR('Enter BM elevation and backsight');return;}
+  const hiOv=parseFloat(g('lvhi').value),HI=isNaN(hiOv)?bm+bs:hiOv;
+  g('lvbox').innerHTML='<div class="rbox"><div class="rl">Height of Instrument (HI)</div>'
+    +'<div class="rv">'+HI.toFixed(4)+'</div>'
+    +'<div class="rs">BM '+bm.toFixed(4)+' + BS '+bs.toFixed(4)+' = '+HI.toFixed(4)+'</div></div>';
+  lvRows.forEach((r,i)=>{if(!r)return;const el=g('lve'+i);
+    if(el){el.textContent=(HI-r.rod).toFixed(4);el.style.color='#ff8c00';}});
+}
+for(let i=0;i<4;i++)lvAdd();
+
+let lpRows=[];
+function lpAdd(){
+  const i=lpRows.length;lpRows.push({sta:'',obs:0,dist:0});
+  const tr=document.createElement('tr');tr.id='lpr'+i;
+  tr.innerHTML='<td style="color:#4a6070">'+(i+1)+'</td>'
+    +'<td><input class="ii" type="text" placeholder="BM-'+(i+1)+'" style="width:80px" oninput="lpRows['+i+'].sta=this.value"></td>'
+    +'<td><input class="ii" type="number" inputmode="decimal" step=".0001" placeholder="500.0000" oninput="lpRows['+i+'].obs=+this.value"></td>'
+    +'<td><input class="ii" type="number" inputmode="decimal" step=".01" placeholder="dist ft" oninput="lpRows['+i+'].dist=+this.value"></td>'
+    +'<td id="lpc'+i+'" style="color:#4a6070">—</td>'
+    +'<td id="lpa'+i+'" style="color:#4a6070">—</td>'
+    +'<td><button class="btd" onclick="lpDel('+i+')">&#215;</button></td>';
+  g('lptb').appendChild(tr);
+}
+function lpDel(i){const el=g('lpr'+i);if(el)el.remove();lpRows[i]=null;}
+function cLP(){
+  const bm1=parseFloat(g('lpbm1').value),bm2=parseFloat(g('lpbm2').value),tol=gv('lptol');
+  const rows=lpRows.filter(Boolean);
+  if(isNaN(bm1)||isNaN(bm2)){g('lpr').innerHTML=ERR('Enter starting and closing BM elevations');return;}
+  const totalDist=rows.reduce((s,r)=>s+r.dist,0)||1;
+  const closingObs=rows.length?rows[rows.length-1].obs:bm2;
+  const misc=closingObs-bm2;
+  let cum=0;
+  rows.forEach(r=>{const i=lpRows.indexOf(r);cum+=r.dist;
+    const corr=-(misc)*(cum/totalDist);
+    const adj=r.obs+corr;
+    const ce=g('lpc'+i),ae=g('lpa'+i);
+    if(ce){ce.textContent=corr.toFixed(5);ce.style.color='#6a8098';}
+    if(ae){ae.textContent=adj.toFixed(4);ae.style.color='#ff8c00';}});
+  const ok=Math.abs(misc)<=tol;
+  g('lpr').innerHTML=RG([['Misclosure',misc.toFixed(5)+' ft',true],['Allowable',tol.toFixed(4)+' ft',false],
+    ['Total Distance',totalDist.toFixed(1)+' ft',false],
+    ['Status',ok?'✓ WITHIN TOLERANCE':'✗ EXCEEDS TOLERANCE',ok],
+    ['Precision Ratio','1 : '+Math.round(totalDist/(Math.abs(misc)||0.001)).toLocaleString(),false]]);
+}
+for(let i=0;i<3;i++)lpAdd();
+
+// ============================================================
+// STEP-BY-STEP HELPER
+// ============================================================
+function STEPS(title, steps){
+  const rows=steps.map(function(s){
+    return '<tr><td class="st-lbl">'+s[0]+'</td><td class="st-expr">'+s[1]+'</td><td class="st-val">'+s[2]+'</td></tr>';
+  }).join('');
+  return '<details class="stbox" open>'
+    +'<summary class="stsum">&#9660; STEP-BY-STEP: '+title+'</summary>'
+    +'<div class="tw"><table><thead><tr><th>Step</th><th>Expression</th><th>Result</th></tr></thead>'
+    +'<tbody>'+rows+'</tbody></table></div></details>';
+}
+
+// ============================================================
+// TAB 5: CURVES
+// ============================================================
+function hcCalc(delta,R){
+  const d=tR(delta),T=R*Math.tan(d/2),L=R*d,LC=2*R*Math.sin(d/2),
+    E=R*(1/Math.cos(d/2)-1),M=R*(1-Math.cos(d/2)),D=5729.578/R;
+  return{T,L,LC,E,M,D,R,delta};
+}
+function hcRG(c,pc,showSteps){
+  const PT=pc!=null?pc+c.L:null;
+  let html=RG([['Radius R',c.R.toFixed(4)+' ft',true],['Degree of Curve D°',c.D.toFixed(6)+'°',false],
+    ['Tangent T',c.T.toFixed(4)+' ft',true],['Arc Length L',c.L.toFixed(4)+' ft',true],
+    ['Long Chord LC',c.LC.toFixed(4)+' ft',false],['External E',c.E.toFixed(4)+' ft',false],
+    ['Mid-Ordinate M',c.M.toFixed(4)+' ft',false],['Delta Δ',c.delta.toFixed(6)+'°',false],
+    ...(pc!=null?[['PC Station',pc.toFixed(2),false],['PT Station',PT.toFixed(4),true]]:[])]
+  );
+  if(showSteps){
+    html+=STEPS('Horizontal Curve',[
+      ['Given','Δ = '+c.delta.toFixed(6)+'°  →  R = '+c.R.toFixed(4)+' ft',''],
+      ['Δ in Radians','Δ(rad) = '+c.delta.toFixed(6)+' × π/180',tR(c.delta).toFixed(8)+' rad'],
+      ['Degree of Curve','D° = 5729.578 / R = 5729.578 / '+c.R.toFixed(4),c.D.toFixed(6)+'°'],
+      ['Tangent Length','T = R·tan(Δ/2) = '+c.R.toFixed(4)+'·tan('+c.delta.toFixed(4)+'/2)',c.T.toFixed(5)+' ft'],
+      ['Arc Length','L = R·Δ(rad) = '+c.R.toFixed(4)+'·'+tR(c.delta).toFixed(6),c.L.toFixed(5)+' ft'],
+      ['Long Chord','LC = 2R·sin(Δ/2) = 2·'+c.R.toFixed(4)+'·sin('+c.delta.toFixed(4)+'/2)',c.LC.toFixed(5)+' ft'],
+      ['External Dist','E = R(1/cos(Δ/2)−1) = '+c.R.toFixed(4)+'·(sec('+c.delta.toFixed(4)+'/2)−1)',c.E.toFixed(5)+' ft'],
+      ['Mid-Ordinate','M = R(1−cos(Δ/2)) = '+c.R.toFixed(4)+'·(1−cos('+c.delta.toFixed(4)+'/2))',c.M.toFixed(5)+' ft'],
+      ...(pc!=null?[
+        ['PT Station','PT = PC + L = '+pc.toFixed(2)+' + '+c.L.toFixed(4),(pc+c.L).toFixed(4)],
+      ]:[])
+    ]);
+  }
+  return html;
+}
+function cCR1(){const d=gv('cr1d'),R=gv('cr1r'),pc=parseFloat(g('cr1pc').value);
+  if(!d||!R){g('cr1r').innerHTML=ERR('Enter Δ and R');return;}
+  g('cr1r').innerHTML=hcRG(hcCalc(d,R),isNaN(pc)?null:pc,true);}
+function cCR2(){const d=gv('cr2d'),D=gv('cr2D'),pc=parseFloat(g('cr2pc').value);
+  if(!d||!D){g('cr2r').innerHTML=ERR('Enter Δ and D°');return;}
+  const R=5729.578/D,c=hcCalc(d,R);
+  let html=hcRG(c,isNaN(pc)?null:pc,false);
+  html+=STEPS('Horiz Curve from D°',[
+    ['Given','Δ = '+d.toFixed(6)+'°,  D° = '+D.toFixed(6)+'°',''],
+    ['Radius from D°','R = 5729.578 / D° = 5729.578 / '+D.toFixed(6),R.toFixed(5)+' ft'],
+    ['Δ in Radians','Δ(rad) = '+d.toFixed(6)+' × π/180',tR(d).toFixed(8)+' rad'],
+    ['Tangent','T = R·tan(Δ/2) = '+R.toFixed(4)+'·tan('+d.toFixed(4)+'/2)',c.T.toFixed(5)+' ft'],
+    ['Arc Length','L = R·Δ(rad)',c.L.toFixed(5)+' ft'],
+    ['Long Chord','LC = 2R·sin(Δ/2)',c.LC.toFixed(5)+' ft'],
+  ]);
+  g('cr2r').innerHTML=html;}
+function cCR3(){
+  const pc=gv('cr3pc'),R=gv('cr3r'),delta=gv('cr3d'),intv=gv('cr3i')||50;
+  if(!R||!delta){g('cr3r').innerHTML=ERR('Enter R and Δ');return;}
+  const c=hcCalc(delta,R),PT=pc+c.L;
+  let rows='';
+  for(let st=pc;st<=PT+0.001;st=Math.min(st+intv,PT)){
+    const x=st-pc,defl=tD(x/(2*R)),chord=2*R*Math.sin(tR(defl));
+    rows+='<tr><td>'+st.toFixed(2)+'</td><td>'+x.toFixed(4)+'</td><td>'+fdms(defl)+'</td><td>'+chord.toFixed(4)+'</td></tr>';
+    if(Math.abs(st-PT)<0.001)break;
+  }
+  let html=hcRG(c,pc,false);
+  html+='<div class="tw"><table><thead><tr><th>Station</th><th>Arc (ft)</th><th>Deflection</th><th>Chord (ft)</th></tr></thead><tbody>'+rows+'</tbody></table></div>';
+  html+=STEPS('Deflection Angle Layout',[
+    ['Formula','defl = arc / (2R) in degrees  |  chord = 2R·sin(defl)',''],
+    ['PC','PC = '+pc.toFixed(2)+'  |  R = '+R.toFixed(4),''],
+    ['PT','PT = PC + L = '+pc.toFixed(2)+' + '+c.L.toFixed(4),PT.toFixed(4)],
+    ['1st station defl','defl = (sta−PC)/(2R) = ('+Math.min(pc+intv,PT).toFixed(2)+'−'+pc.toFixed(2)+')/(2·'+R.toFixed(4)+')',tD((Math.min(intv,c.L))/(2*R)).toFixed(6)+'°'],
+  ]);
+  g('cr3r').innerHTML=html;
+}
+
+// ─── VERTICAL CURVE HELPERS ────────────────────────────────
+function vcCalc(L,g1p,g2p,pvie,pvis){
+  const g1=g1p/100,g2=g2p/100,r=(g2-g1)/L;
+  const BVCS=pvis-L/2,EVCS=pvis+L/2;
+  const BVCE=pvie-g1*(L/2),EVCE=pvie+g2*(L/2);
+  const A=(g2-g1)*100,K=L/Math.abs(A||1e-10);
+  const hlX=r!==0?-g1/r:null,hlE=hlX!=null?BVCE+g1*hlX+0.5*r*hlX*hlX:null;
+  const hlIn=hlX!=null&&hlX>=-0.001&&hlX<=L+0.001;
+  const hlSta=hlX!=null?BVCS+hlX:null;
+  return{L,g1,g2,g1p,g2p,r,BVCS,EVCS,BVCE,EVCE,A,K,hlX,hlE,hlIn,hlSta,pvie,pvis};
+}
+function vcElev(vc,x){return vc.BVCE+vc.g1*x+0.5*vc.r*x*x;}
+function vcSteps(vc,exampleX){
+  const x=exampleX!=null?exampleX:Math.min(vc.L/2,100);
+  const E=vcElev(vc,x);
+  return STEPS('Vertical Curve',[
+    ['Given','L='+vc.L+' ft,  g₁='+vc.g1p+'%,  g₂='+vc.g2p+'%,  PVI Elev='+vc.pvie+'  @ Sta='+vc.pvis,''],
+    ['PVC Station','PVC = PVI − L/2 = '+vc.pvis+' − '+vc.L+'/2',vc.BVCS.toFixed(4)],
+    ['PVT Station','PVT = PVI + L/2 = '+vc.pvis+' + '+vc.L+'/2',vc.EVCS.toFixed(4)],
+    ['PVC Elevation','PVC Elev = PVI Elev − g₁·(L/2) = '+vc.pvie+' − '+(vc.g1p/100).toFixed(4)+'·'+vc.L/2,vc.BVCE.toFixed(4)],
+    ['PVT Elevation','PVT Elev = PVI Elev + g₂·(L/2) = '+vc.pvie+' + '+(vc.g2p/100).toFixed(4)+'·'+vc.L/2,vc.EVCE.toFixed(4)],
+    ['A (grade change)','A = g₂ − g₁ = '+vc.g2p+' − ('+vc.g1p+') = '+vc.A.toFixed(4)+'%',vc.A.toFixed(4)+'%'],
+    ['Rate of change r','r = (g₂−g₁)/L = ('+vc.g2p+'%−'+vc.g1p+'%) / '+vc.L,(vc.r*100).toFixed(8)+'%/ft'],
+    ['K-value','K = L / |A| = '+vc.L+' / '+Math.abs(vc.A).toFixed(4),vc.K.toFixed(4)+' ft/%'],
+    ['Curve Type',vc.A>0?'A > 0 → SAG (valley)':'A < 0 → CREST (hill)',''],
+    ['Parabola formula','E(x) = BVCE + g₁·x + ½·r·x²',''],
+    ['Example at x='+x.toFixed(2),'E = '+vc.BVCE.toFixed(4)+' + '+vc.g1.toFixed(5)+'·'+x.toFixed(2)+' + ½·'+vc.r.toFixed(8)+'·'+x.toFixed(2)+'²',E.toFixed(4)],
+    ...(vc.hlIn?[
+      ['High/Low point x','x = −g₁/r = −'+(vc.g1*100).toFixed(5)+'% / '+( vc.r*100).toFixed(8)+'%/ft',vc.hlX.toFixed(4)+' ft from PVC'],
+      ['High/Low station','Sta = PVC + x = '+vc.BVCS.toFixed(4)+' + '+vc.hlX.toFixed(4),vc.hlSta.toFixed(4)],
+      ['High/Low elevation','E = BVCE + g₁·x + ½r·x²',vc.hlE.toFixed(4)],
+    ]:[['High/Low','x = '+( vc.hlX!=null?vc.hlX.toFixed(4):'N/A')+' — outside curve limits','—']])
+  ]);
+}
+
+function cVC1(){
+  const L=gv('vcL'),g1=gv('vcg1'),g2=gv('vcg2'),pvie=gv('vcpvie'),intv=gv('vcint')||50;
+  const pvis_raw=parseFloat(g('vcpvis').value);
+  const pvis=isNaN(pvis_raw)?0:pvis_raw;
+  const pvisHasVal=!isNaN(pvis_raw);
+  if(!L||isNaN(pvie)){g('vcr1').innerHTML=ERR('Enter L, g1, g2, and PVI elevation');return;}
+  if(!pvisHasVal){g('vcr1').innerHTML=ERR('Enter PVI Station to compute PVC/PVT stations');return;}
+  const vc=vcCalc(L,g1,g2,pvie,pvis);
+  // Check for PVC override
+  const pvcSOv=parseFloat(g('vcpvcs').value),pvcEOv=parseFloat(g('vcpvce').value);
+  const BVCS=isNaN(pvcSOv)?vc.BVCS:pvcSOv;
+  const BVCE=isNaN(pvcEOv)?vc.BVCE:pvcEOv;
+  // Summary grid
+  let html=RG([
+    ['PVC STATION',BVCS.toFixed(4),true],['PVC ELEVATION',BVCE.toFixed(4),true],
+    ['PVI Station',pvis.toFixed(4),false],['PVI Elevation',pvie.toFixed(4),false],
+    ['PVT STATION',vc.EVCS.toFixed(4),true],['PVT ELEVATION',vc.EVCE.toFixed(4),true],
+    ['Curve Length L',L+' ft',false],['A = g₂−g₁',vc.A.toFixed(4)+'%',false],
+    ['K-value',vc.K.toFixed(4)+' ft/%',false],['Curve Type',vc.A>0?'SAG':'CREST',true],
+    ['High/Low Sta',vc.hlIn?vc.hlSta.toFixed(4):'Outside curve',vc.hlIn],
+    ['High/Low Elev',vc.hlIn?vc.hlE.toFixed(4):'—',vc.hlIn]
+  ]);
+  // Station table
+  let rows='';
+  const startSta=BVCS,endSta=vc.EVCS;
+  // Round up to next interval
+  const firstSta=Math.ceil(startSta/intv)*intv;
+  // Add PVC
+  rows+='<tr style="background:rgba(255,140,0,.06)"><td><b>'+startSta.toFixed(2)+'</b></td><td>0.00</td><td style="color:#ff8c00;font-weight:700">'+vcElev(vc,0).toFixed(4)+'</td><td style="color:#4a6070;font-size:10px">PVC</td></tr>';
+  for(let sta=firstSta;sta<endSta-0.001;sta+=intv){
+    const x=sta-startSta;
+    rows+='<tr><td>'+sta.toFixed(2)+'</td><td>'+x.toFixed(4)+'</td><td style="color:#ff8c00">'+vcElev(vc,x).toFixed(4)+'</td><td></td></tr>';
+  }
+  // High/low if inside
+  if(vc.hlIn){
+    const hlSta=vc.hlSta,hlX=vc.hlX;
+    rows+='<tr style="background:rgba(255,140,0,.06)"><td><b>'+hlSta.toFixed(4)+'</b></td><td>'+hlX.toFixed(4)+'</td><td style="color:#ff8c00;font-weight:700">'+vc.hlE.toFixed(4)+'</td><td style="color:#ff8c00;font-size:10px">HIGH/LOW</td></tr>';
+  }
+  // Add PVT
+  rows+='<tr style="background:rgba(255,140,0,.06)"><td><b>'+endSta.toFixed(2)+'</b></td><td>'+L.toFixed(4)+'</td><td style="color:#ff8c00;font-weight:700">'+vcElev(vc,L).toFixed(4)+'</td><td style="color:#4a6070;font-size:10px">PVT</td></tr>';
+  html+='<div class="tw"><table><thead><tr><th>Station</th><th>x from PVC</th><th>Elevation</th><th>Note</th></tr></thead><tbody>'+rows+'</tbody></table></div>';
+  html+=vcSteps(vc,Math.min(L/2,100));
+  g('vcr1').innerHTML=html;
+}
+
+function cVC2(){
+  const L=gv('vc2L'),g1=gv('vc2g1'),g2=gv('vc2g2'),pvie=gv('vc2pvie');
+  const pvis_raw=parseFloat(g('vc2pvis').value);
+  if(!L||isNaN(pvie)||isNaN(pvis_raw)){g('vcr2').innerHTML=ERR('Enter all fields including PVI station');return;}
+  const vc=vcCalc(L,g1,g2,pvie,pvis_raw);
+  const raw=gs('vc2offs').split(',').map(s=>parseFloat(s.trim())).filter(v=>!isNaN(v));
+  if(!raw.length){g('vcr2').innerHTML=ERR('Enter stations to compute');return;}
+  // Stations — accept either absolute stations or offsets from PVC
+  const isAbsolute=raw.some(v=>Math.abs(v)>L);
+  let rows='',steps_ex=null;
+  raw.forEach(v=>{
+    const sta=isAbsolute?v:vc.BVCS+v;
+    const x=sta-vc.BVCS;
+    if(x<-0.001||x>L+0.001){
+      rows+='<tr><td>'+sta.toFixed(2)+'</td><td style="color:#4a6070">outside curve</td><td>—</td><td>—</td></tr>';
+      return;
+    }
+    const elev=vcElev(vc,x);
+    if(steps_ex===null)steps_ex=x;
+    rows+='<tr><td>'+sta.toFixed(2)+'</td><td>'+x.toFixed(4)+'</td><td style="color:#ff8c00">'+elev.toFixed(4)+'</td>'
+      +'<td style="color:#4a6070;font-size:10px">'+vc.BVCE.toFixed(3)+'+'+vc.g1.toFixed(4)+'·'+x.toFixed(2)+'+½·'+vc.r.toFixed(5)+'·'+x.toFixed(2)+'²</td></tr>';
+  });
+  let html='<div class="tw"><table><thead><tr><th>Station</th><th>x from PVC</th><th>Elevation</th><th>Formula Check</th></tr></thead><tbody>'+rows+'</tbody></table></div>';
+  html+=RG([['PVC Sta',vc.BVCS.toFixed(4),false],['PVC Elev',vc.BVCE.toFixed(4),false],
+    ['PVT Sta',vc.EVCS.toFixed(4),false],['PVT Elev',vc.EVCE.toFixed(4),false],
+    ['Input interpretation',isAbsolute?'Absolute stations':'Offsets from PVC',false]]);
+  html+=vcSteps(vc,steps_ex);
+  g('vcr2').innerHTML=html;
+}
+
+// ============================================================
+// TAB 6: COGO
+// ============================================================
+function cCG1(){
+  const n1=gv('cg1n1'),e1=gv('cg1e1'),n2=gv('cg1n2'),e2=gv('cg1e2');
+  const dN=n2-n1,dE=e2-e1,dist=Math.sqrt(dN*dN+dE*dE);
+  let az=tD(Math.atan2(dE,dN));if(az<0)az+=360;
+  let cg1HTML=RG([['DISTANCE',dist.toFixed(5),true],['AZIMUTH',az.toFixed(8)+'°',true],
+    ['Azimuth DMS',fdms(az),false],['BEARING',az2b(az),true],
+    ['ΔNorthing',dN.toFixed(5),false],['ΔEasting',dE.toFixed(5),false],
+    ['Back Azimuth',normAz(az+180).toFixed(6)+'°',false]]);
+  cg1HTML+=STEPS('Inverse Calculation',[
+    ['Given','P1 = (N:'+n1.toFixed(4)+', E:'+e1.toFixed(4)+')  →  P2 = (N:'+n2.toFixed(4)+', E:'+e2.toFixed(4)+')',''],
+    ['ΔNorthing','ΔN = N2 − N1 = '+n2.toFixed(4)+' − '+n1.toFixed(4),dN.toFixed(6)],
+    ['ΔEasting','ΔE = E2 − E1 = '+e2.toFixed(4)+' − '+e1.toFixed(4),dE.toFixed(6)],
+    ['Distance','D = √(ΔN² + ΔE²) = √('+dN.toFixed(4)+'² + '+dE.toFixed(4)+'²)',dist.toFixed(6)],
+    ['Azimuth (atan2)','Az = atan2(ΔE, ΔN) = atan2('+dE.toFixed(4)+', '+dN.toFixed(4)+')',az.toFixed(8)+'°'],
+    ['Azimuth DMS','Convert decimal to DMS',fdms(az)],
+    ['Bearing',az2b(az),''],
+    ['Back Azimuth','Az_back = Az + 180° = '+az.toFixed(4)+' + 180°',normAz(az+180).toFixed(6)+'°'],
+  ]);
+  g('cg1r').innerHTML=cg1HTML;
+}
+function cCG2(){
+  const n=gv('cg2n'),e=gv('cg2e'),az=gv('cg2az'),d=gv('cg2d');
+  const dN=d*Math.cos(tR(az)),dE=d*Math.sin(tR(az));
+  g('cg2r').innerHTML=RG([['NEW NORTHING',(n+dN).toFixed(5),true],['NEW EASTING',(e+dE).toFixed(5),true],
+    ['ΔNorthing',dN.toFixed(5),false],['ΔEasting',dE.toFixed(5),false]]);
+}
+let cg3rows=[];
+function cg3Add(){
+  const i=cg3rows.length;cg3rows.push({id:'PT'+(i+1),n:0,e:0});
+  const tr=document.createElement('tr');tr.id='cg3r'+i;
+  tr.innerHTML='<td style="color:#4a6070">'+(i+1)+'</td>'
+    +'<td><input class="ii" type="text" placeholder="PT'+(i+1)+'" style="width:70px" oninput="cg3rows['+i+'].id=this.value"></td>'
+    +'<td><input class="ii" type="number" inputmode="decimal" step=".0001" placeholder="N" oninput="cg3rows['+i+'].n=+this.value"></td>'
+    +'<td><input class="ii" type="number" inputmode="decimal" step=".0001" placeholder="E" oninput="cg3rows['+i+'].e=+this.value"></td>'
+    +'<td><button class="btd" onclick="cg3Del('+i+')">&#215;</button></td>';
+  g('cg3tb').appendChild(tr);
+}
+function cg3Del(i){const el=g('cg3r'+i);if(el)el.remove();cg3rows[i]=null;}
+function cCG3(){
+  const pts=cg3rows.filter(Boolean);
+  if(pts.length<3){g('cg3r').innerHTML=ERR('Need at least 3 points');return;}
+  const area=shoelace(pts.map(p=>[p.e,p.n]));
+  let perim=0;const n=pts.length;
+  for(let i=0;i<n;i++){const j=(i+1)%n;perim+=Math.sqrt((pts[j].n-pts[i].n)**2+(pts[j].e-pts[i].e)**2);}
+  g('cg3r').innerHTML=RG([['AREA (ft²)',area.toFixed(4),true],['AREA (acres)',(area/43560).toFixed(8),true],
+    ['Area (m²)',(area*0.092903).toFixed(4),false],['Area (hectares)',(area*0.092903/10000).toFixed(8),false],
+    ['Area (sq chains)',(area/4356).toFixed(6),false],['Perimeter',perim.toFixed(4)+' ft',false]]);
+}
+for(let i=0;i<4;i++)cg3Add();
+function cCG4(){
+  const n1=gv('cg4n1'),e1=gv('cg4e1'),az1=tR(gv('cg4az1'));
+  const n2=gv('cg4n2'),e2=gv('cg4e2'),az2=tR(gv('cg4az2'));
+  const c1=Math.cos(az1),s1=Math.sin(az1),c2=Math.cos(az2),s2=Math.sin(az2);
+  const den=s2*c1-c2*s1;
+  if(Math.abs(den)<1e-10){g('cg4r').innerHTML=ERR('Lines are parallel — no intersection');return;}
+  const t=((n2-n1)*s2-(e2-e1)*c2)/den;
+  const ni=n1+t*c1,ei=e1+t*s1;
+  g('cg4r').innerHTML=RG([['INTERSECTION N',ni.toFixed(5),true],['INTERSECTION E',ei.toFixed(5),true],
+    ['Dist from Pt 1',Math.sqrt((ni-n1)**2+(ei-e1)**2).toFixed(4),false],
+    ['Dist from Pt 2',Math.sqrt((ni-n2)**2+(ei-e2)**2).toFixed(4),false]]);
+}
+function cRS(){
+  const nA=gv('rsna'),eA=gv('rsea'),nB=gv('rsnb'),eB=gv('rseb'),nC=gv('rsnc'),eC=gv('rsec');
+  const alpha=tR(gv('rsa')),beta=tR(gv('rsb'));
+  // Tienstra: weights K1,K2,K3
+  const gamma=PI-(alpha+beta);
+  if(gamma<=0){g('rsr').innerHTML=ERR('Angles alpha+beta must be less than 180°');return;}
+  const cot=a=>Math.cos(a)/Math.sin(a);
+  // angles subtended at known triangle A-B-C
+  const cotAngleA=()=>{// angle of triangle at A
+    const ab=Math.sqrt((nB-nA)**2+(eB-eA)**2),bc=Math.sqrt((nC-nB)**2+(eC-eB)**2),ca=Math.sqrt((nA-nC)**2+(eA-eC)**2);
+    const cosA=(ab*ab+ca*ca-bc*bc)/(2*ab*ca);return Math.cos(Math.acos(cosA))/Math.sin(Math.acos(cosA));};
+  const cotAngB=()=>{const ab=Math.sqrt((nB-nA)**2+(eB-eA)**2),bc=Math.sqrt((nC-nB)**2+(eC-eB)**2),ca=Math.sqrt((nA-nC)**2+(eA-eC)**2);
+    const cosB=(ab*ab+bc*bc-ca*ca)/(2*ab*bc);return Math.cos(Math.acos(cosB))/Math.sin(Math.acos(cosB));};
+  const cotAngC=()=>{const ab=Math.sqrt((nB-nA)**2+(eB-eA)**2),bc=Math.sqrt((nC-nB)**2+(eC-eB)**2),ca=Math.sqrt((nA-nC)**2+(eA-eC)**2);
+    const cosC=(bc*bc+ca*ca-ab*ab)/(2*bc*ca);return Math.cos(Math.acos(cosC))/Math.sin(Math.acos(cosC));};
+  const K1=1/(cot(alpha)-cotAngA());
+  const K2=1/(cot(beta)-cotAngB());
+  const K3=1/(cot(gamma)-cotAngC());
+  const Kt=K1+K2+K3;
+  const nP=(K1*nA+K2*nB+K3*nC)/Kt,eP=(K1*eA+K2*eB+K3*eC)/Kt;
+  g('rsr').innerHTML=RG([['UNKNOWN N',nP.toFixed(5),true],['UNKNOWN E',eP.toFixed(5),true],
+    ['Dist to A',Math.sqrt((nP-nA)**2+(eP-eA)**2).toFixed(4),false],
+    ['Dist to B',Math.sqrt((nP-nB)**2+(eP-eB)**2).toFixed(4),false],
+    ['Dist to C',Math.sqrt((nP-nC)**2+(eP-eC)**2).toFixed(4),false]]);
+}
+
+// ============================================================
+// TAB 7: TRAVERSE
+// ============================================================
+let tvRows=[];
+function tvAdd(){
+  const i=tvRows.length;tvRows.push({name:'L'+(i+1),az:0,dist:0});
+  const tr=document.createElement('tr');tr.id='tvr'+i;
+  tr.innerHTML='<td style="color:#4a6070">'+(i+1)+'</td>'
+    +'<td><input class="ii" type="text" placeholder="Course '+(i+1)+'" style="width:90px" oninput="tvRows['+i+'].name=this.value"></td>'
+    +'<td><input class="ii" type="number" inputmode="decimal" step=".0001" placeholder="0.0000" oninput="tvRows['+i+'].az=+this.value"></td>'
+    +'<td><input class="ii" type="number" inputmode="decimal" step=".0001" placeholder="0.0000" oninput="tvRows['+i+'].dist=+this.value"></td>'
+    +'<td><button class="btd" onclick="tvDel('+i+')">&#215;</button></td>';
+  g('tvtb').appendChild(tr);
+}
+function tvDel(i){const el=g('tvr'+i);if(el)el.remove();tvRows[i]=null;}
+function cTV(){
+  const rows=tvRows.filter(Boolean);
+  if(rows.length<2){g('tvr').innerHTML=ERR('Enter at least 2 courses');return;}
+  const n0=gv('tvn0'),e0=gv('tve0');
+  let sumLat=0,sumDep=0,peri=0;
+  const data=rows.map(r=>{
+    const lat=r.dist*Math.cos(tR(r.az)),dep=r.dist*Math.sin(tR(r.az));
+    sumLat+=lat;sumDep+=dep;peri+=r.dist;return{...r,lat,dep};});
+  const LEC=Math.sqrt(sumLat**2+sumDep**2),prec=LEC>0?peri/LEC:Infinity;
+  const adj=data.map(r=>({...r,
+    dLat:-sumLat*(r.dist/peri),dDep:-sumDep*(r.dist/peri),
+    adjLat:r.lat-sumLat*(r.dist/peri),adjDep:r.dep-sumDep*(r.dist/peri)}));
+  let cn=n0,ce=e0;
+  const coords=[{n:n0,e:e0,name:'START'}];
+  adj.forEach(r=>{cn+=r.adjLat;ce+=r.adjDep;coords.push({n:cn,e:ce,name:r.name});});
+  const trows=adj.map(r=>'<tr><td>'+r.name+'</td><td>'+r.az.toFixed(4)+'°</td><td>'+r.dist.toFixed(4)+'</td>'
+    +'<td>'+r.lat.toFixed(5)+'</td><td>'+r.dep.toFixed(5)+'</td>'
+    +'<td>'+r.dLat.toFixed(5)+'</td><td>'+r.dDep.toFixed(5)+'</td>'
+    +'<td style="color:#ff8c00">'+r.adjLat.toFixed(5)+'</td><td style="color:#ff8c00">'+r.adjDep.toFixed(5)+'</td></tr>').join('');
+  const crows=coords.map(c=>'<tr><td>'+c.name+'</td><td style="color:#ff8c00">'+c.n.toFixed(4)+'</td><td style="color:#ff8c00">'+c.e.toFixed(4)+'</td></tr>').join('');
+  g('tv2r').innerHTML='<div class="tw"><table><thead><tr><th>Course</th><th>Azimuth</th><th>Dist</th><th>Latitude</th><th>Departure</th><th>Lat Corr</th><th>Dep Corr</th><th>Adj Lat</th><th>Adj Dep</th></tr></thead><tbody>'+trows+'</tbody></table></div>'
+    +'<p class="sl" style="margin-top:16px">ADJUSTED COORDINATES:</p>'
+    +'<div class="tw"><table><thead><tr><th>Point</th><th>Northing</th><th>Easting</th></tr></thead><tbody>'+crows+'</tbody></table></div>';
+  let tvHTML=RG([['ΣLatitude',sumLat.toFixed(6),false],['ΣDeparture',sumDep.toFixed(6),false],
+    ['LINEAR ERROR',LEC.toFixed(5)+' ft',true],['Perimeter',peri.toFixed(4)+' ft',false],
+    ['PRECISION RATIO','1 : '+Math.round(prec).toLocaleString(),true],
+    ['Closure Azimuth',normAz(tD(Math.atan2(sumDep,sumLat))).toFixed(4)+'°',false]]);
+  const r0=adj[0];
+  tvHTML+=STEPS('Traverse Closure (Bowditch)',[
+    ['Course Lat','Lat = dist·cos(Az)  |  Dep = dist·sin(Az)',''],
+    ['Example: '+r0.name,'Lat = '+r0.dist.toFixed(4)+'·cos('+r0.az.toFixed(4)+'°)',r0.lat.toFixed(6)],
+    ['Example Dep',r0.name+':  Dep = '+r0.dist.toFixed(4)+'·sin('+r0.az.toFixed(4)+'°)',r0.dep.toFixed(6)],
+    ['ΣLat / ΣDep','Sum of all latitudes / departures',sumLat.toFixed(6)+' / '+sumDep.toFixed(6)],
+    ['Linear Error Closure','LEC = √(ΣLat² + ΣDep²) = √('+sumLat.toFixed(4)+'² + '+sumDep.toFixed(4)+'²)',LEC.toFixed(5)+' ft'],
+    ['Precision Ratio','1 : (Perimeter / LEC) = 1 : ('+peri.toFixed(4)+' / '+LEC.toFixed(5)+')',('1 : '+Math.round(prec).toLocaleString())],
+    ['Bowditch Correction','ΔLat_i = −ΣLat × (dist_i / Perimeter)','for each course'],
+    ['Example correction',r0.name+':  ΔLat = −'+sumLat.toFixed(4)+'×('+r0.dist.toFixed(4)+'/'+peri.toFixed(4)+')',r0.dLat.toFixed(6)],
+    ['Adjusted Lat',r0.name+':  adjLat = Lat + ΔLat = '+r0.lat.toFixed(5)+' + '+r0.dLat.toFixed(5),r0.adjLat.toFixed(6)],
+  ]);
+  g('tvr').innerHTML=tvHTML;
+}
+for(let i=0;i<4;i++)tvAdd();
+
+// ============================================================
+// TAB 8: TRIANGLES
+// ============================================================
+function triOut(id,a,b,c,A,B,C){
+  if([a,b,c,A,B,C].some(v=>isNaN(v)||v<=0)){g(id).innerHTML=ERR('Invalid triangle geometry');return;}
+  const s=(a+b+c)/2,area=Math.sqrt(Math.max(0,s*(s-a)*(s-b)*(s-c)));
+  const Rc=a/(2*Math.sin(tR(A))),ri=area/s;
+  const html=RG([['Side a',a.toFixed(6),false],['Side b',b.toFixed(6),false],['Side c',c.toFixed(6),false],
+    ['ANGLE A',A.toFixed(6)+'°',true],['ANGLE B',B.toFixed(6)+'°',true],['ANGLE C',C.toFixed(6)+'°',true],
+    ['AREA',area.toFixed(6),true],['Perimeter',(a+b+c).toFixed(6),false],
+    ['Circumradius R',Rc.toFixed(6),false],['Inradius r',ri.toFixed(6),false],
+    ['Sum of Angles',(A+B+C).toFixed(6)+'°',false]]);
+  g(id).innerHTML=html;
+}
+function sSSS(){const a=gv('s1a'),b=gv('s1b'),c=gv('s1c');if(!a||!b||!c){g('tr1r').innerHTML=ERR('Enter all three sides');return;}
+  const cosA=(b*b+c*c-a*a)/(2*b*c),cosB=(a*a+c*c-b*b)/(2*a*c);
+  const A=tD(Math.acos(cosA)),B=tD(Math.acos(cosB)),C=180-A-B;
+  const s=(a+b+c)/2,area=Math.sqrt(Math.max(0,s*(s-a)*(s-b)*(s-c)));
+  triOut('tr1r',a,b,c,A,B,C);
+  let html=g('tr1r').innerHTML;
+  html+=STEPS('SSS — Law of Cosines',[
+    ['Given','a='+a+',  b='+b+',  c='+c,''],
+    ['cos A','cos A = (b²+c²−a²)/(2bc) = ('+b+'²+'+c+'²−'+a+'²)/(2·'+b+'·'+c+')',cosA.toFixed(8)],
+    ['Angle A','A = arccos('+cosA.toFixed(6)+')',A.toFixed(6)+'°'],
+    ['cos B','cos B = (a²+c²−b²)/(2ac)',cosB.toFixed(8)],
+    ['Angle B','B = arccos('+cosB.toFixed(6)+')',B.toFixed(6)+'°'],
+    ['Angle C','C = 180° − A − B = 180 − '+A.toFixed(4)+' − '+B.toFixed(4),C.toFixed(6)+'°'],
+    ['Semi-perimeter','s = (a+b+c)/2 = ('+(a+b+c).toFixed(4)+')/2',s.toFixed(6)],
+    ['Area (Heron)','A = √(s(s−a)(s−b)(s−c))',area.toFixed(6)],
+    ['Check: sum angles','A + B + C',(A+B+C).toFixed(8)+'°'],
+  ]);
+  g('tr1r').innerHTML=html;}
+function sSAS(){const a=gv('s2a'),C=gv('s2C'),b=gv('s2b');if(!a||!C||!b){g('tr2r').innerHTML=ERR('Enter a, C, b');return;}
+  const c=Math.sqrt(a*a+b*b-2*a*b*Math.cos(tR(C)));const A=tD(Math.acos((b*b+c*c-a*a)/(2*b*c)));triOut('tr2r',a,b,c,A,180-A-C,C);}
+function sASA(){const A=gv('s3A'),c=gv('s3c'),B=gv('s3B');if(!A||!c||!B){g('tr3r').innerHTML=ERR('Enter A, c, B');return;}
+  const C=180-A-B;if(C<=0){g('tr3r').innerHTML=ERR('Angles exceed 180°');return;}
+  const a=c*Math.sin(tR(A))/Math.sin(tR(C)),b=c*Math.sin(tR(B))/Math.sin(tR(C));triOut('tr3r',a,b,c,A,B,C);}
+function sAAS(){const A=gv('s4A'),B=gv('s4B'),a=gv('s4a');if(!A||!B||!a){g('tr4r').innerHTML=ERR('Enter A, B, a');return;}
+  const C=180-A-B;if(C<=0){g('tr4r').innerHTML=ERR('Angles exceed 180°');return;}
+  const b=a*Math.sin(tR(B))/Math.sin(tR(A)),c=a*Math.sin(tR(C))/Math.sin(tR(A));triOut('tr4r',a,b,c,A,B,C);}
+function sRT(){
+  const a=parseFloat(g('rta').value),b=parseFloat(g('rtb').value),c=parseFloat(g('rtc').value),A=parseFloat(g('rtA').value);
+  let ra,rb,rc,rA,rB;
+  if(!isNaN(a)&&!isNaN(b)){rc=Math.sqrt(a*a+b*b);rA=tD(Math.atan2(a,b));rB=90-rA;ra=a;rb=b;}
+  else if(!isNaN(a)&&!isNaN(c)){rb=Math.sqrt(c*c-a*a);rA=tD(Math.asin(a/c));rB=90-rA;ra=a;rc=c;}
+  else if(!isNaN(b)&&!isNaN(c)){ra=Math.sqrt(c*c-b*b);rA=tD(Math.asin(ra/c));rB=90-rA;rb=b;rc=c;}
+  else if(!isNaN(A)&&!isNaN(a)){rc=a/Math.sin(tR(A));rb=Math.sqrt(rc*rc-a*a);rA=A;rB=90-A;ra=a;}
+  else if(!isNaN(A)&&!isNaN(b)){ra=b*Math.tan(tR(A));rc=b/Math.cos(tR(A));rA=A;rB=90-A;rb=b;}
+  else if(!isNaN(A)&&!isNaN(c)){ra=c*Math.sin(tR(A));rb=c*Math.cos(tR(A));rA=A;rB=90-A;rc=c;}
+  else{g('rtr').innerHTML=ERR('Enter at least two known values');return;}
+  const area=0.5*ra*rb;
+  let rtHTML=RG([['Leg a',ra.toFixed(6),false],['Leg b',rb.toFixed(6),false],['Hypotenuse c',rc.toFixed(6),true],
+    ['ANGLE A',rA.toFixed(6)+'°',true],['Angle B',rB.toFixed(6)+'°',false],['Right Angle C','90.000000°',false],
+    ['Area',area.toFixed(6),false],['Perimeter',(ra+rb+rc).toFixed(6),false]]);
+  rtHTML+=STEPS('Right Triangle',[
+    ['Pythagorean','c² = a² + b²  →  c = √(a²+b²)',''],
+    ['Leg a',''+ra.toFixed(6),''],
+    ['Leg b',rb.toFixed(6),''],
+    ['Hypotenuse c','c = √('+ra.toFixed(4)+'² + '+rb.toFixed(4)+'²)',rc.toFixed(6)],
+    ['Angle A','A = atan(a/b) = atan('+ra.toFixed(4)+'/'+rb.toFixed(4)+')',rA.toFixed(6)+'°'],
+    ['Angle B','B = 90° − A = 90 − '+rA.toFixed(4),rB.toFixed(6)+'°'],
+    ['Area','Area = ½·a·b = ½·'+ra.toFixed(4)+'·'+rb.toFixed(4),area.toFixed(6)],
+    ['Perimeter','P = a + b + c = '+ra.toFixed(4)+' + '+rb.toFixed(4)+' + '+rc.toFixed(4),(ra+rb+rc).toFixed(6)],
+    ['Check: trig','sin(A) = a/c = '+ra.toFixed(4)+'/'+rc.toFixed(4),(ra/rc).toFixed(8)+'  vs  sin('+rA.toFixed(4)+'°) = '+Math.sin(tR(rA)).toFixed(8)],
+  ]);
+  g('rtr').innerHTML=rtHTML;
+}
+
+// ============================================================
+// TAB 9: EARTHWORK
+// ============================================================
+let ew1rows=[];
+function ew1Add(){
+  const i=ew1rows.length;ew1rows.push({sta:0,area:0});
+  const tr=document.createElement('tr');tr.id='ew1r'+i;
+  tr.innerHTML='<td style="color:#4a6070">'+(i+1)+'</td>'
+    +'<td><input class="ii" type="number" inputmode="decimal" step="1" placeholder="'+(i*100)+'" oninput="ew1rows['+i+'].sta=+this.value"></td>'
+    +'<td><input class="ii" type="number" inputmode="decimal" step=".01" placeholder="0.00" oninput="ew1rows['+i+'].area=+this.value"></td>'
+    +'<td><button class="btd" onclick="ew1Del('+i+')">&#215;</button></td>';
+  g('ew1tb').appendChild(tr);
+}
+function ew1Del(i){const el=g('ew1r'+i);if(el)el.remove();ew1rows[i]=null;}
+function cEW1(){
+  const rows=ew1rows.filter(Boolean).sort((a,b)=>a.sta-b.sta);
+  if(rows.length<2){g('ew1r').innerHTML=ERR('Need at least 2 cross-sections');return;}
+  let totV=0;let segs='';
+  for(let i=0;i<rows.length-1;i++){
+    const L=Math.abs(rows[i+1].sta-rows[i].sta),V=(L/2)*(rows[i].area+rows[i+1].area);
+    totV+=V;
+    segs+='<tr><td>'+rows[i].sta+'–'+rows[i+1].sta+'</td><td>'+L.toFixed(1)+'</td>'
+      +'<td>'+rows[i].area.toFixed(2)+'</td><td>'+rows[i+1].area.toFixed(2)+'</td>'
+      +'<td style="color:#ff8c00">'+V.toFixed(2)+'</td><td style="color:#ff8c00">'+( V/27).toFixed(2)+'</td></tr>';
+  }
+  const seg0=rows[0],seg1=rows[1]||rows[0],L0=Math.abs(seg1.sta-seg0.sta);
+  let ew1HTML=RG([['TOTAL VOLUME (ft³)',totV.toFixed(2),true],['TOTAL VOLUME (CY)',(totV/27).toFixed(2),true],
+    ['Sections',(rows.length-1).toString(),false]])+
+    '<div class="tw"><table><thead><tr><th>Segment</th><th>Length</th><th>A₁ (ft²)</th><th>A₂ (ft²)</th><th>Volume (ft³)</th><th>Volume (CY)</th></tr></thead><tbody>'+segs+'</tbody></table></div>';
+  ew1HTML+=STEPS('End Area Method',[
+    ['Formula','V = (L/2)·(A₁ + A₂)  per segment  |  1 CY = 27 ft³',''],
+    ['Example segment','Sta '+seg0.sta+' to '+seg1.sta+'  |  Length L = '+L0.toFixed(1)+' ft',''],
+    ['Area A₁','At Sta '+seg0.sta,seg0.area.toFixed(2)+' ft²'],
+    ['Area A₂','At Sta '+seg1.sta,seg1.area.toFixed(2)+' ft²'],
+    ['Volume','V = ('+L0.toFixed(1)+'/2)·('+seg0.area.toFixed(2)+' + '+seg1.area.toFixed(2)+')',((L0/2)*(seg0.area+seg1.area)).toFixed(2)+' ft³'],
+    ['Volume in CY','V / 27',((L0/2)*(seg0.area+seg1.area)/27).toFixed(2)+' CY'],
+    ['TOTAL all segments','Σ of all '+( rows.length-1)+' segments',totV.toFixed(2)+' ft³  =  '+(totV/27).toFixed(2)+' CY'],
+  ]);
+  g('ew1r').innerHTML=ew1HTML;
+}
+for(let i=0;i<4;i++)ew1Add();
+function cEW2(){
+  const L=gv('ew2L'),A1=gv('ew2A1'),Am=gv('ew2Am'),A2=gv('ew2A2');
+  if(!L){g('ew2r').innerHTML=ERR('Enter L');return;}
+  const Vp=(L/6)*(A1+4*Am+A2),Vea=(L/2)*(A1+A2);
+  g('ew2r').innerHTML=RG([['PRISMOIDAL (ft³)',Vp.toFixed(4),true],['PRISMOIDAL (CY)',(Vp/27).toFixed(4),true],
+    ['End-Area (ft³)',Vea.toFixed(4),false],['End-Area (CY)',(Vea/27).toFixed(4),false],
+    ['Prismoidal Correction',(Vp-Vea).toFixed(4)+' ft³',false]]);
+}
+function genBP(){
+  const rows=parseInt(g('bprows').value)||3,cols=parseInt(g('bpcols').value)||3,cs=gv('bpcs')||10;
+  let html='<p class="sl" style="margin-top:14px">Grid ('+rows+'×'+cols+' cells = '+(rows+1)+'×'+(cols+1)+' nodes, cell = '+cs+'×'+cs+' ft):</p><div class="tw"><table>';
+  html+='<thead><tr><th></th>'+Array.from({length:cols+1},(_,j)=>'<th>C'+j+'</th>').join('')+'</tr></thead><tbody>';
+  for(let r=0;r<=rows;r++){
+    html+='<tr><td style="color:#4a6070;font-size:10px">R'+r+'</td>';
+    for(let c=0;c<=cols;c++){
+      const isCorner=(r===0||r===rows)&&(c===0||c===cols);
+      const isEdge=(r===0||r===rows||c===0||c===cols)&&!isCorner;
+      const color=isCorner?'#ff8c00':isEdge?'#6a9cb8':'#c8d8e8';
+      html+='<td><input class="ii" type="number" inputmode="decimal" step=".01" placeholder="0" id="bp-'+r+'-'+c+'" style="width:62px;border-color:'+color+'30"></td>';
+    }
+    html+='</tr>';
+  }
+  html+='</tbody></table></div>';
+  html+='<p class="sl" style="font-size:10px"><span style="color:#ff8c00">&#9632;</span> corner (&times;1) &nbsp;<span style="color:#6a9cb8">&#9632;</span> edge (&times;2) &nbsp;<span style="color:#c8d8e8">&#9632;</span> interior (&times;4)</p>';
+  g('bpgrid').innerHTML=html;
+  g('bpact').style.display='block';
+}
+function cBP(){
+  const rows=parseInt(g('bprows').value)||3,cols=parseInt(g('bpcols').value)||3,cs=gv('bpcs')||10;
+  const A=cs*cs;let sum=0;
+  for(let r=0;r<=rows;r++)for(let c=0;c<=cols;c++){
+    const el=g('bp-'+r+'-'+c);if(!el)continue;
+    const h=parseFloat(el.value)||0;
+    const ie=r===0||r===rows,je=c===0||c===cols;
+    const mult=(ie&&je)?1:(ie||je)?2:4;
+    sum+=mult*h;
+  }
+  const V=(A/4)*sum,CY=V/27;
+  g('bpr').innerHTML=RG([['GRID VOLUME (ft³)',V.toFixed(4),true],['GRID VOLUME (CY)',CY.toFixed(4),true],
+    ['Total Grid Area',(rows*cols*A).toFixed(2)+' ft²',false],['Cell Size',cs+'×'+cs+' ft',false]]);
+}
+function cXS1(){
+  const b=gv('xs1b'),s=gv('xs1s'),d=gv('xs1d');
+  if(!b||!s||!d){g('xs1r').innerHTML=ERR('Enter b, s, d');return;}
+  const A=(b+s*d)*d,x=b/2+s*d;
+  g('xs1r').innerHTML=RG([['AREA A',A.toFixed(4)+' ft²',true],['Half-width each side',x.toFixed(4)+' ft',false],
+    ['Total width',(2*x).toFixed(4)+' ft',false],['CY per 100-ft station',(A*100/27).toFixed(2)+' CY',false]]);
+}
+function cXS2(){
+  const b=gv('xs2b'),s=gv('xs2s'),dL=gv('xs2dL'),dC=gv('xs2dC'),dR=gv('xs2dR');
+  if(!b||!s){g('xs2r').innerHTML=ERR('Enter b and s');return;}
+  const xL=b/2+s*dL,xR=b/2+s*dR;
+  // Polygon: left catch → center ground → right catch → right shoulder → left shoulder
+  const pts=[[-xL,dL],[0,dC],[xR,dR],[b/2,0],[-b/2,0]];
+  const A=shoelace(pts);
+  g('xs2r').innerHTML=RG([['AREA A',A.toFixed(4)+' ft²',true],['Left offset xL',xL.toFixed(4)+' ft',false],
+    ['Right offset xR',xR.toFixed(4)+' ft',false],['Total width',(xL+xR).toFixed(4)+' ft',false],
+    ['CY per 100-ft station',(A*100/27).toFixed(2)+' CY',false]]);
+}
+function cXS3(){
+  const b=gv('xs3b'),s=gv('xs3s'),xf=gv('xs3xf'),dL=gv('xs3dL'),dFL=gv('xs3dFL'),dC=gv('xs3dC'),dFR=gv('xs3dFR'),dR=gv('xs3dR');
+  if(!b||!s){g('xs3r').innerHTML=ERR('Enter b and s');return;}
+  const xL=b/2+s*dL,xR=b/2+s*dR;
+  // 7-point polygon
+  const pts=[[-xL,dL],[-xf,dFL],[0,dC],[xf,dFR],[xR,dR],[b/2,0],[-b/2,0]];
+  const A=shoelace(pts);
+  g('xs3r').innerHTML=RG([['AREA A',A.toFixed(4)+' ft²',true],['Left offset xL',xL.toFixed(4)+' ft',false],
+    ['Right offset xR',xR.toFixed(4)+' ft',false],['Total width',(xL+xR).toFixed(4)+' ft',false],
+    ['CY per 100-ft station',(A*100/27).toFixed(2)+' CY',false]]);
+}
+function cSW(){
+  const bcy=gv('swbcy'),sf=gv('swsf')/100,sh=gv('swsh')/100;
+  const lcy=bcy*(1+sf),ccy=bcy*(1-sh);
+  let swHTML=RG([['Bank Volume (BCY)',bcy.toFixed(2),true],['Loose Volume (LCY)',lcy.toFixed(2),true],
+    ['Compacted (CCY)',ccy.toFixed(2),true],['Load Factor LCY/BCY',(1/(1+sf)).toFixed(4),false],
+    ['Shrink Factor CCY/BCY',(1-sh).toFixed(4),false],
+    ['BCY needed for CCY target',(ccy/(1-sh)).toFixed(2)+' BCY',false]]);
+  swHTML+=STEPS('Swell / Shrinkage Factors',[
+    ['Given','BCY = '+bcy.toFixed(2)+'  |  Swell = '+( sf*100).toFixed(1)+'%  |  Shrinkage = '+(sh*100).toFixed(1)+'%',''],
+    ['Swell definition','Material expands when excavated: LCY = BCY × (1 + swell%)',''],
+    ['Loose Volume (LCY)','LCY = '+bcy.toFixed(2)+' × (1 + '+( sf*100).toFixed(1)+'%) = '+bcy.toFixed(2)+' × '+(1+sf).toFixed(4),lcy.toFixed(2)+' LCY'],
+    ['Shrinkage definition','Material compacts below bank volume when placed as fill',''],
+    ['Compacted Volume (CCY)','CCY = BCY × (1 − shrink%) = '+bcy.toFixed(2)+' × (1 − '+(sh*100).toFixed(1)+'%) = '+bcy.toFixed(2)+' × '+(1-sh).toFixed(4),ccy.toFixed(2)+' CCY'],
+    ['Load Factor','LF = BCY / LCY = 1/(1+swell) = 1/'+( 1+sf).toFixed(4),(1/(1+sf)).toFixed(4)],
+    ['Bank → CY for fill','To get '+ccy.toFixed(2)+' CCY, need BCY / (1−shrink)',( ccy/(1-sh)).toFixed(2)+' BCY'],
+  ]);
+  g('swr').innerHTML=swHTML;
+}
+
+// ============================================================
+// TAB 10: STAKING
+// ============================================================
+function cSK1(){
+  const n=gv('sk1n'),e=gv('sk1e'),az=gv('sk1az'),od=gv('sk1od'),dir=gs('sk1dir');
+  const perpAz=normAz(dir==='R'?az+90:az-90);
+  const dN=od*Math.cos(tR(perpAz)),dE=od*Math.sin(tR(perpAz));
+  g('sk1r').innerHTML=RG([['OFFSET NORTHING',(n+dN).toFixed(5),true],['OFFSET EASTING',(e+dE).toFixed(5),true],
+    ['Perp Azimuth',perpAz.toFixed(6)+'°',false],['ΔN to offset',dN.toFixed(5),false],
+    ['ΔE to offset',dE.toFixed(5),false],['Offset Bearing',az2b(perpAz),false]]);
+}
+let sk2rows=[];
+function sk2Add(){
+  const i=sk2rows.length;sk2rows.push({sta:'',des:0,gnd:0});
+  const tr=document.createElement('tr');tr.id='sk2r'+i;
+  tr.innerHTML='<td style="color:#4a6070">'+(i+1)+'</td>'
+    +'<td><input class="ii" type="text" placeholder="STA '+(i+1)+'" style="width:80px" oninput="sk2rows['+i+'].sta=this.value"></td>'
+    +'<td><input class="ii" type="number" inputmode="decimal" step=".0001" placeholder="500.0000" oninput="sk2rows['+i+'].des=+this.value"></td>'
+    +'<td><input class="ii" type="number" inputmode="decimal" step=".0001" placeholder="500.0000" oninput="sk2rows['+i+'].gnd=+this.value"></td>'
+    +'<td id="sk2cf'+i+'" style="color:#4a6070">—</td>'
+    +'<td><button class="btd" onclick="sk2Del('+i+')">&#215;</button></td>';
+  g('sk2tb').appendChild(tr);
+}
+function sk2Del(i){const el=g('sk2r'+i);if(el)el.remove();sk2rows[i]=null;}
+function cSK2(){
+  sk2rows.forEach((r,i)=>{if(!r)return;
+    const el=g('sk2cf'+i);if(!el)return;
+    const cf=r.gnd-r.des,isCut=cf>0;
+    el.textContent=(isCut?'CUT ':'FILL ')+Math.abs(cf).toFixed(4);
+    el.style.color=isCut?'#ff8c00':'#44aaff';});
+}
+for(let i=0;i<4;i++)sk2Add();
+function cSK3(){
+  const CLe=gv('sk3cl'),b2=gv('sk3b2'),c=gv('sk3c')/100;
+  const sL=gv('sk3sL'),tL=gs('sk3tL'),gL=gv('sk3gL')/100,EgL=gv('sk3EgL');
+  const sR=gv('sk3sR'),tRt=gs('sk3tR'),gR=gv('sk3gR')/100,EgR=gv('sk3EgR');
+  function cp(slp,type,gSlope,Eg){
+    const Eh=CLe-c*b2;// hinge (shoulder) elevation
+    if(type==='cut'){
+      const denom=gSlope+1/slp;
+      if(Math.abs(denom)<1e-8)return{valid:false,msg:'Parallel slopes (no solution)'};
+      const xc=(Eg-Eh+b2/slp)/denom;
+      const ec=Eg-gSlope*xc;
+      return{x:xc,elev:ec,depth:ec-Eh,valid:xc>=b2};
+    }else{
+      const denom=gSlope-1/slp;
+      if(Math.abs(denom)<1e-8)return{valid:false,msg:'Parallel slopes (no solution)'};
+      const xc=(Eg-Eh-b2/slp)/denom;
+      const ec=Eg-gSlope*xc;
+      return{x:xc,elev:ec,depth:Eh-ec,valid:xc>=b2};
+    }
+  }
+  const L=cp(sL,tL,-gL,EgL);// left: ground slope positive = uphill away from CL, so going left it's -gL
+  const R=cp(sR,tRt,gR,EgR);
+  const Ehl=CLe-c*b2;
+  g('sk3r').innerHTML=RG([
+    ['CL Design Elev',CLe.toFixed(4),false],['Shoulder Elev (both)',Ehl.toFixed(4),false],
+    ['Left '+tL.toUpperCase()+' — Catch X',L.valid?L.x.toFixed(4)+' ft from CL':(L.msg||'x < b/2 (check inputs)'),L.valid],
+    ['Left Catch Elevation',L.valid?L.elev.toFixed(4):'—',false],
+    ['Left '+tL.toUpperCase()+' Depth',L.valid?L.depth.toFixed(4)+' ft':'—',L.valid],
+    ['Right '+tRt.toUpperCase()+' — Catch X',R.valid?R.x.toFixed(4)+' ft from CL':(R.msg||'x < b/2 (check inputs)'),R.valid],
+    ['Right Catch Elevation',R.valid?R.elev.toFixed(4):'—',false],
+    ['Right '+tRt.toUpperCase()+' Depth',R.valid?R.depth.toFixed(4)+' ft':'—',R.valid]]);
+}
+function cSK4(){
+  const ns=gv('sk4ns'),es=gv('sk4es'),az=gv('sk4az'),st0=gv('sk4st0');
+  const np=gv('sk4np'),ep=gv('sk4ep');
+  const azR=tR(az),dN=np-ns,dE=ep-es;
+  const sta=st0+dN*Math.cos(azR)+dE*Math.sin(azR);
+  const off=-dN*Math.sin(azR)+dE*Math.cos(azR);
+  g('sk4r').innerHTML=RG([['STATION',sta.toFixed(3),true],['OFFSET (+ = Right)',off.toFixed(4)+' ft',true],
+    ['Side',off>=0?'RIGHT':'LEFT',false],
+    ['Dist from Start',Math.sqrt(dN*dN+dE*dE).toFixed(4)+' ft',false]]);
+}
+</script>
+</body></html>
