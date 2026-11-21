@@ -1,0 +1,31 @@
+{
+  "id": "./",
+  "name": "SurvCalc Pro",
+  "short_name": "SurvCalc",
+  "description": "Field survey calculator for Construction Management students at CCA and MSU Denver.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0E2A3B",
+  "theme_color": "#0E2A3B",
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
