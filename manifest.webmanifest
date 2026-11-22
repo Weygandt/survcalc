@@ -1,8 +1,8 @@
 {
   "id": "./",
-  "name": "Stake Reader",
-  "short_name": "Stake Reader",
-  "description": "How to read survey stakes and what should be on them. A field reference for construction managers.",
+  "name": "SurvCalc Pro",
+  "short_name": "SurvCalc",
+  "description": "Field survey calculator for Construction Management students at CCA and MSU Denver.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
