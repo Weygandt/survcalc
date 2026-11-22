@@ -1,0 +1,1307 @@
+<!doctype html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0E2A3B">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="SurvCalc">
+<meta name="description" content="SurvCalc Pro field survey calculator. Community College of Aurora and Metropolitan State University of Denver Construction Management.">
+<title>SurvCalc Pro</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230E2A3B'/%3E%3Ccircle cx='32' cy='32' r='15' fill='none' stroke='%23F2A900' stroke-width='5'/%3E%3Cpath d='M32 8v14M32 42v14M8 32h14M42 32h14' stroke='%23F2A900' stroke-width='5' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="icons/icon-180.png">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EEF1F4;--surface:#FFFFFF;--surface2:#F6F8FA;--ink:#0B1B2B;--ink2:#334657;--ink3:#53667A;
+  --line:#C9D2DB;--line2:#E3E8ED;--brand:#0E2A3B;--brand2:#173B52;--onbrand:#F1F5F8;--onbrand2:#B4C6D4;
+  --accent:#F2A900;--onaccent:#1F1500;--accentink:#7A4F00;--keybg:#0E2A3B;--keyink:#FFFFFF;--keylab:#F6C453;
+  --good:#0B6B3A;--goodbg:#E2F3E9;--bad:#A8200F;--badbg:#FCE8E6;--warn:#7A4F00;--warnbg:#FFF4D6;
+  --fill:#1F4FC9;--fillbg:#E6EDFD;--focus:#1D6FD8;--shadow:0 1px 2px rgba(11,27,43,.05),0 6px 20px rgba(11,27,43,.06);
+  --sans:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;
+  --mono:'JetBrains Mono','SFMono-Regular',Consolas,'Courier New',monospace;
+}
+[data-theme=dark]{
+  --bg:#0A131B;--surface:#122130;--surface2:#0E1B27;--ink:#E9EFF4;--ink2:#C3D0DB;--ink3:#9BADBC;
+  --line:#2E4254;--line2:#1F3143;--brand:#07111A;--brand2:#13283A;--onbrand:#EDF3F7;--onbrand2:#A3B7C7;
+  --accent:#F2A900;--onaccent:#1F1500;--accentink:#F6C453;--keybg:#1B3A52;--keyink:#FFFFFF;--keylab:#F6C453;
+  --good:#6BDB9E;--goodbg:#0F2E1F;--bad:#FF8E80;--badbg:#3B1813;--warn:#F6C453;--warnbg:#332708;
+  --fill:#93B5FF;--fillbg:#152650;--focus:#6AA8FF;--shadow:none;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.45;-webkit-font-smoothing:antialiased;font-feature-settings:'cv11','ss01'}
+button,input,select{font:inherit;color:inherit}
+.app{display:grid;grid-template-columns:290px 1fr;min-height:100vh}
+/* Sidebar */
+.side{background:var(--brand);color:var(--onbrand);position:sticky;top:0;height:100vh;display:flex;flex-direction:column;overflow:hidden}
+.brand{display:flex;gap:12px;align-items:center;padding:20px 18px 14px}
+.mark{width:42px;height:42px;border-radius:11px;background:var(--accent);display:grid;place-items:center;flex-shrink:0}
+.mark svg{width:26px;height:26px}
+.bname{font-weight:800;font-size:19px;letter-spacing:-.01em;line-height:1.1}
+.bsub{font-size:12px;color:var(--onbrand2);margin-top:3px;font-weight:500}
+.search{margin:4px 14px 10px;position:relative}
+.search input{width:100%;background:var(--brand2);border:1px solid #2B5069;border-radius:10px;padding:10px 12px 10px 36px;color:var(--onbrand);outline:none}
+.search input::placeholder{color:var(--onbrand2)}
+.search input:focus{border-color:var(--accent)}
+.search svg{position:absolute;left:11px;top:50%;transform:translateY(-50%);width:16px;height:16px;stroke:var(--onbrand2)}
+.kbd{position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:12px;color:var(--onbrand2);border:1px solid #2B5069;border-radius:5px;padding:1px 6px;font-family:var(--mono)}
+nav.nav{overflow-y:auto;flex:1;padding:4px 10px 16px;scrollbar-width:thin;scrollbar-color:#2B5069 transparent}
+.grp{margin-top:10px}
+.gh{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--onbrand2);padding:8px 8px 5px}
+.gh svg{width:15px;height:15px;stroke:var(--accent)}
+.ni{display:block;width:100%;text-align:left;background:none;border:0;color:var(--onbrand);padding:8px 10px 8px 31px;border-radius:8px;cursor:pointer;font-size:14px;font-weight:500}
+.ni:hover{background:var(--brand2)}
+.ni.on{background:var(--accent);color:var(--onaccent);font-weight:700}
+.ni:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.sfoot{padding:12px 18px 16px;border-top:1px solid #234459;font-size:12px;color:var(--onbrand2);line-height:1.5}
+.sfoot b{color:var(--onbrand);font-weight:600}
+/* Main */
+.main{min-width:0;display:flex;flex-direction:column}
+.top{position:sticky;top:0;z-index:20;background:var(--bg);border-bottom:1px solid var(--line2);display:flex;align-items:center;gap:10px;padding:12px 28px}
+.menu{display:none;background:var(--surface);border:1px solid var(--line);border-radius:9px;width:40px;height:40px;cursor:pointer;place-items:center}
+.menu svg{width:20px;height:20px;stroke:var(--ink)}
+.crumb{font-size:13px;color:var(--ink3);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.crumb b{color:var(--ink);font-weight:700}
+.sp{flex:1}
+.tb{display:inline-flex;align-items:center;gap:7px;background:var(--surface);border:1px solid var(--line);color:var(--ink);border-radius:9px;padding:8px 12px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap}
+.tb:hover{border-color:var(--ink3)}
+.tb svg{width:16px;height:16px;stroke:currentColor}
+.tb[aria-pressed=true]{background:var(--brand);color:var(--onbrand);border-color:var(--brand)}
+.tb:focus-visible,.btn:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.wrap{padding:24px 28px 60px;max-width:1320px;width:100%}
+.hd h1{font-size:28px;line-height:1.15;margin:0 0 6px;letter-spacing:-.02em;font-weight:800}
+.hd p{margin:0;color:var(--ink2);max-width:780px}
+.formula{display:inline-block;margin-top:10px;font-family:var(--mono);font-size:13px;color:var(--ink2);background:var(--surface);border:1px solid var(--line2);border-radius:8px;padding:6px 10px}
+.layout{display:grid;grid-template-columns:minmax(340px,440px) 1fr;gap:22px;margin-top:22px;align-items:start}
+.layout.stack{grid-template-columns:1fr}
+.card{background:var(--surface);border:1px solid var(--line2);border-radius:14px;box-shadow:var(--shadow)}
+.inputs{padding:20px}
+.ct{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink3);margin:0 0 14px;display:flex;align-items:center;gap:8px}
+.ct .dot{width:8px;height:8px;border-radius:2px;background:var(--accent)}
+.fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 14px}
+.layout.stack .fields{grid-template-columns:repeat(auto-fill,minmax(200px,1fr))}
+.fld{display:flex;flex-direction:column;gap:6px;min-width:0}
+.fld.full{grid-column:1/-1}
+.fld>label,.lab{font-size:13px;font-weight:600;color:var(--ink2)}
+.lab em,.fld>label em{font-style:normal;font-weight:500;color:var(--ink3)}
+.hint{font-size:12px;color:var(--ink3)}
+.box{display:flex;align-items:stretch;background:var(--surface);border:1.5px solid var(--line);border-radius:9px;overflow:hidden;transition:border-color .12s,box-shadow .12s}
+.box:focus-within{border-color:var(--focus);box-shadow:0 0 0 3px color-mix(in srgb,var(--focus) 22%,transparent)}
+.box.bad{border-color:var(--bad)}
+.box input,.box select{flex:1;min-width:0;border:0;background:transparent;padding:10px 11px;font-family:var(--mono);font-size:15px;font-weight:500;color:var(--ink);outline:none}
+.box select{font-family:var(--sans);font-weight:600;cursor:pointer;padding-right:8px}
+.box select option{background:var(--surface);color:var(--ink)}
+.box input::placeholder{color:var(--ink3);opacity:.75;font-weight:400}
+.sfx{display:grid;place-items:center;padding:0 10px;color:var(--ink3);font-family:var(--mono);font-size:13px;background:var(--surface2);border-left:1px solid var(--line2)}
+.pm{border:0;border-left:1px solid var(--line2);background:var(--surface2);color:var(--ink2);padding:0 12px;cursor:pointer;font-weight:700;font-size:15px}
+.pm:hover{color:var(--ink)}
+.dms{display:grid;grid-template-columns:1.25fr 1fr 1.2fr;gap:6px}
+.dms .box input{padding:10px 6px 10px 10px}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg button{border:1.5px solid var(--line);background:var(--surface);border-radius:9px;padding:8px 12px;font-size:13.5px;font-weight:600;color:var(--ink2);cursor:pointer}
+.seg button.on{background:var(--brand);border-color:var(--brand);color:var(--onbrand)}
+[data-theme=dark] .tb[aria-pressed=true]{background:var(--accent);color:var(--onaccent);border-color:var(--accent)}
+[data-theme=dark] .seg button.on{background:var(--accent);border-color:var(--accent);color:var(--onaccent)}
+.sech{grid-column:1/-1;font-size:12px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--ink3);border-top:1px solid var(--line2);padding-top:14px;margin-top:2px}
+/* Row tables */
+.rt{grid-column:1/-1}
+.rtw{overflow-x:auto;border:1px solid var(--line2);border-radius:10px}
+.rtw table{width:100%;border-collapse:collapse;font-size:13.5px}
+.rtw th{background:var(--surface2);color:var(--ink2);font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;text-align:left;padding:9px 8px;border-bottom:1px solid var(--line2);white-space:nowrap}
+.rtw td{padding:6px 6px;border-bottom:1px solid var(--line2);vertical-align:middle}
+.rtw tr:last-child td{border-bottom:0}
+.rtw td.n{color:var(--ink3);font-family:var(--mono);font-size:12px;text-align:center;width:34px}
+.rtw .box{border-width:1px;border-radius:7px}
+.rtw .box input,.rtw .box select{padding:7px 8px;font-size:14px}
+.rtw .dms{gap:4px;min-width:200px}
+.rtw .dms .box input{padding:7px 4px 7px 7px}
+.rtw .sfx{padding:0 6px;font-size:12px}
+.del{border:0;background:none;color:var(--ink3);cursor:pointer;width:32px;height:32px;border-radius:7px;font-size:18px;line-height:1}
+.del:hover{background:var(--badbg);color:var(--bad)}
+.addr{margin-top:8px;width:100%;border:1.5px dashed var(--line);background:none;border-radius:9px;padding:9px;color:var(--ink2);font-weight:600;cursor:pointer}
+.addr:hover{border-color:var(--ink3);color:var(--ink)}
+.grid{overflow-x:auto}
+.grid table{border-collapse:separate;border-spacing:5px}
+.grid th{font-size:12px;color:var(--ink3);font-weight:700}
+.grid .box{width:78px}
+.grid .box input{padding:7px;font-size:14px;text-align:center}
+.grid .c1 .box{border-color:#C98600}.grid .c2 .box{border-color:var(--fill)}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--ink2);margin-top:6px}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:3px;border:2px solid;margin-right:5px;vertical-align:-2px}
+.acts{display:flex;gap:8px;margin-top:18px;flex-wrap:wrap}
+.btn{border:0;border-radius:9px;padding:10px 16px;font-weight:700;font-size:14px;cursor:pointer}
+.btn.pri{background:var(--accent);color:var(--onaccent)}
+.btn.pri:hover{filter:brightness(1.05)}
+.btn.ghost{background:var(--surface2);color:var(--ink2);border:1px solid var(--line)}
+.btn.ghost:hover{color:var(--ink);border-color:var(--ink3)}
+/* Results */
+.results{display:flex;flex-direction:column;gap:16px;min-width:0}
+.empty{padding:28px;text-align:center;color:var(--ink3);border:1.5px dashed var(--line);border-radius:14px;background:var(--surface)}
+.empty b{display:block;color:var(--ink2);font-size:15px;margin-bottom:4px}
+.msg{padding:12px 14px;border-radius:10px;font-weight:600;font-size:14px;display:flex;gap:10px;align-items:flex-start}
+.msg.info{background:var(--warnbg);color:var(--warn)}
+.msg.err{background:var(--badbg);color:var(--bad)}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:10px}
+.rc{background:var(--surface);border:1px solid var(--line2);border-radius:12px;padding:12px 14px;cursor:pointer;position:relative;transition:border-color .12s,transform .06s}
+.rc:hover{border-color:var(--ink3)}
+.rc:active{transform:scale(.99)}
+.rc .l{font-size:12px;font-weight:600;color:var(--ink3);letter-spacing:.01em}
+.rc .v{font-family:var(--mono);font-size:17px;font-weight:600;color:var(--ink);margin-top:4px;word-break:break-word;font-variant-numeric:tabular-nums}
+.rc.key{background:var(--keybg);border-color:var(--keybg)}
+.rc.key .l{color:var(--keylab)}
+.rc.key .v{color:var(--keyink);font-size:21px}
+.rc.good{background:var(--goodbg);border-color:transparent}.rc.good .v,.rc.good .l{color:var(--good)}
+.rc.bad{background:var(--badbg);border-color:transparent}.rc.bad .v,.rc.bad .l{color:var(--bad)}
+.rc.fill{background:var(--fillbg);border-color:transparent}.rc.fill .v,.rc.fill .l{color:var(--fill)}
+.rc .cp{position:absolute;top:9px;right:10px;opacity:0;transition:opacity .12s}
+.rc .cp svg{width:14px;height:14px;stroke:var(--ink3)}
+.rc.key .cp svg{stroke:var(--keylab)}
+.rc:hover .cp{opacity:1}
+.badges{display:flex;gap:8px;flex-wrap:wrap}
+.bdg{font-size:13px;font-weight:700;padding:6px 11px;border-radius:999px;display:inline-flex;gap:6px;align-items:center}
+.bdg.good{background:var(--goodbg);color:var(--good)}.bdg.bad{background:var(--badbg);color:var(--bad)}.bdg.info{background:var(--surface);color:var(--ink2);border:1px solid var(--line)}
+.notes{font-size:13.5px;color:var(--ink2);background:var(--surface);border:1px solid var(--line2);border-radius:10px;padding:10px 14px}
+.notes p{margin:3px 0}
+.ot{overflow:hidden}
+.ot h2,.steps summary{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink3);margin:0;padding:12px 14px;border-bottom:1px solid var(--line2)}
+.ot .sc{overflow-x:auto}
+.ot table{width:100%;border-collapse:collapse;font-size:13.5px}
+.ot th{text-align:right;font-size:12px;color:var(--ink2);font-weight:700;padding:8px 12px;background:var(--surface2);border-bottom:1px solid var(--line2);white-space:nowrap}
+.ot td{text-align:right;padding:8px 12px;border-bottom:1px solid var(--line2);font-family:var(--mono);font-size:13.5px;white-space:nowrap;font-variant-numeric:tabular-nums}
+.ot th:first-child,.ot td:first-child{text-align:left;font-family:var(--sans);font-weight:600}
+.ot tr:last-child td{border-bottom:0}
+.ot tr.hl td{background:color-mix(in srgb,var(--accent) 16%,var(--surface));font-weight:700}
+.ot tr.tot td{background:var(--surface2);font-weight:700;border-top:1.5px solid var(--line)}
+.ot td.c{color:var(--bad);font-weight:700}.ot td.f{color:var(--fill);font-weight:700}
+.steps summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center}
+.steps summary::-webkit-details-marker{display:none}
+.steps summary:after{content:'Hide';font-size:12px;color:var(--ink3);letter-spacing:.05em}
+.steps:not([open]) summary:after{content:'Show'}
+.steps:not([open]) summary{border-bottom:0}
+.st{display:grid;grid-template-columns:28px minmax(120px,190px) 1fr auto;gap:4px 12px;padding:10px 14px;border-bottom:1px solid var(--line2);align-items:baseline}
+.st:last-child{border-bottom:0}
+.st .i{font-family:var(--mono);font-size:12px;color:var(--onaccent);background:var(--accent);width:22px;height:22px;border-radius:6px;display:grid;place-items:center;font-weight:700}
+.st .sl{font-weight:600;font-size:13.5px;color:var(--ink)}
+.st .se{font-family:var(--mono);font-size:13px;color:var(--ink2);word-break:break-word}
+.st .sr{font-family:var(--mono);font-size:14px;font-weight:700;color:var(--ink);white-space:nowrap;text-align:right}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);background:var(--brand);color:var(--onbrand);padding:10px 16px;border-radius:10px;font-weight:600;font-size:14px;opacity:0;pointer-events:none;transition:all .18s;z-index:99}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.disc{margin-top:36px;font-size:12px;color:var(--ink3);max-width:780px}
+.scrim{display:none}
+@media (max-width:1080px){.layout{grid-template-columns:1fr}}
+@media (max-width:860px){
+  .app{grid-template-columns:1fr}
+  .side{position:fixed;left:0;top:0;bottom:0;width:300px;z-index:50;transform:translateX(-102%);transition:transform .2s}
+  body.nav-open .side{transform:none}
+  body.nav-open .scrim{display:block;position:fixed;inset:0;background:rgba(5,12,18,.5);z-index:40}
+  .menu{display:grid}
+  .top{padding:10px 14px}
+  .wrap{padding:18px 14px 50px}
+  .hd h1{font-size:23px}
+  .tb .tl{display:none}
+  .fields{grid-template-columns:1fr 1fr}
+  .box input,.box select{font-size:16px}
+  .st{grid-template-columns:26px 1fr;}
+  .st .se,.st .sr{grid-column:2}
+  .st .sr{text-align:left}
+}
+@media (max-width:420px){.fields{grid-template-columns:1fr}.cards{grid-template-columns:1fr 1fr}}
+@media print{.side,.top,.acts,.inputs .addr{display:none}.app{display:block}.card{box-shadow:none}}
+/* ===== GALAXY MENU ===== */
+.gx{position:fixed;inset:0;z-index:80;display:none;overflow:hidden;color:#EEF3F8;font-family:var(--sans);
+  background:radial-gradient(1200px 700px at 78% 12%,rgba(124,77,255,.20),transparent 60%),radial-gradient(900px 600px at 10% 85%,rgba(0,170,200,.16),transparent 60%),radial-gradient(700px 500px at 50% 55%,rgba(242,169,0,.07),transparent 65%),#04070D;
+  touch-action:none;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent}
+body.gx-open .gx{display:block}
+body.gx-open{overflow:hidden}
+.gx canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.gx-top{position:absolute;left:0;right:0;top:0;z-index:120;display:flex;align-items:center;gap:10px;padding:calc(12px + env(safe-area-inset-top)) 16px 12px}
+.gx-brand{display:flex;align-items:center;gap:10px;min-width:0}
+.gx-brand .mk{width:34px;height:34px;border-radius:10px;background:#F2A900;display:grid;place-items:center;flex:none}
+.gx-brand .mk svg{width:20px;height:20px}
+.gx-brand b{display:block;font-size:16px;font-weight:800;letter-spacing:-.01em}
+.gx-brand span{display:block;font-size:12px;color:#A9BACB}
+.gx-sp{flex:1}
+.gx-btn{display:inline-flex;align-items:center;gap:7px;height:40px;padding:0 13px;border-radius:12px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.07);color:#EEF3F8;font:600 13.5px var(--sans);cursor:pointer;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.gx-btn svg{width:17px;height:17px;stroke:currentColor;flex:none}
+.gx-btn:hover{background:rgba(255,255,255,.13)}
+.gx-btn:focus-visible,.gx-pl:focus-visible,.gx-sun:focus-visible,.gx-item:focus-visible{outline:3px solid #7FB8FF;outline-offset:3px}
+.gx-stage{position:absolute;inset:0;z-index:10}
+.gx-orbit{position:absolute;border:1px solid rgba(160,190,230,.16);border-radius:50%;pointer-events:none;box-shadow:0 0 40px rgba(120,160,255,.06) inset}
+.gx-orbit.o2{border-style:dashed;border-color:rgba(160,190,230,.08)}
+.gx-sun{position:absolute;border-radius:50%;border:0;cursor:pointer;padding:0;display:grid;place-items:center;
+  background:radial-gradient(circle at 38% 34%,#FFF6D8 0,#FFD45C 30%,#F2A900 58%,#B06A00 100%);
+  box-shadow:0 0 28px 6px rgba(242,169,0,.55);z-index:50}
+.gx-glow{position:absolute;border-radius:50%;pointer-events:none;z-index:49;background:radial-gradient(circle,rgba(255,200,60,.34) 0,rgba(242,169,0,.16) 30%,rgba(255,140,0,.05) 55%,transparent 70%);animation:gxpulse 5s ease-in-out infinite}
+.gx-sun svg{width:52%;height:52%}
+@keyframes gxpulse{50%{opacity:.7;transform:scale(1.06)}}
+.gx-pl{position:absolute;left:0;top:0;border:0;padding:0;background:none;cursor:pointer;will-change:transform,opacity;color:inherit}
+.gx-pl .bd{position:relative;display:block;width:1em;height:1em;border-radius:50%;overflow:hidden;
+  background:radial-gradient(circle at 32% 28%,var(--p1) 0,var(--p2) 44%,var(--p3) 100%);
+  box-shadow:inset -.14em -.18em .32em rgba(0,0,0,.55),inset .05em .05em .12em rgba(255,255,255,.35),0 0 .35em var(--p2)}
+.gx-pl.band .bd:before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(168deg,rgba(255,255,255,.13) 0 7%,rgba(0,0,0,.08) 7% 12%,transparent 12% 19%);border-radius:50%}
+.gx-pl.spot .bd:before{content:'';position:absolute;width:.22em;height:.14em;left:.56em;top:.58em;border-radius:50%;background:rgba(0,0,0,.18);box-shadow:-.3em -.25em 0 -.02em rgba(0,0,0,.12),.05em -.42em 0 -.04em rgba(255,255,255,.12)}
+.gx-pl .ic{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none}
+.gx-pl .ic svg{width:.4em;height:.4em;stroke:rgba(255,255,255,.92);filter:drop-shadow(0 .02em .04em rgba(0,0,0,.6))}
+.gx-pl .rg{position:absolute;left:50%;top:50%;width:1.9em;height:.5em;margin:-.25em 0 0 -.95em;border-radius:50%;border:.06em solid var(--p1);opacity:.75;transform:rotate(-14deg);pointer-events:none;box-shadow:0 0 0 .05em rgba(0,0,0,.25) inset}
+.gx-pl .rg.f{clip-path:inset(50% 0 0 0);z-index:2}
+.gx-pl .rg.b{z-index:-1}
+.gx-name{position:absolute;left:0;right:0;text-align:center;z-index:110;pointer-events:none;padding:0 16px}
+.gx-name b{display:block;font-size:clamp(22px,5.4vw,34px);font-weight:800;letter-spacing:-.02em;text-shadow:0 2px 18px rgba(0,0,0,.6)}
+.gx-name span{display:block;margin-top:4px;font-size:13.5px;color:#B9C8D6}
+.gx-dots{display:flex;gap:6px;justify-content:center;margin-top:12px}
+.gx-dots i{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.25)}
+.gx-dots i.on{background:#F2A900;width:18px;border-radius:4px}
+.gx-hint{position:absolute;left:0;right:0;bottom:calc(14px + env(safe-area-inset-bottom));text-align:center;z-index:110;font-size:12px;color:#8FA3B6;pointer-events:none;padding:0 16px;line-height:1.5}
+.gx-hint b{color:#C4D2DE;font-weight:600}
+/* sub menu sheet */
+.gx-sheet{position:absolute;left:0;right:0;bottom:0;z-index:150;max-height:78%;display:flex;flex-direction:column;
+  background:rgba(10,18,30,.86);backdrop-filter:blur(18px) saturate(140%);-webkit-backdrop-filter:blur(18px) saturate(140%);
+  border-top:1px solid rgba(255,255,255,.14);border-radius:22px 22px 0 0;box-shadow:0 -20px 60px rgba(0,0,0,.55);
+  transform:translateY(105%);transition:transform .32s cubic-bezier(.2,.8,.2,1);padding-bottom:env(safe-area-inset-bottom)}
+.gx.sheet .gx-sheet{transform:none}
+.gx-scrim{position:absolute;inset:0;z-index:140;background:rgba(0,0,0,.35);opacity:0;pointer-events:none;transition:opacity .25s}
+.gx.sheet .gx-scrim{opacity:1;pointer-events:auto}
+.gx-grab{width:42px;height:5px;border-radius:3px;background:rgba(255,255,255,.25);margin:9px auto 2px}
+.gx-sh{display:flex;align-items:center;gap:12px;padding:10px 16px 12px}
+.gx-sh .mini{width:40px;height:40px;flex:none;font-size:40px}
+.gx-sh .mini .bd{width:1em;height:1em}
+.gx-sh h2{margin:0;font-size:19px;font-weight:800;letter-spacing:-.01em}
+.gx-sh p{margin:2px 0 0;font-size:12.5px;color:#A9BACB}
+.gx-sh .x{margin-left:auto}
+.gx-search{margin:0 16px 10px;display:flex;align-items:center;gap:8px;height:44px;padding:0 12px;border-radius:12px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16)}
+.gx-search svg{width:18px;height:18px;stroke:#A9BACB;flex:none}
+.gx-search input{flex:1;min-width:0;background:none;border:0;outline:0;color:#EEF3F8;font:500 16px var(--sans)}
+.gx-search input::placeholder{color:#8FA3B6}
+.gx-list{overflow-y:auto;padding:2px 10px 16px;-webkit-overflow-scrolling:touch;touch-action:pan-y}
+.gx-item{display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:12px 10px;border:0;border-radius:12px;background:none;color:#EEF3F8;cursor:pointer;font-family:var(--sans)}
+.gx-item:hover,.gx-item:active{background:rgba(255,255,255,.08)}
+.gx-item .moon{width:12px;height:12px;border-radius:50%;flex:none;background:radial-gradient(circle at 35% 30%,var(--p1),var(--p2) 55%,var(--p3));box-shadow:0 0 8px var(--p2)}
+.gx-item .t{display:block;font-size:15.5px;font-weight:650}
+.gx-item .d{display:block;font-size:12.5px;color:#A9BACB;margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%}
+.gx-item .tx{min-width:0;flex:1}
+.gx-item .ch{width:18px;height:18px;stroke:#6F8498;flex:none}
+.gx-item.on .t{color:#FFD45C}
+.gx-none{padding:18px 16px;color:#A9BACB;font-size:14px}
+@media (min-width:760px){
+  .gx-sheet{left:50%;right:auto;width:520px;margin-left:-260px;bottom:24px;border-radius:22px;border:1px solid rgba(255,255,255,.14);max-height:min(640px,80%)}
+  .gx:not(.sheet) .gx-sheet{transform:translateY(calc(100% + 40px))}
+}
+@media (max-width:520px){.gx-btn .tl{display:none}.gx-btn{padding:0 11px}}
+@media (prefers-reduced-motion:reduce){.gx-glow{animation:none}.gx-sheet,.gx-scrim{transition:none}}
+/* total station + prisms */
+.gx-pl.gx-prism{height:2.3em;border-radius:.3em;transform-origin:50% 100%;filter:none}
+.gx-prism svg{display:block;width:1em;height:2.3em;overflow:visible;filter:drop-shadow(0 0 .12em var(--p2))}
+.gx-sun.ts{background:none;box-shadow:none;border-radius:12px;animation:none}
+.gx-sun.ts svg{width:100%;height:100%;filter:drop-shadow(0 4px 10px rgba(0,0,0,.6))}
+.gx-glow.ts{background:radial-gradient(circle,rgba(255,200,60,.22) 0,rgba(242,169,0,.10) 30%,rgba(120,180,255,.05) 55%,transparent 70%)}
+.gx-beam{position:absolute;left:0;top:0;z-index:85;pointer-events:none;overflow:visible}
+.gx-beam .bm{filter:drop-shadow(0 0 3px #FF3B3B)}
+.gx-circle{position:absolute;left:0;top:0;z-index:12;pointer-events:none}
+.gx-name .ha{display:inline-block;margin-top:8px;font:600 13px var(--mono);color:#7CF2D0;background:rgba(12,26,32,.75);border:1px solid rgba(124,242,208,.3);border-radius:6px;padding:3px 9px;letter-spacing:.02em}
+.gx-sh .mini svg{display:block}
+.tb.gal{border-color:#C98600}
+.tb.gal svg{stroke:currentColor}
+.gx-pl{width:1em;height:1em;isolation:isolate;border-radius:50%}
+.gx-search[hidden]{display:none}
+.gx:focus{outline:none}
+@media (max-width:860px){.tb.gal{display:none}}
+.sr{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="side" id="side" aria-label="Calculators">
+    <div class="brand">
+      <div class="mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#0E2A3B" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="5.5"/><path d="M12 2.5v5M12 16.5v5M2.5 12h5M16.5 12h5"/></svg></div>
+      <div><div class="bname">SurvCalc Pro</div><div class="bsub">Field Survey Calculator · v4</div></div>
+    </div>
+    <div class="search">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+      <input id="q" type="search" placeholder="Search calculators" autocomplete="off" aria-label="Search calculators">
+      <span class="kbd" aria-hidden="true">/</span>
+    </div>
+    <nav class="nav" id="nav"></nav>
+    <div class="sfoot">
+      <b>Community College of Aurora &amp; Metropolitan State University of Denver</b><br>Construction Management<br>
+      Developed by <b>Jeff Weygandt, PLS</b><br>R&amp;R Engineers | Surveyors
+    </div>
+  </aside>
+  <div class="scrim" id="scrim"></div>
+  <main class="main">
+    <header class="top">
+      <button class="menu" id="menu" aria-label="Open galaxy menu"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+      <button class="tb gal" id="bGal" title="Open the menu"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="5"/><ellipse cx="12" cy="12" rx="10.5" ry="3.6" transform="rotate(-18 12 12)"/></svg><span class="tl">Menu</span></button>
+      <div class="crumb" id="crumb"></div>
+      <div class="sp"></div>
+      <button class="tb" id="bEx" title="Load a worked example"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M4 19V5a2 2 0 0 1 2-2h12v16H6a2 2 0 0 0-2 2zM8 7h6"/></svg><span class="tl">Example</span></button>
+      <button class="tb" id="bClr" title="Clear inputs"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></svg><span class="tl">Clear</span></button>
+      <button class="tb" id="bWork" aria-pressed="true" title="Show step by step work"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M4 6h10M4 12h16M4 18h12"/></svg><span class="tl">Show work</span></button>
+      <button class="tb" id="bTheme" title="Light or dark"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M21 13A9 9 0 1 1 11 3a7 7 0 0 0 10 10z"/></svg></button>
+    </header>
+    <div class="wrap" id="view"></div>
+  </main>
+</div>
+<div class="gx" id="gx" tabindex="-1" role="dialog" aria-modal="true" aria-label="Calculator galaxy menu">
+  <canvas id="gxStars" aria-hidden="true"></canvas>
+  <div class="gx-top">
+    <div class="gx-brand"><div class="mk" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#0E2A3B" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="5.5"/><path d="M12 2.5v5M12 16.5v5M2.5 12h5M16.5 12h5"/></svg></div><div><b>SurvCalc Pro</b><span>Aim at a prism</span></div></div>
+    <div class="gx-sp"></div>
+    <button class="gx-btn" id="gxFind" aria-label="Search all calculators"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><span class="tl">Search</span></button>
+    <button class="gx-btn" id="gxClose" aria-label="Close galaxy and return to calculator"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg><span class="tl" id="gxCloseT">Back</span></button>
+  </div>
+  <div class="gx-stage" id="gxStage">
+    <div class="gx-orbit o2" id="gxOrb2"></div>
+    <div class="gx-orbit" id="gxOrb"></div>
+    <svg class="gx-circle" id="gxCircleW" width="100%" height="100%" aria-hidden="true"><g id="gxCircle"></g></svg>
+    <div class="gx-glow ts" id="gxGlow"></div>
+    <button class="gx-sun ts" id="gxSun" aria-label="Total station, all calculators"><svg viewBox="0 0 24 24" fill="none" stroke="#3A2300" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="5.5"/><path d="M12 2.5v5M12 16.5v5M2.5 12h5M16.5 12h5"/></svg></button>
+    <div id="gxPlanets"></div>
+    <svg class="gx-beam" id="gxBeam" aria-hidden="true"></svg>
+  </div>
+  <div class="gx-name" id="gxName" aria-live="polite"></div>
+  <div class="gx-hint"><b>Swipe</b> to turn the instrument · <b>Tap a prism</b> for its calculators · Tap the total station for all<br>Developed by Jeff Weygandt, PLS · R&amp;R Engineers | Surveyors</div>
+  <div class="gx-scrim" id="gxScrim"></div>
+  <section class="gx-sheet" id="gxSheet" aria-labelledby="gxShT">
+    <div class="gx-grab" aria-hidden="true"></div>
+    <div class="gx-sh"><span class="mini" id="gxMini" aria-hidden="true"></span><div><h2 id="gxShT">Calculators</h2><p id="gxShS"></p></div><button class="gx-btn x" id="gxShX" aria-label="Back to galaxy"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <div class="gx-search" id="gxSrch" hidden><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="gxQ" type="search" placeholder="Search calculators" autocomplete="off" aria-label="Search calculators"></div>
+    <div class="gx-list" id="gxList"></div>
+  </section>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script>
+'use strict';
+/* =========================================================
+   MATH + FORMAT HELPERS
+   ========================================================= */
+const D2R=Math.PI/180,R2D=180/Math.PI,fin=Number.isFinite;
+const sinD=a=>Math.sin(a*D2R),cosD=a=>Math.cos(a*D2R),tanD=a=>Math.tan(a*D2R);
+const asinD=x=>Math.asin(x)*R2D,acosD=x=>Math.acos(x)*R2D,atanD=x=>Math.atan(x)*R2D,atan2D=(y,x)=>Math.atan2(y,x)*R2D;
+const norm=a=>((a%360)+360)%360;
+class UErr extends Error{constructor(m,soft){super(m);this.soft=!!soft;}}
+const need=(ok,m)=>{if(!ok)throw new UErr(m,true);};
+const bad=(ok,m)=>{if(!ok)throw new UErr(m,false);};
+
+function num(raw){
+  if(raw==null)return NaN;let s=String(raw).trim().replace(/,/g,'').replace(/−/g,'-');
+  if(s==='')return NaN;
+  s=s.replace(/^([+-]?\d+)\+(\d)/,'$1$2');
+  if(!/^[+-]?(\d+\.?\d*|\.\d+)(e[+-]?\d+)?$/i.test(s))return NaN;
+  return parseFloat(s);
+}
+function rdms(o,k){
+  const g=x=>(o[k+'_'+x]==null?'':String(o[k+'_'+x]).trim());
+  const dr=g('d'),mr=g('m'),sr=g('s');
+  if(dr===''&&mr===''&&sr==='')return NaN;
+  const d=dr===''?0:num(dr),m=mr===''?0:num(mr),s=sr===''?0:num(sr);
+  if(!fin(d)||!fin(m)||!fin(s)||m<0||s<0||m>=60||s>=60)return NaN;
+  const neg=dr.startsWith('-');
+  const v=Math.abs(d)+m/60+s/3600;return neg?-v:v;
+}
+function f(n,dp=4){
+  if(!fin(n))return '—';
+  if(Math.abs(n)<0.5*Math.pow(10,-dp))n=0;
+  return n.toLocaleString('en-US',{minimumFractionDigits:dp,maximumFractionDigits:dp});
+}
+const fp=(n,dp=4)=>(n>0&&Math.abs(n)>=0.5*Math.pow(10,-dp)?'+':'')+f(n,dp);
+function dparts(dd,sp=1){
+  const p=Math.pow(10,sp),T=Math.round(Math.abs(dd)*3600*p);
+  const d=Math.floor(T/(3600*p)),r=T-d*3600*p,m=Math.floor(r/(60*p)),s=(r-m*60*p)/p;
+  return{sg:dd<0&&T>0?-1:1,d,m,s,T};
+}
+const p2=n=>String(n).padStart(2,'0');
+const ps=(s,sp)=>s.toFixed(sp).padStart(sp?3+sp:2,'0');
+function fdms(dd,sp=1){if(!fin(dd))return '—';const q=dparts(dd,sp);return (q.sg<0?'-':'')+q.d+'° '+p2(q.m)+"' "+ps(q.s,sp)+'"';}
+function faz(a,sp=1){if(!fin(a))return '—';const q=dparts(norm(a),sp);return fdms(q.d>=360?0:norm(a),sp);}
+function brgOf(az){
+  const a=norm(az);let q,ang;
+  if(a<90){q='NE';ang=a}else if(a<180){q='SE';ang=180-a}else if(a<270){q='SW';ang=a-180}else{q='NW';ang=360-a}
+  return{q,ang};
+}
+function fbrg(az,sp=1){
+  if(!fin(az))return '—';
+  const P=Math.pow(10,sp),T=Math.round(norm(az)*3600*P),Q=90*3600*P;
+  if(T%Q===0)return['Due North','Due East','Due South','Due West'][(T/Q)%4];
+  const b=brgOf(az);return b.q[0]+' '+fdms(b.ang,sp)+' '+b.q[1];
+}
+const az4=(q,ang)=>norm({NE:ang,SE:180-ang,SW:180+ang,NW:360-ang}[q]);
+function fsta(x,dp=2){
+  if(!fin(x))return '—';const P=Math.pow(10,dp),T=Math.round(Math.abs(x)*P);
+  const h=Math.floor(T/(100*P)),r=(T-h*100*P)/P;return (x<0?'-':'')+h+'+'+r.toFixed(dp).padStart(3+dp,'0');
+}
+const gcd=(a,b)=>b?gcd(b,a%b):a;
+function fFtIn(ft,den=16){
+  if(!fin(ft))return '—';const neg=ft<0;let T=Math.round(Math.abs(ft)*12*den);
+  const wi=Math.floor(T/den),fr=T-wi*den,F=Math.floor(wi/12),I=wi-F*12;
+  let s=F+"' "+I;if(fr){const g=gcd(fr,den);s+=' '+fr/g+'/'+den/g}
+  return (neg?'-':'')+s+'"';
+}
+const sum=a=>a.reduce((x,y)=>x+y,0);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const card=(l,v,o={})=>Object.assign({l,v},o);
+
+/* =========================================================
+   INPUT DEFINITION HELPERS
+   ========================================================= */
+const N=(k,label,o={})=>Object.assign({k,t:'num',label},o);
+const A=(k,label,o={})=>Object.assign({k,t:'dms',label},o);
+const S=(k,label,opts,o={})=>Object.assign({k,t:'sel',label,opts,rerender:true},o);
+const H=(label,o={})=>Object.assign({t:'h',label},o);
+const ROWS=(k,label,cols,o={})=>Object.assign({k,t:'rows',label,cols},o);
+const QUAD=[['NE','NE'],['SE','SE'],['SW','SW'],['NW','NW']];
+const ex=(vals={},rows={},grid={})=>({vals,rows,grid});
+const dmsv=(k,d,m,s)=>({[k+'_d']:String(d),[k+'_m']:String(m),[k+'_s']:String(s)});
+
+/* =========================================================
+   CALCULATORS
+   ========================================================= */
+const GROUPS=[
+ ['angles','Angles & Direction','M4 20h16M4 20L15 6M9 20a5 5 0 0 0-1.5-3.8'],
+ ['distance','Distance & Grade','M3 17L17 3l4 4L7 21zM7 13l2 2M10 10l2 2M13 7l2 2'],
+ ['datum','Grid & Datum','M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18'],
+ ['convert','Unit Conversions','M7 7h13l-3-3M17 17H4l3 3'],
+ ['level','Leveling','M3 12h18M7 8h10v8H7zM12 8v8'],
+ ['curves','Curves','M3 19C3 10 10 4 21 4M3 19h4M17 4v4'],
+ ['cogo','COGO','M5 19L12 5l7 14M8 13h8'],
+ ['traverse','Traverse','M4 18L8 5l9 3 3 9zM4 18l16-1'],
+ ['tri','Triangles','M12 4L21 20H3z'],
+ ['earth','Earthwork','M2 18l5-7 4 4 3-5 8 8zM2 18h20'],
+ ['stake','Staking & Layout','M6 21V4l10 4-10 4']
+];
+
+const C=[];
+const def=o=>C.push(o);
+
+/* ---------------- ANGLES ---------------- */
+def({id:'az2brg',g:'angles',title:'Azimuth to Bearing',desc:'Convert a north azimuth (0° to 360°) to a quadrant bearing. Also returns the back azimuth and back bearing.',
+ inputs:[A('az','Azimuth',{full:true})],
+ example:ex(dmsv('az',225,30,15)),
+ run(v){
+  need(fin(v.az),'Enter an azimuth.');
+  const a=norm(v.az),b=brgOf(a),ba=norm(a+180);
+  const rule={NE:'Az < 90°, bearing angle = Az',SE:'90° ≤ Az < 180°, bearing angle = 180° − Az',SW:'180° ≤ Az < 270°, bearing angle = Az − 180°',NW:'Az ≥ 270°, bearing angle = 360° − Az'}[b.q];
+  return{cards:[card('Bearing',fbrg(a),{key:1}),card('Azimuth',faz(a)),card('Azimuth (decimal)',f(a,6)+'°'),card('Back azimuth',faz(ba)),card('Back bearing',fbrg(ba)),card('Quadrant',b.q)],
+   steps:[['Normalize azimuth','Az = '+faz(v.az),faz(a)],['Find quadrant',rule,b.q],['Bearing angle',{NE:faz(a),SE:'180° − '+faz(a),SW:faz(a)+' − 180°',NW:'360° − '+faz(a)}[b.q],fdms(b.ang)],['Write bearing',b.q[0]+' angle '+b.q[1],fbrg(a)],['Back azimuth','Az ± 180°',faz(ba)]]};
+ }});
+def({id:'brg2az',g:'angles',title:'Bearing to Azimuth',desc:'Convert a quadrant bearing to a north azimuth.',
+ inputs:[S('q','Quadrant',QUAD,{seg:1,full:true}),A('ang','Bearing angle',{full:true,hint:'0° to 90°'})],
+ example:ex(Object.assign({q:'SW'},dmsv('ang',45,30,0))),
+ run(v){
+  need(fin(v.ang),'Enter the bearing angle.');bad(v.ang>=0&&v.ang<=90,'A bearing angle must be between 0° and 90°.');
+  const a=az4(v.q,v.ang);const rule={NE:'Az = angle',SE:'Az = 180° − angle',SW:'Az = 180° + angle',NW:'Az = 360° − angle'}[v.q];
+  return{cards:[card('Azimuth',faz(a),{key:1}),card('Azimuth (decimal)',f(a,6)+'°'),card('Back azimuth',faz(a+180)),card('Bearing check',fbrg(a))],
+   steps:[['Quadrant rule',v.q+': '+rule,''],['Substitute',rule.replace('angle',fdms(v.ang)),faz(a)],['Back azimuth','Az ± 180°',faz(a+180)]]};
+ }});
+def({id:'decl',g:'angles',title:'Magnetic Declination',desc:'Apply magnetic declination. East declination is added to a magnetic azimuth to get true; west is subtracted. Get current declination for your site from NOAA.',
+ inputs:[S('mode','Convert',[['m2t','Magnetic → True'],['t2m','True → Magnetic']],{seg:1,full:true}),A('az','Azimuth to convert',{full:true}),A('dec','Declination',{full:true}),S('dir','Declination direction',[['E','East'],['W','West']],{seg:1,full:true})],
+ example:ex(Object.assign({mode:'m2t',dir:'E'},dmsv('az',120,0,0),dmsv('dec',7,45,0))),
+ run(v){
+  need(fin(v.az)&&fin(v.dec),'Enter the azimuth and the declination.');
+  const sgn=(v.dir==='E'?1:-1)*(v.mode==='m2t'?1:-1);const r=norm(v.az+sgn*v.dec);
+  const lab=v.mode==='m2t'?'True azimuth':'Magnetic azimuth';
+  return{cards:[card(lab,faz(r),{key:1}),card(v.mode==='m2t'?'True bearing':'Magnetic bearing',fbrg(r)),card('Declination applied',(sgn>0?'+':'-')+fdms(v.dec))],
+   steps:[['Rule',v.mode==='m2t'?'True = Magnetic + East decl (− West)':'Magnetic = True − East decl (+ West)',''],['Substitute',faz(v.az)+(sgn>0?' + ':' − ')+fdms(v.dec),faz(r)]]};
+ }});
+def({id:'angsum',g:'angles',title:'Add & Subtract Angles',desc:'Add or subtract any number of angles in degrees, minutes, seconds. Result is shown raw and normalized to 0° to 360°.',
+ wide:1,inputs:[ROWS('r','Angles',[{k:'op',t:'sel',label:'Op',opts:[['+','+'],['-','−']]},{k:'a',t:'dms',label:'Angle'}],{rows:3})],
+ example:ex({},{r:[{op:'+',...dmsv('a',87,14,30)},{op:'+',...dmsv('a',92,50,45)},{op:'-',...dmsv('a',45,0,10)}]}),
+ run(v){
+  const r=v.r.filter(x=>fin(x.a));need(r.length,'Enter at least one angle.');
+  let t=0;const ex=[];r.forEach((x,i)=>{t+=x.op==='-'?-x.a:x.a;ex.push((i?(x.op==='-'?' − ':' + '):(x.op==='-'?'−':''))+fdms(x.a));});
+  return{cards:[card('Sum',fdms(t),{key:1}),card('Normalized (0° to 360°)',faz(t)),card('Decimal',f(t,6)+'°'),card('Supplement (180° − sum)',fdms(180-t)),card('Explement (360° − sum)',fdms(360-t))],
+   steps:[['Add in DMS',ex.join(''),fdms(t)],['Normalize','Add or subtract 360° until 0 ≤ result < 360',faz(t)]]};
+ }});
+def({id:'angconv',g:'angles',title:'Angle Unit Conversion',desc:'Convert between decimal degrees, DMS, radians, gons (grads) and mils.',
+ inputs:[S('u','Input unit',[['dms','DMS'],['dd','Decimal °'],['rad','Radians'],['gon','Gons'],['mil','Mils']],{seg:1,full:true}),
+  A('a','Angle',{full:true,show:v=>v.u==='dms',signed:1}),N('x','Value',{full:true,show:v=>v.u!=='dms',signed:1})],
+ example:ex(Object.assign({u:'dms'},dmsv('a',45,20,0))),
+ run(v){
+  let dd;if(v.u==='dms')dd=v.a;else{const x=v.x;dd={dd:x,rad:x*R2D,gon:x*0.9,mil:x*360/6400}[v.u];}
+  need(fin(dd),'Enter an angle.');
+  return{cards:[card('DMS',fdms(dd),{key:1}),card('Decimal degrees',f(dd,8)+'°'),card('Radians',f(dd*D2R,9)),card('Gons (grads)',f(dd/0.9,6)),card('Mils (6400)',f(dd*6400/360,4))],
+   steps:[['Factors','1° = π/180 rad = 1/0.9 gon = 6400/360 mil',''],['Decimal to DMS','min = frac × 60, sec = frac(min) × 60',fdms(dd)]]};
+ }});
+
+/* ---------------- DISTANCE ---------------- */
+def({id:'tape',g:'distance',title:'Steel Tape Corrections',desc:'Temperature, tension, sag and sea level corrections. Leave a section blank to skip it. Corrections add to the measured length.',
+ formula:'Ct = α(T−Ts)L · Cp = (P−Ps)L/AE · Cs = −w²Ls²L/24P² · Csl = −HL/R',
+ inputs:[S('u','Units',[['ft','Feet, lb, °F'],['m','Meters, N, °C']],{seg:1,full:true}),
+  N('L','Measured distance',{unit:v=>v.u}),H('Temperature'),N('T','Field temperature',{unit:v=>v.u==='m'?'°C':'°F',signed:1}),N('Ts','Standard temperature',{unit:v=>v.u==='m'?'°C':'°F',ph:v=>v.u==='m'?'20':'68'}),
+  H('Tension'),N('P','Applied tension',{unit:v=>v.u==='m'?'N':'lb'}),N('Ps','Standard tension',{unit:v=>v.u==='m'?'N':'lb'}),N('A','Tape cross section',{unit:v=>v.u==='m'?'mm²':'in²'}),N('E','Modulus E',{unit:v=>v.u==='m'?'N/mm²':'psi',ph:v=>v.u==='m'?'200000':'29000000'}),
+  H('Sag (uses applied tension)'),N('w','Tape weight',{unit:v=>v.u==='m'?'N/m':'lb/ft'}),N('Ls','Unsupported span',{unit:v=>v.u}),
+  H('Sea level'),N('H','Mean elevation',{unit:v=>v.u,signed:1})],
+ example:ex({u:'ft',L:'150',T:'92',Ts:'68',P:'12',w:'0.018',Ls:'150'}),
+ run(v){
+  const m=v.u==='m',U=m?'m':'ft';need(fin(v.L)&&v.L>0,'Enter the measured distance.');
+  const L=v.L,al=m?0.0000116:0.00000645,Ts=fin(v.Ts)?v.Ts:(m?20:68),R=m?6371000:20906000,E=fin(v.E)?v.E:(m?200000:29000000);
+  const st=[],cards=[];let tot=0,any=0;
+  if(fin(v.T)){const c=al*(v.T-Ts)*L;tot+=c;any=1;cards.push(card('Temperature Ct',fp(c,4)+' '+U));st.push(['Temperature','Ct = '+al+' × ('+v.T+' − '+Ts+') × '+f(L,3),fp(c,4)+' '+U]);}
+  if(fin(v.P)&&fin(v.Ps)&&fin(v.A)){bad(v.A>0,'Cross section must be greater than zero.');const c=(v.P-v.Ps)*L/(v.A*E);tot+=c;any=1;cards.push(card('Tension Cp',fp(c,4)+' '+U));st.push(['Tension','Cp = ('+v.P+' − '+v.Ps+') × '+f(L,3)+' / ('+v.A+' × '+E.toLocaleString()+')',fp(c,4)+' '+U]);}
+  if(fin(v.w)&&fin(v.Ls)){need(fin(v.P)&&v.P>0,'Sag needs the applied tension.');const n=L/v.Ls,c=-(v.w*v.w*Math.pow(v.Ls,3))/(24*v.P*v.P)*n;tot+=c;any=1;cards.push(card('Sag Cs',fp(c,4)+' '+U));
+   st.push(['Sag per span','−w²Ls³/(24P²) = −'+v.w+'² × '+v.Ls+'³ / (24 × '+v.P+'²)',fp(c/n,4)+' '+U]);st.push(['Spans','n = L / Ls = '+f(L,3)+' / '+v.Ls,f(n,3)]);st.push(['Total sag','Cs = n × per span',fp(c,4)+' '+U]);}
+  if(fin(v.H)){const c=-L*v.H/R;tot+=c;any=1;cards.push(card('Sea level Csl',fp(c,4)+' '+U));st.push(['Sea level','Csl = −'+f(L,3)+' × '+v.H+' / '+R.toLocaleString(),fp(c,4)+' '+U]);}
+  need(any,'Fill in at least one correction section.');
+  cards.unshift(card('Corrected distance',f(L+tot,4)+' '+U,{key:1}),card('Total correction',fp(tot,4)+' '+U));
+  st.push(['Corrected distance',f(L,3)+' '+(tot<0?'− ':'+ ')+f(Math.abs(tot),4),f(L+tot,4)+' '+U]);
+  return{cards,steps:st};
+ }});
+def({id:'slope',g:'distance',title:'Slope to Horizontal',desc:'Reduce a slope distance to horizontal using a vertical angle, a zenith angle, or the elevation difference.',
+ inputs:[S('mth','Method',[['va','Vertical angle'],['za','Zenith angle'],['dh','Elev difference']],{seg:1,full:true}),N('S','Slope distance',{unit:'ft'}),
+  A('a','Vertical angle (+ up)',{show:v=>v.mth==='va',signed:1}),A('z','Zenith angle',{show:v=>v.mth==='za'}),N('dh','Elevation difference',{unit:'ft',show:v=>v.mth==='dh',signed:1})],
+ example:ex({mth:'dh',S:'248.30',dh:'12.40'}),
+ run(v){
+  need(fin(v.S)&&v.S>0,'Enter the slope distance.');let H,V,al,st=[];
+  if(v.mth==='dh'){need(fin(v.dh),'Enter the elevation difference.');bad(Math.abs(v.dh)<v.S,'Elevation difference must be smaller than the slope distance.');H=Math.sqrt(v.S*v.S-v.dh*v.dh);V=v.dh;al=asinD(V/v.S);st.push(['Horizontal','H = √(S² − Δh²) = √('+f(v.S,3)+'² − '+f(v.dh,3)+'²)',f(H,4)+' ft']);}
+  else{const a=v.mth==='za'?v.z:v.a;need(fin(a),'Enter the angle.');al=v.mth==='za'?90-a:a;if(v.mth==='za')st.push(['Vertical angle','α = 90° − zenith = 90° − '+fdms(a),fdms(al)]);
+   H=v.S*cosD(al);V=v.S*sinD(al);st.push(['Horizontal','H = S·cos α = '+f(v.S,3)+' × cos '+fdms(al),f(H,4)+' ft'],['Vertical','V = S·sin α',fp(V,4)+' ft']);}
+  return{cards:[card('Horizontal distance',f(H,4)+' ft',{key:1}),card('Vertical difference',fp(V,4)+' ft'),card('Vertical angle',fdms(al)),card('Zenith angle',fdms(90-al)),card('Grade',fp(V/H*100,3)+'%'),card('Slope minus horizontal',f(v.S-H,4)+' ft')],steps:st};
+ }});
+def({id:'stadia',g:'distance',title:'Stadia Reduction',desc:'Reduce stadia hair readings to horizontal distance and elevation. K is 100 for most instruments.',formula:'H = K·s·cos²α + C·cos α · V = ½K·s·sin 2α',
+ inputs:[N('U','Upper hair',{unit:'ft'}),N('M','Middle hair',{unit:'ft'}),N('L','Lower hair',{unit:'ft'}),S('at','Angle type',[['va','Vertical'],['za','Zenith']],{seg:1}),
+  A('a','Vertical angle',{show:v=>v.at==='va',signed:1}),A('z','Zenith angle',{show:v=>v.at==='za'}),N('K','Stadia constant K',{ph:'100'}),N('C','Constant C',{ph:'0',unit:'ft'}),
+  H('Elevation (optional)'),N('IE','Station elevation',{unit:'ft'}),N('HI','Instrument height',{unit:'ft'})],
+ example:ex({U:'6.42',M:'5.00',L:'3.58',at:'va',...dmsv('a',3,15,0),IE:'5412.30',HI:'5.10'}),
+ run(v){
+  need(fin(v.U)&&fin(v.L),'Enter the upper and lower hair readings.');bad(v.U>v.L,'Upper hair must be larger than the lower hair.');
+  const K=fin(v.K)?v.K:100,Cc=fin(v.C)?v.C:0;let al=v.at==='za'?(fin(v.z)?90-v.z:0):(fin(v.a)?v.a:0);
+  const s=v.U-v.L,H=K*s*cosD(al)**2+Cc*cosD(al),V=0.5*K*s*sinD(2*al);
+  const cards=[card('Horizontal distance',f(H,3)+' ft',{key:1}),card('Vertical distance V',fp(V,3)+' ft'),card('Rod interval s',f(s,3)+' ft')];
+  const st=[['Rod interval','s = upper − lower = '+v.U+' − '+v.L,f(s,3)],['Horizontal','H = '+K+' × '+f(s,3)+' × cos²('+fdms(al)+')'+(Cc?' + '+Cc+'·cos α':''),f(H,3)+' ft'],['Vertical','V = ½ × '+K+' × '+f(s,3)+' × sin(2 × '+fdms(al)+')',fp(V,3)+' ft']];
+  if(fin(v.IE)){need(fin(v.M),'Enter the middle hair for elevation.');const hi=fin(v.HI)?v.HI:0,e=v.IE+hi+V-v.M;cards.splice(1,0,card('Point elevation',f(e,3)+' ft',{key:1}));st.push(['Elevation','Elev = '+v.IE+' + '+hi+' + '+f(V,3)+' − '+v.M,f(e,3)+' ft']);}
+  return{cards,steps:st};
+ }});
+def({id:'edm',g:'distance',title:'EDM Atmospheric Correction',desc:'First velocity correction in ppm using the Leica standard formula (reference 12 °C, 1013.25 hPa, 60% humidity). Your instrument manual governs if it uses a different reference.',
+ formula:'ppm = 286.338 − [0.29535p/(1+αt) − 4.126e-4·h/(1+αt)·10^x]',
+ inputs:[N('D','Measured distance',{unit:'ft',full:true}),N('t','Temperature',{signed:1}),S('tu','Temp unit',[['F','°F'],['C','°C']],{seg:1}),N('p','Pressure'),S('pu','Pressure unit',[['inHg','inHg'],['hPa','hPa'],['mmHg','mmHg']],{seg:1}),N('h','Relative humidity',{unit:'%',ph:'60'})],
+ example:ex({D:'2500',t:'85',tu:'F',p:'24.6',pu:'inHg',h:'30'}),
+ run(v){
+  need(fin(v.D)&&fin(v.t)&&fin(v.p),'Enter distance, temperature and pressure.');
+  const t=v.tu==='F'?(v.t-32)*5/9:v.t,p=v.p*({inHg:33.8638866667,hPa:1,mmHg:1.33322368}[v.pu]),h=fin(v.h)?v.h:60;
+  const a=1/273.15,x=7.5*t/(237.3+t)+0.7857,pt=0.29535*p/(1+a*t),ht=4.126e-4*h/(1+a*t)*Math.pow(10,x),ppm=286.338-(pt-ht),dD=v.D*ppm/1e6;
+  return{cards:[card('Corrected distance',f(v.D+dD,4)+' ft',{key:1}),card('Correction',fp(ppm,1)+' ppm'),card('Distance change',fp(dD,4)+' ft'),card('Temperature',f(t,1)+' °C'),card('Pressure',f(p,1)+' hPa')],
+   steps:[['Convert units','t = '+f(t,2)+' °C, p = '+f(p,2)+' hPa',''],['Pressure term','0.29535 × '+f(p,2)+' / (1 + '+f(t,2)+'/273.15)',f(pt,3)],['Humidity term','4.126e-4 × '+h+' / (1+αt) × 10^'+f(x,4),f(ht,3)],['ppm','286.338 − ('+f(pt,3)+' − '+f(ht,3)+')',fp(ppm,2)],['Apply','D × (1 + ppm/1,000,000)',f(v.D+dD,4)+' ft']]};
+ }});
+def({id:'gradeconv',g:'distance',title:'Grade Converter',desc:'Convert a slope between percent, degrees, H:V ratio, inches per foot and feet per foot.',
+ inputs:[S('fr','Input format',[['pct','Percent'],['deg','Degrees'],['hv','H:V'],['inft','in/ft'],['ftft','ft/ft']],{seg:1,full:true}),N('x','Value',{full:true,signed:1,unit:v=>({pct:'%',deg:'°',hv:'H per 1 V',inft:'in/ft',ftft:'ft/ft'}[v.fr])})],
+ example:ex({fr:'pct',x:'2'}),
+ run(v){
+  need(fin(v.x),'Enter a value.');let g={pct:v.x/100,deg:tanD(v.x),hv:v.x===0?NaN:1/v.x,inft:v.x/12,ftft:v.x}[v.fr];bad(fin(g),'Value cannot be zero for H:V.');
+  const hv=g===0?'Level':f(1/Math.abs(g),3)+' : 1';
+  return{cards:[card('Grade',fp(g*100,4)+'%',{key:1}),card('Angle',fdms(atanD(g))),card('H : V',hv),card('Inches per foot',f(g*12,4)),card('Feet per foot',f(g,6)),card('Rise per 100 ft',fp(g*100,3)+' ft')],
+   steps:[['To decimal grade',{pct:'g = %/100',deg:'g = tan(angle)',hv:'g = 1/H',inft:'g = in/12',ftft:'g = value'}[v.fr],f(g,6)],['Angle','atan(g)',fdms(atanD(g))]]};
+ }});
+def({id:'riserun',g:'distance',title:'Rise / Run Solver',desc:'Enter any two of grade, run and rise. Leave the one you want blank.',
+ inputs:[N('g','Grade',{unit:'%',signed:1}),N('run','Run (horizontal)',{unit:'ft'}),N('rise','Rise',{unit:'ft',signed:1})],
+ example:ex({g:'2.5',run:'180'}),
+ run(v){
+  const n=[v.g,v.run,v.rise].filter(fin).length;need(n>=2,'Enter any two values.');bad(n===2,'Leave one value blank so it can be solved.');
+  let g=v.g,r=v.run,ri=v.rise,st;
+  if(!fin(ri)){ri=r*g/100;st=['Rise','Rise = Run × Grade/100 = '+r+' × '+g+'/100',fp(ri,4)+' ft'];}
+  else if(!fin(r)){bad(g!==0,'Grade cannot be zero when solving run.');r=ri/(g/100);st=['Run','Run = Rise / (Grade/100) = '+ri+' / '+(g/100),f(r,4)+' ft'];}
+  else{bad(r!==0,'Run cannot be zero.');g=ri/r*100;st=['Grade','Grade = Rise/Run × 100 = '+ri+'/'+r+' × 100',fp(g,4)+'%'];}
+  return{cards:[card(st[0],st[2],{key:1}),...[['Grade',fp(g,4)+'%'],['Run',f(r,4)+' ft'],['Rise',fp(ri,4)+' ft']].filter(x=>x[0]!==st[0]).map(x=>card(x[0],x[1])),card('Slope distance',f(Math.hypot(r,ri),4)+' ft'),card('Angle',fdms(atanD(ri/r)))],steps:[st]};
+ }});
+def({id:'grade2',g:'distance',title:'Grade Between Two Points',desc:'Grade, rise and slope distance between two points from their elevations and stations. Stations can be typed as 12+50 or 1250.',
+ inputs:[H('Point 1'),N('s1','Station 1',{sta:1}),N('e1','Elevation 1',{unit:'ft'}),H('Point 2'),N('s2','Station 2',{sta:1}),N('e2','Elevation 2',{unit:'ft'})],
+ example:ex({s1:'10+00',e1:'5412.30',s2:'14+50',e2:'5401.05'}),
+ run(v){
+  need([v.s1,v.e1,v.s2,v.e2].every(fin),'Enter both stations and both elevations.');const run=v.s2-v.s1,rise=v.e2-v.e1;bad(run!==0,'Stations must be different.');
+  const g=rise/run*100;
+  return{cards:[card('Grade',fp(g,4)+'%',{key:1}),card('Rise',fp(rise,4)+' ft'),card('Run',f(run,3)+' ft'),card('Slope distance',f(Math.hypot(run,rise),4)+' ft'),card('Angle',fdms(atanD(rise/run))),card('Direction',g>0?'Rising':g<0?'Falling':'Level')],
+   steps:[['Rise','Elev2 − Elev1 = '+v.e2+' − '+v.e1,fp(rise,4)],['Run','Sta2 − Sta1 = '+fsta(v.s2)+' − '+fsta(v.s1),f(run,3)],['Grade','Rise/Run × 100',fp(g,4)+'%']]};
+ }});
+def({id:'projelev',g:'distance',title:'Project Elevations on a Grade',desc:'Carry a constant grade from a known station and elevation to any list of stations. Good for pipe inverts, curb and drain slopes.',
+ wide:1,inputs:[N('s0','Start station',{sta:1}),N('e0','Start elevation',{unit:'ft'}),N('g','Grade',{unit:'%',signed:1}),ROWS('r','Stations',[{k:'s',t:'num',label:'Station',sta:1}],{rows:4})],
+ example:ex({s0:'0+00',e0:'5410.25',g:'-1.20'},{r:[{s:'0+50'},{s:'1+00'},{s:'1+50'},{s:'2+00'}]}),
+ run(v){
+  need(fin(v.e0)&&fin(v.g),'Enter start elevation and grade.');const s0=fin(v.s0)?v.s0:0,r=v.r.filter(x=>fin(x.s));need(r.length,'Add at least one station.');
+  const rows=r.map(x=>{const d=x.s-s0,e=v.e0+d*v.g/100;return[fsta(x.s),f(d,2),fp(d*v.g/100,3),f(e,3)];});
+  return{cards:[card('Grade',fp(v.g,3)+'%',{key:1}),card('Change per 100 ft',fp(v.g,3)+' ft'),card('Change per 50 ft',fp(v.g/2,3)+' ft')],
+   tables:[{title:'Projected elevations',head:['Station','Distance','Elev change','Elevation'],rows}],
+   steps:[['Formula','Elev = '+v.e0+' + (Sta − '+fsta(s0)+') × '+v.g+'/100',''],['First station','Elev = '+v.e0+' + '+f(r[0].s-s0,2)+' × '+(v.g/100),f(v.e0+(r[0].s-s0)*v.g/100,3)]]};
+ }});
+
+/* ---------------- GRID & DATUM ---------------- */
+def({id:'csf',g:'datum',title:'Grid / Ground Distance',desc:'Combined scale factor from the grid scale factor and the elevation factor. Applying grid distances on the ground without it is a common layout blunder.',formula:'EF = R / (R + H + N) · CSF = k × EF',
+ inputs:[S('mode','Convert',[['g2g','Ground → Grid'],['gr2g','Grid → Ground']],{seg:1,full:true}),N('d','Distance',{unit:'ft'}),N('k','Grid scale factor k',{ph:'0.99990'}),N('H','Elevation (orthometric)',{unit:'ft',hint:'Leave blank to use k as the combined factor'}),N('Nn','Geoid height N',{unit:'ft',signed:1,hint:'Optional, about −55 ft in the Denver area'}),N('csf','Or enter CSF directly',{full:true})],
+ example:ex({mode:'g2g',d:'5000',csf:'0.99985'}),
+ run(v){
+  need(fin(v.d),'Enter a distance.');const R=20906000;let CSF,st=[],EF=NaN;
+  if(fin(v.csf))CSF=v.csf;else{need(fin(v.k),'Enter the grid scale factor or the combined factor.');if(fin(v.H)){const h=v.H+(fin(v.Nn)?v.Nn:0);EF=R/(R+h);CSF=v.k*EF;st.push(['Elevation factor','EF = '+R.toLocaleString()+' / ('+R.toLocaleString()+' + '+f(h,2)+')',f(EF,8)],['Combined factor','CSF = k × EF = '+v.k+' × '+f(EF,8),f(CSF,8)]);}else CSF=v.k;}
+  const out=v.mode==='g2g'?v.d*CSF:v.d/CSF,diff=out-v.d;
+  st.push([v.mode==='g2g'?'Grid distance':'Ground distance',v.mode==='g2g'?'Ground × CSF = '+v.d+' × '+f(CSF,8):'Grid / CSF = '+v.d+' / '+f(CSF,8),f(out,4)+' ft']);
+  return{cards:[card(v.mode==='g2g'?'Grid distance':'Ground distance',f(out,4)+' ft',{key:1}),card('Difference',fp(diff,4)+' ft'),card('Combined scale factor',f(CSF,8)),card('Elevation factor',fin(EF)?f(EF,8):'Not used'),card('Parts per million',fp((CSF-1)*1e6,1)+' ppm')],steps:st};
+ }});
+def({id:'geoid',g:'datum',title:'Ellipsoid / Orthometric Height',desc:'Convert a GPS ellipsoid height to an orthometric (NAVD88) elevation using the geoid height. Use the sign the geoid model reports; in Colorado N is negative.',formula:'H = h − N',
+ inputs:[S('mode','Convert',[['h2H','Ellipsoid h → Elevation H'],['H2h','Elevation H → Ellipsoid h']],{seg:1,full:true}),N('x',v=>v.mode==='h2H'?'Ellipsoid height h':'Orthometric height H',{unit:'ft'}),N('Nn','Geoid height N',{unit:'ft',signed:1})],
+ example:ex({mode:'h2H',x:'5497.00',Nn:'64.50'}),
+ run(v){
+  need(fin(v.x)&&fin(v.Nn),'Enter the height and the geoid height N.');const r=v.mode==='h2H'?v.x-v.Nn:v.x+v.Nn;
+  return{cards:[card(v.mode==='h2H'?'Elevation H (NAVD88)':'Ellipsoid height h',f(r,3)+' ft',{key:1})],steps:[[v.mode==='h2H'?'H = h − N':'h = H + N',v.mode==='h2H'?v.x+' − ('+v.Nn+')':v.x+' + ('+v.Nn+')',f(r,3)+' ft']]};
+ }});
+
+/* ---------------- CONVERSIONS ---------------- */
+const LEN=[['ft','Feet (international)',1],['usft','US survey feet',1200/3937/0.3048],['in','Inches',1/12],['yd','Yards',3],['m','Meters',1/0.3048],['cm','Centimeters',0.01/0.3048],['km','Kilometers',1000/0.3048],['mi','Miles',5280],['ch','Chains (Gunter)',66],['lk','Links',0.66],['rd','Rods / poles',16.5],['fur','Furlongs',660],['va','Varas (Texas)',100/36]];
+const AREA=[['ft2','Square feet',1],['in2','Square inches',1/144],['yd2','Square yards',9],['m2','Square meters',1/0.09290304],['ac','Acres',43560],['ha','Hectares',10000/0.09290304],['sch','Square chains',4356],['srd','Square rods',272.25],['mi2','Square miles',27878400],['km2','Square kilometers',1e6/0.09290304]];
+const VOL=[['ft3','Cubic feet',1],['yd3','Cubic yards',27],['m3','Cubic meters',1/0.028316846592],['in3','Cubic inches',1/1728],['acft','Acre-feet',43560],['gal','US gallons',231/1728],['L','Liters',0.001/0.028316846592]];
+function convCalc(id,title,list,desc,exv,exu){
+ def({id,g:'convert',title,desc,inputs:[N('x','Value',{full:true,signed:1}),S('u','From unit',list.map(x=>[x[0],x[1]]),{full:true,rerender:0})],example:ex({x:exv,u:exu}),
+  run(v){need(fin(v.x),'Enter a value.');const fr=list.find(x=>x[0]===v.u)||list[0],base=v.x*fr[2];
+   const rows=list.map(x=>[x[1],f(base/x[2],Math.abs(base/x[2])>=1e5?3:6)]);
+   return{cards:[card(fr[1],f(v.x,6),{key:1})],tables:[{title:'Equivalents',head:['Unit','Value'],rows,hl:list.indexOf(fr)}],steps:[['Factor','1 '+fr[1].toLowerCase()+' = '+f(fr[2],8)+' '+list[0][1].toLowerCase(),'']]};}});
+}
+convCalc('len','Length',LEN,'Survey and construction length units. The US survey foot was retired at the end of 2022; it is included for older records.','1','ch');
+convCalc('area','Area',AREA,'Area units for lots, parcels and sites.','1','ac');
+convCalc('vol','Volume',VOL,'Volume units for earthwork and water.','1','yd3');
+const FR16=[['0','0'],...Array.from({length:15},(_,i)=>{const n=i+1,g=gcd(n,16);return[String(n/16),(n/g)+'/'+(16/g)];})];
+def({id:'ftin',g:'convert',title:'Decimal Feet ↔ Feet & Inches',desc:'Convert surveyor decimal feet to builder feet, inches and fractions, and back.',
+ inputs:[S('mode','Direction',[['d2f','Decimal → Ft-In'],['f2d','Ft-In → Decimal']],{seg:1,full:true}),N('x','Decimal feet',{show:v=>v.mode==='d2f',signed:1,unit:'ft'}),S('den','Round to',[['8','1/8"'],['16','1/16"'],['32','1/32"']],{show:v=>v.mode==='d2f',seg:1}),
+  N('F','Feet',{show:v=>v.mode==='f2d'}),N('I','Inches',{show:v=>v.mode==='f2d'}),S('fr','Fraction',FR16,{show:v=>v.mode==='f2d',rerender:0})],
+ example:ex({mode:'d2f',x:'12.87',den:'16'}),
+ run(v){
+  if(v.mode==='d2f'){need(fin(v.x),'Enter decimal feet.');const den=+v.den||16,inch=v.x*12;
+   return{cards:[card('Feet & inches',fFtIn(v.x,den),{key:1}),card('Total inches',f(inch,4)+'"'),card('Rounding error',fp((Math.round(Math.abs(inch)*den)/den-Math.abs(inch)),4)+'"')],
+    steps:[['Whole feet','floor('+v.x+')',Math.floor(Math.abs(v.x))+"'"],['Inches','(feet fraction) × 12 = '+f((Math.abs(v.x)%1)*12,4),''],['Round','to nearest 1/'+den+'"',fFtIn(v.x,den)]]};}
+  const F=fin(v.F)?v.F:0,I=fin(v.I)?v.I:0,fr=+v.fr||0;need(fin(v.F)||fin(v.I)||fr,'Enter feet and inches.');const d=F+(I+fr)/12;
+  return{cards:[card('Decimal feet',f(d,4)+' ft',{key:1}),card('Total inches',f(F*12+I+fr,4)+'"')],steps:[['Formula','ft + (in + fraction)/12 = '+F+' + ('+I+' + '+fr+')/12',f(d,4)]]};
+ }});
+def({id:'tenths',g:'convert',title:'Hundredths to Inches Chart',desc:'Field reference: hundredths of a foot to inches, rounded to the nearest 1/8" and 1/16".',inputs:[],
+ run(){const rows=[];for(let i=1;i<100;i++){const x=i/100;rows.push(['0.'+p2(i),f(x*12,3)+'"',fFtIn(x,8).replace(/^0' /,''),fFtIn(x,16).replace(/^0' /,'')]);}
+  return{tables:[{title:'0.01 to 0.99 ft',head:['Feet','Inches','Nearest 1/8"','Nearest 1/16"'],rows}]};}});
+
+/* ---------------- LEVELING ---------------- */
+const LVL=[['0.017','First order I (0.017√mi)'],['0.021','First order II (0.021√mi)'],['0.025','Second order I (0.025√mi)'],['0.033','Second order II (0.033√mi)'],['0.05','Third order (0.05√mi)'],['custom','Custom']];
+def({id:'levelrun',g:'level',title:'Differential Level Notes',desc:'Standard BS / HI / FS level notes. Enter a backsight on every turning point to start a new setup. Mark side shots so they stay out of the chain. Add the known closing elevation to get misclosure and adjusted elevations.',
+ wide:1,formula:'HI = Elev + BS · Elev = HI − FS',
+ inputs:[N('e0','Starting BM elevation',{unit:'ft'}),N('ek','Known closing elevation',{unit:'ft',hint:'Optional, for closure'}),N('K','Loop length',{unit:'mi',hint:'Optional, for allowable'}),S('ord','Standard',LVL,{rerender:1}),N('cst','Custom constant',{show:v=>v.ord==='custom',unit:'ft√mi'}),
+  ROWS('r','Level notes',[{k:'p',t:'text',label:'Station'},{k:'bs',t:'num',label:'BS'},{k:'fs',t:'num',label:'FS'},{k:'k',t:'sel',label:'Type',opts:[['run','Run / TP'],['ss','Side shot']]}],{rows:5})],
+ example:ex({e0:'5412.30',ek:'5412.30',K:'0.5',ord:'0.05'},{r:[{p:'BM A',bs:'4.60'},{p:'TP1',bs:'3.22',fs:'6.10',k:'run'},{p:'Pad',fs:'5.55',k:'ss'},{p:'TP2',bs:'7.15',fs:'2.48',k:'run'},{p:'BM A',fs:'6.42',k:'run'}]}),
+ run(v){
+  need(fin(v.e0),'Enter the starting BM elevation.');const r=v.r.filter(x=>fin(x.bs)||fin(x.fs));need(r.length>=2,'Enter a backsight and at least one foresight.');
+  bad(fin(r[0].bs),'The first row needs a backsight on the starting BM.');
+  let HI=v.e0+r[0].bs,setup=1,sBS=r[0].bs,sFS=0,last=v.e0;const pts=[{p:r[0].p||'BM',bs:r[0].bs,hi:HI,fs:NaN,el:v.e0,su:0,ss:0}];
+  for(let i=1;i<r.length;i++){const x=r[i];bad(fin(x.fs),'Row '+(i+1)+' needs a foresight.');const el=HI-x.fs,ss=x.k==='ss';
+   const pt={p:x.p||('Pt '+(i+1)),bs:NaN,hi:NaN,fs:x.fs,el,su:setup,ss};
+   if(!ss){sFS+=x.fs;last=el;if(fin(x.bs)){HI=el+x.bs;sBS+=x.bs;setup++;pt.bs=x.bs;pt.hi=HI;}}
+   else bad(!fin(x.bs),'A side shot cannot carry a backsight (row '+(i+1)+').');
+   pts.push(pt);}
+  const n=setup,cards=[card('Final elevation',f(last,3)+' ft',{key:1}),card('Σ BS − Σ FS',fp(sBS-sFS,3)+' ft'),card('Elevation change',fp(last-v.e0,3)+' ft'),card('Setups',String(n))];
+  const st=[['First HI','HI = '+v.e0+' + '+r[0].bs,f(v.e0+r[0].bs,3)],['Each foresight','Elev = HI − FS',''],['New setup','HI = Elev(TP) + BS',''],['Arithmetic check','ΣBS − ΣFS = '+f(sBS,2)+' − '+f(sFS,2)+' = '+fp(sBS-sFS,3)+' ; Last − First = '+fp(last-v.e0,3),Math.abs(sBS-sFS-(last-v.e0))<1e-6?'Checks':'Error']];
+  const badges=[],head=['Station','BS','HI','FS','Elevation'];let misc=NaN;
+  if(fin(v.ek)){misc=last-v.ek;cards.push(card('Misclosure',fp(misc,3)+' ft',{key:1}));head.push('Corr','Adjusted');st.push(['Misclosure','Computed − Known = '+f(last,3)+' − '+f(v.ek,3),fp(misc,3)+' ft'],['Adjustment','Corr = −misclosure × (setup / '+n+')','']);
+   const c=fin(v.K)?(v.ord==='custom'?v.cst:+v.ord):NaN;
+   if(fin(v.K)&&fin(c)){const al=c*Math.sqrt(v.K);cards.push(card('Allowable',f(al,3)+' ft'));st.push(['Allowable',c+' × √'+v.K,f(al,3)+' ft']);badges.push(Math.abs(misc)<=al?{t:'Within tolerance',tone:'good'}:{t:'Exceeds tolerance, rerun the loop',tone:'bad'});}}
+  const rows=pts.map((p,i)=>{const row=[p.p+(p.ss?' (SS)':''),fin(p.bs)?f(p.bs,2):'',fin(p.hi)?f(p.hi,3):'',fin(p.fs)?f(p.fs,2):'',f(p.el,3)];
+   if(fin(misc)){const j=p.ss?p.su-1:p.su,cr=-misc*j/n;row.push(fp(cr,3),f(p.el+cr,3));}return row;});
+  return{cards,badges,tables:[{title:'Level notes',head,rows}],steps:st};
+ }});
+def({id:'levelallow',g:'level',title:'Allowable Misclosure',desc:'Allowable level loop misclosure for an accuracy standard. Third order is the usual construction benchmark standard.',formula:'Allowable = C × √(loop length in miles)',
+ inputs:[N('d','Loop length'),S('du','Length unit',[['mi','Miles'],['ft','Feet'],['km','Km']],{seg:1}),S('ord','Standard',LVL,{full:true}),N('cst','Custom constant',{show:v=>v.ord==='custom',unit:'ft√mi'}),N('mc','Actual misclosure',{unit:'ft',signed:1,hint:'Optional'})],
+ example:ex({d:'4',du:'mi',ord:'0.05',mc:'0.06'}),
+ run(v){
+  need(fin(v.d)&&v.d>0,'Enter the loop length.');const K=v.d*({mi:1,ft:1/5280,km:1/1.609344}[v.du]),c=v.ord==='custom'?v.cst:+v.ord;need(fin(c),'Enter the custom constant.');
+  const al=c*Math.sqrt(K),badges=[];if(fin(v.mc))badges.push(Math.abs(v.mc)<=al?{t:'Within tolerance',tone:'good'}:{t:'Exceeds tolerance',tone:'bad'});
+  return{cards:[card('Allowable misclosure',f(al,3)+' ft',{key:1}),card('Loop length',f(K,4)+' mi'),card('In millimeters',f(al*304.8,1)+' mm')],badges,
+   steps:[['Convert length','K = '+f(K,4)+' mi',''],['Allowable',c+' × √'+f(K,4),f(al,4)+' ft']]};
+ }});
+
+/* ---------------- CURVES ---------------- */
+const RD=18000/Math.PI;
+function hc(delta,R){const T=R*tanD(delta/2),L=R*delta*D2R,LC=2*R*sinD(delta/2),E=R*(1/cosD(delta/2)-1),M=R*(1-cosD(delta/2));return{T,L,LC,E,M,D:RD/R};}
+def({id:'hcurve',g:'curves',title:'Horizontal Curve',desc:'Simple circular curve elements from Δ and radius or degree of curve (arc definition). Add a PI or PC station to get curve stations.',formula:'T = R tan(Δ/2) · L = RΔ · LC = 2R sin(Δ/2) · D = 5729.578/R',
+ inputs:[S('by','Define by',[['R','Radius'],['D','Degree of curve']],{seg:1,full:true}),A('dl','Intersection angle Δ',{full:true}),N('R','Radius',{unit:'ft',show:v=>v.by==='R'}),A('D','Degree of curve D',{show:v=>v.by==='D',full:true}),
+  S('sb','Station from',[['none','None'],['pi','PI station'],['pc','PC station']],{seg:1,full:true}),N('s','Station',{sta:1,show:v=>v.sb!=='none'})],
+ example:ex({by:'R',...dmsv('dl',30,0,0),R:'1000',sb:'pi',s:'45+12.50'}),
+ run(v){
+  need(fin(v.dl),'Enter Δ.');bad(v.dl>0&&v.dl<180,'Δ must be between 0° and 180°.');let R;
+  if(v.by==='R'){need(fin(v.R),'Enter the radius.');R=v.R;}else{need(fin(v.D),'Enter D.');bad(v.D>0,'D must be greater than zero.');R=RD/v.D;}
+  bad(R>0,'Radius must be greater than zero.');const c=hc(v.dl,R);
+  const cards=[card('Tangent T',f(c.T,3)+' ft',{key:1}),card('Arc length L',f(c.L,3)+' ft',{key:1}),card('Radius R',f(R,3)+' ft'),card('Degree of curve D',fdms(c.D)),card('Long chord LC',f(c.LC,3)+' ft'),card('External E',f(c.E,3)+' ft'),card('Middle ordinate M',f(c.M,3)+' ft')];
+  const st=[];if(v.by==='D')st.push(['Radius','R = 5729.578 / D = 5729.578 / '+f(v.D,6),f(R,3)]);
+  st.push(['Tangent','T = '+f(R,3)+' × tan('+fdms(v.dl/2)+')',f(c.T,3)],['Arc length','L = R × Δ(rad) = '+f(R,3)+' × '+f(v.dl*D2R,6),f(c.L,3)],['Long chord','LC = 2R sin(Δ/2)',f(c.LC,3)],['External','E = R(sec(Δ/2) − 1)',f(c.E,3)],['Middle ordinate','M = R(1 − cos(Δ/2))',f(c.M,3)]);
+  if(v.sb!=='none'&&fin(v.s)){const PC=v.sb==='pi'?v.s-c.T:v.s,PI=PC+c.T,PT=PC+c.L;cards.splice(2,0,card('PC station',fsta(PC)),card('PT station',fsta(PT),{key:1}));if(v.sb==='pc')cards.push(card('PI station',fsta(PI)));
+   if(v.sb==='pi')st.push(['PC','PC = PI − T = '+fsta(v.s)+' − '+f(c.T,2),fsta(PC)]);st.push(['PT','PT = PC + L = '+fsta(PC)+' + '+f(c.L,2),fsta(PT)]);}
+  return{cards,steps:st};
+ }});
+def({id:'hcstake',g:'curves',title:'Curve Staking Table',desc:'Deflection angles and chords from the PC at full stations. Occupy the PC, sight the PI at zero, turn each deflection.',formula:'δ = arc / (2R) · chord = 2R sin δ',
+ wide:1,inputs:[A('dl','Δ'),N('R','Radius',{unit:'ft'}),N('pc','PC station',{sta:1}),N('iv','Station interval',{unit:'ft',ph:'50'})],
+ example:ex({...dmsv('dl',30,0,0),R:'1000',pc:'43+44.55',iv:'50'}),
+ run(v){
+  need(fin(v.dl)&&fin(v.R)&&fin(v.pc),'Enter Δ, radius and PC station.');bad(v.R>0&&v.dl>0&&v.dl<180,'Check Δ and radius.');const iv=fin(v.iv)&&v.iv>0?v.iv:50;
+  const c=hc(v.dl,v.R),PT=v.pc+c.L,pts=[[v.pc,'PC']];let s=Math.floor(v.pc/iv+1e-9)*iv+iv;
+  bad(c.L/iv<2000,'Interval too small for this curve.');
+  for(;s<PT-1e-6;s+=iv)pts.push([s,'']);pts.push([PT,'PT']);
+  let prev=0;const rows=pts.map(([s,n])=>{const a=s-v.pc,d=a/(2*v.R)*R2D,lc=2*v.R*sinD(d),sc=2*v.R*Math.sin((a-prev)/(2*v.R));const r=[n?n+' '+fsta(s):fsta(s),f(a,2),fdms(d),f(lc,3),f(a?sc:0,3)];prev=a;return r;});
+  return{cards:[card('PT station',fsta(PT),{key:1}),card('Total deflection (Δ/2)',fdms(v.dl/2)),card('Arc length',f(c.L,3)+' ft'),card('Deflection per 100 ft',fdms(100/(2*v.R)*R2D))],
+   tables:[{title:'Staking table from PC',head:['Station','Arc from PC','Deflection','Chord from PC','Sub-chord'],rows}],
+   steps:[['Deflection','δ = arc/(2R) × 180/π',''],['First full station','arc = '+f(pts[1][0]-v.pc,2)+' → δ = '+f(pts[1][0]-v.pc,2)+' / '+f(2*v.R,2)+' rad',fdms((pts[1][0]-v.pc)/(2*v.R)*R2D)],['Check','Deflection at PT = Δ/2',fdms(v.dl/2)]]};
+ }});
+function vcc(v){
+ need([v.L,v.g1,v.g2,v.pvis,v.pvie].every(fin),'Enter L, both grades, PVI station and PVI elevation.');bad(v.L>0,'Curve length must be greater than zero.');
+ const g1=v.g1/100,g2=v.g2/100,r=(g2-g1)/v.L,pvc=v.pvis-v.L/2,pvt=v.pvis+v.L/2,e0=v.pvie-g1*v.L/2,e1=v.pvie+g2*v.L/2,A=v.g2-v.g1,x=r!==0?-g1/r:NaN,hl=fin(x)&&x>0&&x<v.L;
+ return{g1,g2,r,pvc,pvt,e0,e1,A,K:A?v.L/Math.abs(A):Infinity,x,hl,el:xx=>e0+g1*xx+r/2*xx*xx,tan:xx=>e0+g1*xx};
+}
+const VCIN=[N('g1','Grade in g1',{unit:'%',signed:1}),N('g2','Grade out g2',{unit:'%',signed:1}),N('L','Curve length L',{unit:'ft'}),N('pvis','PVI station',{sta:1}),N('pvie','PVI elevation',{unit:'ft'})];
+def({id:'vcurve',g:'curves',title:'Vertical Curve',desc:'Equal tangent parabolic vertical curve. Gives PVC and PVT, K value, the high or low point, and elevations at even stations.',formula:'Elev(x) = Elev PVC + g1·x + (g2 − g1)x² / 2L',
+ wide:1,inputs:[...VCIN,N('iv','Station interval',{unit:'ft',ph:'50'})],
+ example:ex({g1:'2.5',g2:'-1.8',L:'600',pvis:'10+00',pvie:'450.00',iv:'50'}),
+ run(v){
+  const c=vcc(v),iv=fin(v.iv)&&v.iv>0?v.iv:50;bad(v.L/iv<2000,'Interval too small.');const pts=[[c.pvc,'PVC']];
+  for(let s=Math.floor(c.pvc/iv+1e-9)*iv+iv;s<c.pvt-1e-6;s+=iv)pts.push([s,Math.abs(s-v.pvis)<1e-6?'PVI':'']);
+  if(c.hl)pts.push([c.pvc+c.x,c.A>0?'Low pt':'High pt']);pts.push([c.pvt,'PVT']);pts.sort((a,b)=>a[0]-b[0]);
+  const rows=pts.map(([s,n])=>{const x=s-c.pvc;return[(n?n+' ':'')+fsta(s),f(x,2),f(c.tan(x),3),fp(c.r/2*x*x,3),f(c.el(x),3)];});
+  const hlr=rows.findIndex(r=>/(High|Low) pt/.test(r[0]));
+  return{cards:[card('PVC station',fsta(c.pvc)),card('PVC elevation',f(c.e0,3),{key:1}),card('PVT station',fsta(c.pvt)),card('PVT elevation',f(c.e1,3),{key:1}),card('A (g2 − g1)',fp(c.A,3)+'%'),card('K value',fin(c.K)?f(c.K,1):'∞'),card('Curve type',c.A>0?'Sag':c.A<0?'Crest':'No curve'),
+   card(c.A>0?'Low point':'High point',c.hl?fsta(c.pvc+c.x)+' @ '+f(c.el(c.x),3):'Not on curve',{key:c.hl?1:0})],
+   tables:[{title:'Curve elevations',head:['Station','x from PVC','Tangent elev','Offset','Curve elev'],rows,hl:hlr}],
+   steps:[['PVC station','PVI − L/2 = '+fsta(v.pvis)+' − '+v.L/2,fsta(c.pvc)],['PVC elevation','PVI elev − g1·L/2 = '+v.pvie+' − '+c.g1+' × '+v.L/2,f(c.e0,3)],['PVT elevation','PVI elev + g2·L/2 = '+v.pvie+' + '+c.g2+' × '+v.L/2,f(c.e1,3)],
+    ['Rate of change','r = (g2 − g1)/L = ('+c.g2+' − '+c.g1+')/'+v.L,f(c.r*100,6)+' %/ft'],['K','L / |A| = '+v.L+' / '+f(Math.abs(c.A),3),fin(c.K)?f(c.K,2):'∞'],
+    ['High / low x','x = −g1 / r = '+(-c.g1)+' / '+f(c.r,8),c.hl?f(c.x,2)+' ft':'Outside curve'],['Elevation','Elev = PVC + g1·x + (r/2)x²','']]};
+ }});
+def({id:'vcpoint',g:'curves',title:'Vertical Curve Elevations',desc:'Curve elevation at any list of stations. Stations outside the curve get the tangent elevation.',
+ wide:1,inputs:[...VCIN,ROWS('r','Stations',[{k:'s',t:'num',label:'Station',sta:1}],{rows:3})],
+ example:ex({g1:'2.5',g2:'-1.8',L:'600',pvis:'10+00',pvie:'450.00'},{r:[{s:'8+00'},{s:'10+25'},{s:'12+40'}]}),
+ run(v){
+  const c=vcc(v),r=v.r.filter(x=>fin(x.s));need(r.length,'Add a station.');
+  const rows=r.map(x=>{const s=x.s;let e,w;if(s<c.pvc){e=v.pvie+c.g1*(s-v.pvis);w='Back tangent';}else if(s>c.pvt){e=v.pvie+c.g2*(s-v.pvis);w='Ahead tangent';}else{e=c.el(s-c.pvc);w='On curve';}return[fsta(s),w,f(s-c.pvc,2),f(e,3)];});
+  return{cards:[card('PVC',fsta(c.pvc)+' @ '+f(c.e0,3)),card('PVT',fsta(c.pvt)+' @ '+f(c.e1,3))],tables:[{title:'Elevations',head:['Station','Location','x from PVC','Elevation'],rows}],steps:[['On curve','Elev = '+f(c.e0,3)+' + '+c.g1+'·x + '+f(c.r/2,8)+'·x²','']]};
+ }});
+
+/* ---------------- COGO ---------------- */
+const dirIn=(p='')=>[S(p+'dm','Direction as',[['az','Azimuth'],['brg','Bearing']],{seg:1,full:true}),A(p+'az','Azimuth',{show:v=>v[p+'dm']==='az',full:true}),S(p+'q','Quadrant',QUAD,{show:v=>v[p+'dm']==='brg',seg:1,rerender:0}),A(p+'ang','Bearing angle',{show:v=>v[p+'dm']==='brg'})];
+const dirOf=(v,p='')=>v[p+'dm']==='brg'?(fin(v[p+'ang'])?az4(v[p+'q'],v[p+'ang']):NaN):(fin(v[p+'az'])?norm(v[p+'az']):NaN);
+def({id:'inverse',g:'cogo',title:'Inverse',desc:'Distance and direction between two coordinate points.',formula:'Dist = √(ΔN² + ΔE²) · Az = atan2(ΔE, ΔN)',
+ inputs:[H('From point'),N('n1','Northing 1'),N('e1','Easting 1'),H('To point'),N('n2','Northing 2'),N('e2','Easting 2')],
+ example:ex({n1:'1000',e1:'1000',n2:'1176.7767',e2:'1176.7767'}),
+ run(v){
+  need([v.n1,v.e1,v.n2,v.e2].every(fin),'Enter both points.');const dN=v.n2-v.n1,dE=v.e2-v.e1,d=Math.hypot(dN,dE);bad(d>0,'The points are the same.');const az=norm(atan2D(dE,dN));
+  return{cards:[card('Distance',f(d,4)+' ft',{key:1}),card('Bearing',fbrg(az),{key:1}),card('Azimuth',faz(az)),card('Back azimuth',faz(az+180)),card('ΔN',fp(dN,4)),card('ΔE',fp(dE,4))],
+   steps:[['ΔN','N2 − N1 = '+v.n2+' − '+v.n1,fp(dN,4)],['ΔE','E2 − E1 = '+v.e2+' − '+v.e1,fp(dE,4)],['Distance','√('+f(dN,4)+'² + '+f(dE,4)+'²)',f(d,4)],['Azimuth','atan2(ΔE, ΔN), then 0° to 360°',faz(az)]]};
+ }});
+def({id:'forward',g:'cogo',title:'Forward (Traverse Point)',desc:'New coordinates from a known point, a direction and a distance.',formula:'N2 = N1 + D cos Az · E2 = E1 + D sin Az',
+ inputs:[N('n','Start northing'),N('e','Start easting'),...dirIn(),N('d','Distance',{unit:'ft',full:true})],
+ example:ex({n:'1000',e:'1000',dm:'brg',q:'NE',...dmsv('ang',45,0,0),d:'250'}),
+ run(v){
+  const az=dirOf(v);need([v.n,v.e,az,v.d].every(fin),'Enter the point, direction and distance.');const dN=v.d*cosD(az),dE=v.d*sinD(az);
+  return{cards:[card('Northing',f(v.n+dN,4),{key:1}),card('Easting',f(v.e+dE,4),{key:1}),card('Latitude ΔN',fp(dN,4)),card('Departure ΔE',fp(dE,4)),card('Azimuth used',faz(az))],
+   steps:[['Azimuth',v.dm==='brg'?fbrg(az)+' → azimuth':'given',faz(az)],['Latitude','D cos Az = '+v.d+' × cos '+faz(az),fp(dN,4)],['Departure','D sin Az = '+v.d+' × sin '+faz(az),fp(dE,4)],['New point','N = '+v.n+' + ΔN, E = '+v.e+' + ΔE',f(v.n+dN,4)+', '+f(v.e+dE,4)]]};
+ }});
+def({id:'carea',g:'cogo',title:'Area by Coordinates',desc:'Area and perimeter of a closed figure by the coordinate (shoelace) method. Enter corners in order around the figure.',formula:'2A = |Σ (Eᵢ Nᵢ₊₁ − Eᵢ₊₁ Nᵢ)|',
+ wide:1,inputs:[ROWS('r','Corners',[{k:'p',t:'text',label:'Point'},{k:'n',t:'num',label:'Northing'},{k:'e',t:'num',label:'Easting'}],{rows:4})],
+ example:ex({},{r:[{p:'1',n:'1000',e:'1000'},{p:'2',n:'1176.777',e:'1176.777'},{p:'3',n:'1026.777',e:'1436.584'},{p:'4',n:'853.572',e:'1336.584'}]}),
+ run(v){
+  const p=v.r.filter(x=>fin(x.n)&&fin(x.e));need(p.length>=3,'Enter at least three corners.');let s=0,per=0;const n=p.length;
+  for(let i=0;i<n;i++){const a=p[i],b=p[(i+1)%n];s+=a.e*b.n-b.e*a.n;per+=Math.hypot(b.n-a.n,b.e-a.e);}const A=Math.abs(s)/2;bad(A>0,'Points are in a line, area is zero.');
+  return{cards:[card('Area',f(A,2)+' ft²',{key:1}),card('Acres',f(A/43560,4)+' ac',{key:1}),card('Square meters',f(A*0.09290304,2)+' m²'),card('Hectares',f(A*0.09290304/1e4,4)+' ha'),card('Perimeter',f(per,3)+' ft'),card('Order',s<0?'Clockwise':'Counterclockwise')],
+   steps:[['Cross products','Σ(Eᵢ·Nᵢ₊₁ − Eᵢ₊₁·Nᵢ), last point wraps to first',f(s,3)],['Area','|'+f(s,3)+'| / 2',f(A,3)+' ft²'],['Acres','ft² / 43,560',f(A/43560,5)]]};
+ }});
+def({id:'intersect',g:'cogo',title:'Bearing-Bearing Intersection',desc:'Intersection of two lines, each defined by a point and a direction.',
+ inputs:[H('Line 1'),N('n1','Northing 1'),N('e1','Easting 1'),...dirIn('a'),H('Line 2'),N('n2','Northing 2'),N('e2','Easting 2'),...dirIn('b')],
+ example:ex({n1:'1000',e1:'1000',adm:'az',...dmsv('aaz',45,0,0),n2:'1000',e2:'1200',bdm:'az',...dmsv('baz',315,0,0)}),
+ run(v){
+  const a1=dirOf(v,'a'),a2=dirOf(v,'b');need([v.n1,v.e1,v.n2,v.e2,a1,a2].every(fin),'Enter both points and both directions.');
+  const c1=cosD(a1),s1=sinD(a1),c2=cosD(a2),s2=sinD(a2),den=c1*s2-s1*c2;bad(Math.abs(den)>1e-10,'The lines are parallel, there is no intersection.');
+  const t=((v.n2-v.n1)*s2-(v.e2-v.e1)*c2)/den,N_=v.n1+t*c1,E_=v.e1+t*s1,u=(N_-v.n2)*c2+(E_-v.e2)*s2;
+  const notes=[];if(t<0)notes.push('The intersection is behind point 1 (opposite its direction).');if(u<0)notes.push('The intersection is behind point 2 (opposite its direction).');
+  return{cards:[card('Northing',f(N_,4),{key:1}),card('Easting',f(E_,4),{key:1}),card('Distance from 1',f(Math.abs(t),4)+' ft'),card('Distance from 2',f(Math.abs(u),4)+' ft')],notes,
+   steps:[['Directions','Line 1 '+faz(a1)+', Line 2 '+faz(a2),''],['Solve','N1 + t·cos Az1 = N2 + u·cos Az2 and same for E','t = '+f(t,4)],['Point','N1 + t cos Az1, E1 + t sin Az1',f(N_,4)+', '+f(E_,4)]]};
+ }});
+def({id:'resect',g:'cogo',title:'Three-Point Resection',desc:'Locate an occupied point from two measured angles to three known points. α is turned clockwise from A to B, β clockwise from B to C. Avoid setups near the circle through A, B and C.',
+ inputs:[H('Known points'),N('na','A northing'),N('ea','A easting'),N('nb','B northing'),N('eb','B easting'),N('nc','C northing'),N('ec','C easting'),H('Measured at occupied point'),A('al','α (A to B)'),A('be','β (B to C)')],
+ example:ex({na:'5100',ea:'5000',nb:'5000',eb:'5100',nc:'4900',ec:'5000',...dmsv('al',90,0,0),...dmsv('be',90,0,0)}),
+ run(v){
+  need([v.na,v.ea,v.nb,v.eb,v.nc,v.ec,v.al,v.be].every(fin),'Enter all three points and both angles.');
+  const P={A:{n:v.na,e:v.ea},B:{n:v.nb,e:v.eb},C:{n:v.nc,e:v.ec}};bad(v.al%180!==0&&v.be%180!==0,'Angles of 0° or 180° cannot be resected.');
+  const cen=(p,q,ang)=>{const a=ang%360>180?360-ang%360:ang%360,mn=(p.n+q.n)/2,me=(p.e+q.e)/2,dn=q.n-p.n,de=q.e-p.e,c=Math.hypot(dn,de),h=(c/2)/tanD(a),un=-de/c,ue=dn/c;return[{n:mn+un*h,e:me+ue*h},{n:mn-un*h,e:me-ue*h}];};
+  const az=(f1,t1)=>norm(atan2D(t1.e-f1.e,t1.n-f1.n));let best=null;
+  for(const o1 of cen(P.A,P.B,v.al))for(const o2 of cen(P.B,P.C,v.be)){const dn=o2.n-o1.n,de=o2.e-o1.e,L2=dn*dn+de*de;if(L2<1e-9)continue;
+   const t=((P.B.n-o1.n)*dn+(P.B.e-o1.e)*de)/L2,fn=o1.n+t*dn,fe=o1.e+t*de,X={n:2*fn-P.B.n,e:2*fe-P.B.e};if(Math.hypot(X.n-P.B.n,X.e-P.B.e)<1e-6)continue;
+   const e1=Math.abs(((norm(az(X,P.B)-az(X,P.A))-norm(v.al))+540)%360-180),e2=Math.abs(((norm(az(X,P.C)-az(X,P.B))-norm(v.be))+540)%360-180),err=e1+e2;
+   if(!best||err<best.err)best={X,err,o1,o2};}
+  bad(best&&best.err<1/3600,'No solution: the point is on or near the danger circle, or the angles do not fit these control points.');
+  const X=best.X,ra=Math.hypot(best.o1.n-best.o2.n,best.o1.e-best.o2.e),cR=Math.hypot(best.o1.n-P.B.n,best.o1.e-P.B.e),notes=[];
+  if(ra<0.05*cR)notes.push('Weak geometry: the occupied point is close to the circle through A, B and C. Check with a fourth point.');
+  return{cards:[card('Northing',f(X.n,4),{key:1}),card('Easting',f(X.e,4),{key:1}),card('Distance to A',f(Math.hypot(X.n-P.A.n,X.e-P.A.e),3)),card('Distance to B',f(Math.hypot(X.n-P.B.n,X.e-P.B.e),3)),card('Distance to C',f(Math.hypot(X.n-P.C.n,X.e-P.C.e),3)),card('Angle check',(best.err*3600).toFixed(2)+'"')],notes,
+   steps:[['Circle 1','Points that see A and B at α = '+fdms(v.al)+' lie on a circle through A and B',''],['Circle 2','Points that see B and C at β = '+fdms(v.be)+' lie on a circle through B and C',''],['Solve','The second intersection of the two circles (besides B) is the occupied point',f(X.n,3)+', '+f(X.e,3)],['Check','Recompute α and β from the solved point','off by '+(best.err*3600).toFixed(2)+'"']]};
+ }});
+
+/* ---------------- TRAVERSE ---------------- */
+def({id:'latdep',g:'traverse',title:'Latitude & Departure',desc:'North-south and east-west components of a single course.',formula:'Lat = D cos(bearing) · Dep = D sin(bearing)',
+ inputs:[...dirIn(),N('d','Distance',{unit:'ft',full:true})],example:ex({dm:'az',...dmsv('az',135,0,0),d:'100'}),
+ run(v){const az=dirOf(v);need(fin(az)&&fin(v.d),'Enter a direction and distance.');const la=v.d*cosD(az),de=v.d*sinD(az),b=brgOf(az);
+  return{cards:[card('Latitude',fp(la,4),{key:1}),card('Departure',fp(de,4),{key:1}),card('Bearing',fbrg(az)),card('Azimuth',faz(az))],
+   steps:[['Bearing angle',fbrg(az),fdms(b.ang)],['Latitude','D × cos '+fdms(b.ang)+', sign '+(b.q[0]==='N'?'+ (north)':'− (south)'),fp(la,4)],['Departure','D × sin '+fdms(b.ang)+', sign '+(b.q[1]==='E'?'+ (east)':'− (west)'),fp(de,4)]]};}});
+def({id:'closure',g:'traverse',title:'Closure from ΣLat & ΣDep',desc:'Linear error of closure and precision ratio when you already have the latitude and departure sums.',formula:'E = √(ΣLat² + ΣDep²) · Precision = 1 : P/E',
+ inputs:[N('sl','Σ Latitude',{unit:'ft',signed:1}),N('sd','Σ Departure',{unit:'ft',signed:1}),N('p','Perimeter',{unit:'ft',full:true})],example:ex({sl:'-0.12',sd:'0.09',p:'1200'}),
+ run(v){need(fin(v.sl)&&fin(v.sd),'Enter both sums.');const E=Math.hypot(v.sl,v.sd);const cards=[card('Linear error',f(E,4)+' ft',{key:1}),card('Error direction',fin(E)&&E>0?fbrg(atan2D(v.sd,v.sl)):'—')];let badges=[];const st=[['Linear error','√('+v.sl+'² + '+v.sd+'²)',f(E,4)]];
+  if(fin(v.p)&&E>0){const r=v.p/E;cards.splice(1,0,card('Precision',fmtRatio(r),{key:1}));st.push(['Precision','1 : '+v.p+' / '+f(E,4),'1 : '+f(r,0)]);badges=prBadges(r);}return{cards,badges,steps:st};}});
+function fmtRatio(r){return r>=1e7?'1 : >10,000,000':'1 : '+Math.round(r).toLocaleString('en-US');}
+function prBadges(r){return[{t:'1:5,000 general construction '+(r>=5000?'✓':'✗'),tone:r>=5000?'good':'bad'},{t:'1:10,000 building layout '+(r>=10000?'✓':'✗'),tone:r>=10000?'good':'bad'}];}
+def({id:'traverse',g:'traverse',title:'Traverse Closure & Adjustment',desc:'Closed loop traverse from azimuths, bearings or interior angles. Computes closure and precision, then adjusts by the Compass (Bowditch) or Transit rule.',
+ wide:1,inputs:[N('n0','Start northing',{ph:'1000.000'}),N('e0','Start easting',{ph:'1000.000'}),S('mode','Directions as',[['brg','Bearings'],['az','Azimuths'],['int','Interior angles']],{seg:1}),S('rule','Adjustment',[['compass','Compass (Bowditch)'],['transit','Transit']],{seg:1,rerender:0}),
+  A('az0','Azimuth of course 1',{show:v=>v.mode==='int'}),S('dir','Traverse direction',[['cw','Clockwise'],['ccw','Counterclockwise']],{seg:1,show:v=>v.mode==='int',rerender:0}),S('bal','Balance angles',[['y','Yes'],['n','No']],{seg:1,show:v=>v.mode==='int',rerender:0}),
+  ROWS('r','Courses',[{k:'c',t:'text',label:'Course'},{k:'q',t:'sel',label:'Quad',opts:QUAD,show:v=>v.mode==='brg'},{k:'a',t:'dms',label:v=>({brg:'Bearing angle',az:'Azimuth',int:'Interior angle at start of course'}[v.mode])},{k:'d',t:'num',label:'Distance'}],{rows:4})],
+ example:ex({n0:'1000',e0:'1000',mode:'brg',rule:'compass'},{r:[{c:'A-B',q:'NE',...dmsv('a',45,0,0),d:'250.00'},{c:'B-C',q:'SE',...dmsv('a',60,0,0),d:'300.00'},{c:'C-D',q:'SW',...dmsv('a',30,0,0),d:'200.00'},{c:'D-A',q:'NW',...dmsv('a',66,30,0),d:'367.10'}]}),
+ run(v){
+  const r=v.r.filter(x=>fin(x.d)||fin(x.a));need(r.length>=3,'Enter at least three courses.');r.forEach((x,i)=>bad(fin(x.d)&&x.d>0&&fin(x.a),'Course '+(i+1)+' needs a direction and a distance.'));
+  const n=r.length,st=[],notes=[];let azs=[];
+  if(v.mode==='az')azs=r.map(x=>norm(x.a));
+  else if(v.mode==='brg'){r.forEach((x,i)=>bad(x.a>=0&&x.a<=90,'Course '+(i+1)+': bearing angle must be 0° to 90°.'));azs=r.map(x=>az4(x.q,x.a));}
+  else{need(fin(v.az0),'Enter the azimuth of course 1.');const tot=sum(r.map(x=>x.a)),req=(n-2)*180,mc=tot-req,cor=v.bal==='n'?0:-mc/n;
+   st.push(['Angular check','Σ interior = '+fdms(tot)+', required (n−2)×180 = '+fdms(req),'misclosure '+fdms(mc)]);if(cor)st.push(['Balance','Each angle '+(cor<0?'−':'+')+' '+fdms(Math.abs(cor)),'']);
+   const ang=r.map(x=>x.a+cor),sg=v.dir==='ccw'?1:-1;azs=[norm(v.az0)];for(let i=1;i<n;i++)azs.push(norm(azs[i-1]+180+sg*ang[i]));
+   st.push(['Carry azimuths','Az next = Az back + 180° '+(sg>0?'+':'−')+' interior angle','']);const chk=norm(azs[n-1]+180+sg*ang[0]);
+   notes.push('Angular misclosure '+fdms(mc)+' over '+n+' angles ('+fdms(Math.abs(mc)/n)+' per angle). Closing azimuth check: '+faz(chk)+' vs '+faz(v.az0)+'.');}
+  const P=sum(r.map(x=>x.d)),lat=r.map((x,i)=>x.d*cosD(azs[i])),dep=r.map((x,i)=>x.d*sinD(azs[i])),SL=sum(lat),SD=sum(dep),E=Math.hypot(SL,SD),ratio=E>0?P/E:Infinity;
+  const aL=sum(lat.map(Math.abs)),aD=sum(dep.map(Math.abs));
+  const cl=r.map((x,i)=>v.rule==='transit'?-SL*Math.abs(lat[i])/aL:-SL*x.d/P),cd=r.map((x,i)=>v.rule==='transit'?-SD*Math.abs(dep[i])/aD:-SD*x.d/P);
+  const n0=fin(v.n0)?v.n0:1000,e0=fin(v.e0)?v.e0:1000;let N_=n0,E_=e0;const coords=[[n0,e0]];
+  const rows=r.map((x,i)=>{const al=lat[i]+cl[i],ad=dep[i]+cd[i];N_+=al;E_+=ad;coords.push([N_,E_]);return[x.c||('Course '+(i+1)),fbrg(azs[i]),f(x.d,2),fp(lat[i],3),fp(dep[i],3),fp(cl[i],3),fp(cd[i],3),fp(al,3),fp(ad,3)];});
+  rows.push(['Σ','',f(P,2),fp(SL,3),fp(SD,3),fp(-SL,3),fp(-SD,3),fp(0,3),fp(0,3)]);
+  const pts=coords.slice(0,n);let s2=0;for(let i=0;i<n;i++){const a=pts[i],b=pts[(i+1)%n];s2+=a[1]*b[0]-b[1]*a[0];}const area=Math.abs(s2)/2;
+  const crow=pts.map((p,i)=>{const q=pts[(i+1)%n],dN=q[0]-p[0],dE=q[1]-p[1];return['Pt '+(i+1),f(p[0],3),f(p[1],3),fbrg(atan2D(dE,dN)),f(Math.hypot(dN,dE),3)];});
+  const ex0=r[0];
+  st.unshift(['Lat & Dep','Lat = D cos(brg), Dep = D sin(brg), signed by quadrant',''],['Example: '+(ex0.c||'course 1'),f(ex0.d,2)+' × cos/sin '+fdms(brgOf(azs[0]).ang),fp(lat[0],3)+' / '+fp(dep[0],3)],
+   ['Sums','ΣLat = '+fp(SL,4)+', ΣDep = '+fp(SD,4),''],['Linear error','E = √('+f(SL,4)+'² + '+f(SD,4)+'²)',f(E,4)+' ft'],['Precision','1 : '+f(P,2)+' / '+f(E,4),fmtRatio(ratio)],
+   [v.rule==='transit'?'Transit rule':'Compass rule',v.rule==='transit'?'Corr Lat = −ΣLat × |Lat|/Σ|Lat|':'Corr Lat = −ΣLat × D/P, Corr Dep = −ΣDep × D/P',''],
+   ['Example correction',v.rule==='transit'?'−('+f(SL,4)+') × '+f(Math.abs(lat[0]),3)+' / '+f(aL,3):'−('+f(SL,4)+') × '+f(ex0.d,2)+' / '+f(P,2),fp(cl[0],4)]);
+  const rd=ratio===Infinity?'Perfect closure':'1 : '+(Math.floor(ratio/100)*100).toLocaleString('en-US');
+  return{cards:[card('Precision',ratio===Infinity?'Perfect':fmtRatio(ratio),{key:1}),card('Linear error',f(E,4)+' ft',{key:1}),card('Σ Latitude',fp(SL,4)),card('Σ Departure',fp(SD,4)),card('Perimeter',f(P,2)+' ft'),card('Reported (round down)',rd),card('Error direction',E>0?fbrg(atan2D(SD,SL)):'—'),card('Adjusted area',f(area,1)+' ft² · '+f(area/43560,4)+' ac')],
+   badges:ratio===Infinity?[]:prBadges(ratio),notes,
+   tables:[{title:'Latitudes, departures & '+(v.rule==='transit'?'transit':'compass')+' corrections',head:['Course','Bearing','Dist','Lat','Dep','Corr Lat','Corr Dep','Adj Lat','Adj Dep'],rows,tot:1},
+    {title:'Adjusted coordinates',head:['Point','Northing','Easting','Adj bearing to next','Adj dist'],rows:crow}],steps:st};
+ }});
+
+/* ---------------- TRIANGLES ---------------- */
+function triOut(a,b,c,A,B,C,st,extra){
+  bad([a,b,c,A,B,C].every(x=>fin(x)&&x>0),'These values do not form a triangle.');const s=(a+b+c)/2,ar=Math.sqrt(Math.max(0,s*(s-a)*(s-b)*(s-c)));
+  st.push(['Area (Heron)','s = '+f(s,3)+', √(s(s−a)(s−b)(s−c))',f(ar,3)]);
+  return Object.assign({cards:[card('Side a',f(a,4)),card('Side b',f(b,4)),card('Side c',f(c,4)),card('Angle A',fdms(A),{key:1}),card('Angle B',fdms(B),{key:1}),card('Angle C',fdms(C),{key:1}),card('Area',f(ar,3)),card('Perimeter',f(a+b+c,3))],steps:st},extra||{});
+}
+def({id:'triangle',g:'tri',title:'Oblique Triangle',desc:'Solve any triangle. Side a is opposite angle A, b opposite B, c opposite C. SSA shows both solutions when the case is ambiguous.',
+ inputs:[S('cs','Known',[['SSS','SSS'],['SAS','SAS'],['ASA','ASA'],['AAS','AAS'],['SSA','SSA']],{seg:1,full:true}),
+  N('a','Side a',{show:v=>v.cs!=='ASA'}),N('b','Side b',{show:v=>['SSS','SAS','SSA'].includes(v.cs)}),N('c','Side c',{show:v=>['SSS','ASA'].includes(v.cs)}),
+  A('A','Angle A',{show:v=>['ASA','AAS','SSA'].includes(v.cs)}),A('B','Angle B',{show:v=>['ASA','AAS'].includes(v.cs)}),A('C','Angle C (included)',{show:v=>v.cs==='SAS'})],
+ example:ex({cs:'SSS',a:'250',b:'300',c:'367.10'}),
+ run(v){
+  const st=[];let a=v.a,b=v.b,c=v.c,A,B,C;
+  if(v.cs==='SSS'){need([a,b,c].every(fin),'Enter all three sides.');bad(a+b>c&&a+c>b&&b+c>a,'No triangle: each side must be shorter than the other two combined.');
+   A=acosD((b*b+c*c-a*a)/(2*b*c));B=acosD((a*a+c*c-b*b)/(2*a*c));C=180-A-B;st.push(['Angle A','cos A = (b² + c² − a²)/2bc',fdms(A)],['Angle B','cos B = (a² + c² − b²)/2ac',fdms(B)],['Angle C','180° − A − B',fdms(C)]);}
+  else if(v.cs==='SAS'){C=v.C;need([a,b,C].every(fin),'Enter a, b and the included angle C.');bad(C>0&&C<180,'C must be between 0° and 180°.');c=Math.sqrt(a*a+b*b-2*a*b*cosD(C));A=acosD((b*b+c*c-a*a)/(2*b*c));B=180-A-C;
+   st.push(['Side c','c² = a² + b² − 2ab cos C',f(c,4)],['Angle A','cos A = (b² + c² − a²)/2bc',fdms(A)],['Angle B','180° − A − C',fdms(B)]);}
+  else if(v.cs==='ASA'||v.cs==='AAS'){A=v.A;B=v.B;need(fin(A)&&fin(B),'Enter angles A and B.');C=180-A-B;bad(C>0,'A + B must be less than 180°.');
+   if(v.cs==='ASA'){need(fin(c),'Enter side c.');a=c*sinD(A)/sinD(C);b=c*sinD(B)/sinD(C);}else{need(fin(a),'Enter side a.');b=a*sinD(B)/sinD(A);c=a*sinD(C)/sinD(A);}
+   st.push(['Angle C','180° − A − B',fdms(C)],['Law of sines','a/sin A = b/sin B = c/sin C',f((v.cs==='ASA'?c/sinD(C):a/sinD(A)),4)],['Sides','a, b, c',f(a,3)+', '+f(b,3)+', '+f(c,3)]);}
+  else{A=v.A;need([a,b,A].every(fin),'Enter a, b and angle A.');bad(A>0&&A<180,'A must be between 0° and 180°.');const sB=b*sinD(A)/a;st.push(['sin B','b sin A / a = '+f(sB,6),'']);bad(sB<=1+1e-12,'No triangle: side a is too short to reach.');
+   const B1=asinD(Math.min(1,sB)),sols=[B1];if(B1<90-1e-9&&A+(180-B1)<180-1e-9)sols.push(180-B1);
+   const mk=Bx=>{const Cx=180-A-Bx;return{B:Bx,C:Cx,c:a*sinD(Cx)/sinD(A)};};const s1=mk(sols[0]);
+   const out=triOut(a,b,s1.c,A,s1.B,s1.C,st);
+   if(sols.length>1){const s2=mk(sols[1]);out.badges=[{t:'Ambiguous case: two triangles fit',tone:'info'}];out.tables=[{title:'Both solutions',head:['Solution','Angle B','Angle C','Side c'],rows:[['1',fdms(s1.B),fdms(s1.C),f(s1.c,4)],['2',fdms(s2.B),fdms(s2.C),f(s2.c,4)]]}];}
+   return out;}
+  return triOut(a,b,c,A,B,C,st);
+ }});
+def({id:'right',g:'tri',title:'Right Triangle',desc:'Enter any two values including at least one side. C is the 90° corner, c is the hypotenuse, A is opposite side a.',
+ inputs:[N('a','Leg a (opposite A)'),N('b','Leg b'),N('c','Hypotenuse c'),A('A','Angle A')],example:ex({a:'3',b:'4'}),
+ run(v){
+  let {a,b,c,A}=v;const k=[a,b,c,A].filter(fin).length;need(k>=2&&(fin(a)||fin(b)||fin(c)),'Enter two values, including at least one side.');bad(k===2,'Enter exactly two values.');const st=[];
+  if(fin(a)&&fin(b)){c=Math.hypot(a,b);A=atanD(a/b);st.push(['Hypotenuse','√(a² + b²)',f(c,4)],['Angle A','atan(a/b)',fdms(A)]);}
+  else if(fin(a)&&fin(c)){bad(c>a,'Hypotenuse must be the longest side.');b=Math.sqrt(c*c-a*a);A=asinD(a/c);st.push(['Leg b','√(c² − a²)',f(b,4)],['Angle A','asin(a/c)',fdms(A)]);}
+  else if(fin(b)&&fin(c)){bad(c>b,'Hypotenuse must be the longest side.');a=Math.sqrt(c*c-b*b);A=acosD(b/c);st.push(['Leg a','√(c² − b²)',f(a,4)],['Angle A','acos(b/c)',fdms(A)]);}
+  else{bad(A>0&&A<90,'Angle A must be between 0° and 90°.');if(fin(a)){c=a/sinD(A);b=a/tanD(A);}else if(fin(b)){a=b*tanD(A);c=b/cosD(A);}else{a=c*sinD(A);b=c*cosD(A);}st.push(['Trig','sin A = a/c, cos A = b/c, tan A = a/b','']);}
+  return{cards:[card('Leg a',f(a,4)),card('Leg b',f(b,4)),card('Hypotenuse c',f(c,4),{key:1}),card('Angle A',fdms(A),{key:1}),card('Angle B',fdms(90-A)),card('Area',f(a*b/2,3))],steps:st};
+ }});
+
+/* ---------------- EARTHWORK ---------------- */
+def({id:'endarea',g:'earth',title:'Average End Area',desc:'Cut and fill volumes between cross sections. Enter areas in square feet. Results in cubic yards.',formula:'V = (A1 + A2)/2 × L / 27',
+ wide:1,inputs:[ROWS('r','Cross sections',[{k:'s',t:'num',label:'Station',sta:1},{k:'c',t:'num',label:'Cut area ft²'},{k:'f',t:'num',label:'Fill area ft²'}],{rows:4})],
+ example:ex({},{r:[{s:'10+00',c:'120',f:'0'},{s:'11+00',c:'85',f:'12'},{s:'12+00',c:'20',f:'64'},{s:'13+00',c:'0',f:'110'}]}),
+ run(v){
+  const r=v.r.filter(x=>fin(x.s)&&(fin(x.c)||fin(x.f))).map(x=>({s:x.s,c:fin(x.c)?x.c:0,f:fin(x.f)?x.f:0})).sort((a,b)=>a.s-b.s);need(r.length>=2,'Enter at least two cross sections.');
+  let tc=0,tf=0;const rows=[];for(let i=1;i<r.length;i++){const L=r[i].s-r[i-1].s,vc=(r[i-1].c+r[i].c)/2*L/27,vf=(r[i-1].f+r[i].f)/2*L/27;tc+=vc;tf+=vf;rows.push([fsta(r[i-1].s)+' to '+fsta(r[i].s),f(L,2),f(vc,1),f(vf,1)]);}
+  rows.push(['Total','',f(tc,1),f(tf,1)]);const a=r[0],b=r[1],L0=b.s-a.s;
+  return{cards:[card('Cut',f(tc,1)+' CY',{key:1,tone:'bad'}),card('Fill',f(tf,1)+' CY',{key:1,tone:'fill'}),card('Net',(tc>=tf?'Cut ':'Fill ')+f(Math.abs(tc-tf),1)+' CY')],tables:[{title:'Volumes by segment',head:['Segment','Length','Cut CY','Fill CY'],rows,tot:1}],
+   steps:[['First segment cut','('+a.c+' + '+b.c+')/2 × '+f(L0,2)+' / 27',f((a.c+b.c)/2*L0/27,2)+' CY'],['Repeat','Each pair of sections, then sum','']]};
+ }});
+def({id:'prism',g:'earth',title:'Prismoidal Formula',desc:'More accurate than average end area when the middle section is known.',formula:'V = L/6 × (A1 + 4Am + A2)',
+ inputs:[N('L','Length',{unit:'ft'}),N('a1','End area A1',{unit:'ft²'}),N('am','Middle area Am',{unit:'ft²'}),N('a2','End area A2',{unit:'ft²'})],example:ex({L:'100',a1:'120',am:'98',a2:'80'}),
+ run(v){need([v.L,v.a1,v.am,v.a2].every(fin),'Enter length and all three areas.');const V=v.L/6*(v.a1+4*v.am+v.a2),Ve=v.L/2*(v.a1+v.a2);
+  return{cards:[card('Prismoidal volume',f(V/27,2)+' CY',{key:1}),card('Cubic feet',f(V,1)+' ft³'),card('End area volume',f(Ve/27,2)+' CY'),card('Correction',fp((V-Ve)/27,2)+' CY')],
+   steps:[['Prismoidal',v.L+'/6 × ('+v.a1+' + 4×'+v.am+' + '+v.a2+')',f(V,1)+' ft³'],['To CY','÷ 27',f(V/27,2)],['End area check',v.L+'/2 × ('+v.a1+' + '+v.a2+') / 27',f(Ve/27,2)]]};}});
+def({id:'borrow',g:'earth',title:'Borrow Pit Grid',desc:'Grid volume from cut depths at each grid node. Corner nodes count once, edges twice, interior nodes four times.',formula:'V = (cell area / 4) × Σ(h × n)',
+ wide:1,inputs:[N('nr','Rows of cells',{ph:'3',rerender:1}),N('nc','Columns of cells',{ph:'3',rerender:1}),N('dx','Cell width',{unit:'ft'}),N('dy','Cell length',{unit:'ft'}),{k:'g',t:'grid',label:'Cut depth at each node (ft)'}],
+ example:ex({nr:'2',nc:'3',dx:'50',dy:'50'},{},{g:{'0_0':'2.1','0_1':'2.6','0_2':'3.0','0_3':'2.4','1_0':'1.8','1_1':'2.9','1_2':'3.4','1_3':'2.2','2_0':'1.2','2_1':'1.9','2_2':'2.5','2_3':'1.6'}}),
+ run(v){
+  const nr=fin(v.nr)?Math.round(v.nr):3,nc=fin(v.nc)?Math.round(v.nc):3;need(fin(v.dx)&&fin(v.dy),'Enter the cell size.');let S1=0,S2=0,S4=0,miss=0;
+  for(let i=0;i<=nr;i++)for(let j=0;j<=nc;j++){const h=v.g[i+'_'+j];if(!fin(h)){miss++;continue;}const ei=i===0||i===nr,ej=j===0||j===nc;if(ei&&ej)S1+=h;else if(ei||ej)S2+=h;else S4+=h;}
+  need(!miss,'Fill in every node ('+miss+' blank).');const Ac=v.dx*v.dy,V=Ac/4*(S1+2*S2+4*S4);
+  return{cards:[card('Volume',f(V/27,2)+' CY',{key:1}),card('Cubic feet',f(V,1)+' ft³'),card('Area',f(nr*nc*Ac,0)+' ft²'),card('Average depth',f(V/(nr*nc*Ac),3)+' ft')],
+   steps:[['Corners × 1','Σh₁',f(S1,2)],['Edges × 2','2 × Σh₂ = 2 × '+f(S2,2),f(2*S2,2)],['Interior × 4','4 × Σh₄ = 4 × '+f(S4,2),f(4*S4,2)],['Volume','('+Ac+'/4) × '+f(S1+2*S2+4*S4,2),f(V,1)+' ft³'],['To CY','÷ 27',f(V/27,2)]]};
+ }});
+def({id:'xsec',g:'earth',title:'Cross Section Area',desc:'Area of a cut section from slope stake notes. Depths are measured from subgrade. Catch point offsets are computed as b/2 + s × d.',
+ inputs:[S('ty','Section',[['lvl','Level'],['3','Three-level'],['5','Five-level']],{seg:1,full:true}),N('b','Base width b',{unit:'ft'}),N('s','Side slope s',{unit:'H:1V'}),
+  N('dC','Center depth',{unit:'ft'}),N('dL','Left catch depth',{unit:'ft',show:v=>v.ty!=='lvl'}),N('dR','Right catch depth',{unit:'ft',show:v=>v.ty!=='lvl'}),
+  N('xfl','Left intermediate offset',{unit:'ft',show:v=>v.ty==='5'}),N('dfl','Left intermediate depth',{unit:'ft',show:v=>v.ty==='5'}),N('xfr','Right intermediate offset',{unit:'ft',show:v=>v.ty==='5'}),N('dfr','Right intermediate depth',{unit:'ft',show:v=>v.ty==='5'})],
+ example:ex({ty:'3',b:'24',s:'1.5',dC:'5.0',dL:'3.5',dR:'4.2'}),
+ run(v){
+  need(fin(v.b)&&fin(v.s)&&fin(v.dC),'Enter base width, side slope and center depth.');const b2=v.b/2;let pts,st=[];
+  if(v.ty==='lvl'){const A=v.dC*(v.b+v.s*v.dC),x=b2+v.s*v.dC;return{cards:[card('Area',f(A,2)+' ft²',{key:1}),card('Catch offset',f(x,2)+' ft each side'),card('Top width',f(2*x,2)+' ft'),card('CY per 100 ft',f(A*100/27,1))],steps:[['Area','A = d(b + s·d) = '+v.dC+' × ('+v.b+' + '+v.s+' × '+v.dC+')',f(A,2)]]};}
+  need(fin(v.dL)&&fin(v.dR),'Enter left and right depths.');const xL=b2+v.s*v.dL,xR=b2+v.s*v.dR;st.push(['Catch offsets','xL = '+b2+' + '+v.s+'×'+v.dL+', xR = '+b2+' + '+v.s+'×'+v.dR,f(xL,2)+' L, '+f(xR,2)+' R']);
+  if(v.ty==='3')pts=[[-b2,0],[-xL,v.dL],[0,v.dC],[xR,v.dR],[b2,0]];
+  else{need([v.xfl,v.dfl,v.xfr,v.dfr].every(fin),'Enter both intermediate points.');bad(v.xfl<xL&&v.xfr<xR,'Intermediate offsets must be inside the catch points.');pts=[[-b2,0],[-xL,v.dL],[-v.xfl,v.dfl],[0,v.dC],[v.xfr,v.dfr],[xR,v.dR],[b2,0]];}
+  let s=0;for(let i=0;i<pts.length;i++){const a=pts[i],c=pts[(i+1)%pts.length];s+=a[0]*c[1]-c[0]*a[1];}const A=Math.abs(s)/2;
+  st.push(['Area by coordinates','Offsets as x, depths as y, shoelace formula',f(A,2)+' ft²']);
+  if(v.ty==='3')st.push(['Check','A = [dC(xL + xR) + (b/2)(dL + dR)] / 2',f((v.dC*(xL+xR)+b2*(v.dL+v.dR))/2,2)]);
+  return{cards:[card('Area',f(A,2)+' ft²',{key:1}),card('Left catch',f(xL,2)+' ft'),card('Right catch',f(xR,2)+' ft'),card('CY per 100 ft',f(A*100/27,1))],steps:st};
+ }});
+def({id:'swell',g:'earth',title:'Swell & Shrink',desc:'Bank (in place), loose (hauled) and compacted volumes. Add truck capacity to get loads.',formula:'LCY = BCY × (1 + swell) · CCY = BCY × (1 − shrink)',
+ inputs:[N('b','Bank volume',{unit:'BCY'}),N('sw','Swell',{unit:'%'}),N('sh','Shrinkage',{unit:'%'}),N('tk','Truck capacity',{unit:'LCY',hint:'Optional'})],example:ex({b:'1000',sw:'25',sh:'10',tk:'14'}),
+ run(v){need(fin(v.b)&&fin(v.sw),'Enter bank volume and swell.');const sh=fin(v.sh)?v.sh:0,L=v.b*(1+v.sw/100),Cc=v.b*(1-sh/100);
+  const cards=[card('Loose',f(L,1)+' LCY',{key:1}),card('Compacted',f(Cc,1)+' CCY',{key:1}),card('Load factor',f(1/(1+v.sw/100),4)),card('Bank needed per CCY',f(1/(1-sh/100),4)+' BCY')];
+  if(fin(v.tk)&&v.tk>0)cards.push(card('Truck loads',String(Math.ceil(L/v.tk))));
+  return{cards,steps:[['Loose','LCY = '+v.b+' × (1 + '+v.sw+'/100)',f(L,1)],['Compacted','CCY = '+v.b+' × (1 − '+sh+'/100)',f(Cc,1)]].concat(fin(v.tk)&&v.tk>0?[['Loads','⌈'+f(L,1)+' / '+v.tk+'⌉',String(Math.ceil(L/v.tk))]]:[])};}});
+
+/* ---------------- STAKING ---------------- */
+const ALN=[H('Alignment'),N('n0','Start northing'),N('e0','Start easting'),N('s0','Start station',{sta:1}),...dirIn()];
+def({id:'staoff2xy',g:'stake',title:'Station & Offset to Coordinates',desc:'Coordinates of a point at a station and offset along a straight alignment.',
+ inputs:[...ALN,H('Point'),N('s','Station',{sta:1}),N('o','Offset',{unit:'ft'}),S('side','Side',[['R','Right'],['L','Left']],{seg:1,rerender:0})],
+ example:ex({n0:'1000',e0:'1000',s0:'10+00',dm:'az',...dmsv('az',90,0,0),s:'12+50',o:'25',side:'L'}),
+ run(v){
+  const az=dirOf(v);need([v.n0,v.e0,az,v.s].every(fin),'Enter the alignment and the station.');const s0=fin(v.s0)?v.s0:0,o=fin(v.o)?v.o:0,al=v.s-s0,pa=norm(az+(v.side==='L'?-90:90));
+  const N_=v.n0+al*cosD(az)+o*cosD(pa),E_=v.e0+al*sinD(az)+o*sinD(pa);
+  return{cards:[card('Northing',f(N_,4),{key:1}),card('Easting',f(E_,4),{key:1}),card('Distance along',f(al,3)+' ft'),card('Offset direction',faz(pa))],
+   steps:[['Along','Sta − start = '+fsta(v.s)+' − '+fsta(s0),f(al,3)],['To CL point','N0 + along·cos Az, E0 + along·sin Az',f(v.n0+al*cosD(az),4)+', '+f(v.e0+al*sinD(az),4)],['Offset',o+' ft at Az ± 90° = '+faz(pa),f(N_,4)+', '+f(E_,4)]]};
+ }});
+def({id:'xy2staoff',g:'stake',title:'Coordinates to Station & Offset',desc:'Station and offset of any point measured against a straight alignment.',formula:'Sta = Sta0 + ΔN cos Az + ΔE sin Az · Off = −ΔN sin Az + ΔE cos Az',
+ inputs:[...ALN,H('Point'),N('n','Northing'),N('e','Easting')],
+ example:ex({n0:'1000',e0:'1000',s0:'10+00',dm:'az',...dmsv('az',90,0,0),n:'1025',e:'1250'}),
+ run(v){
+  const az=dirOf(v);need([v.n0,v.e0,az,v.n,v.e].every(fin),'Enter the alignment and the point.');const s0=fin(v.s0)?v.s0:0,dN=v.n-v.n0,dE=v.e-v.e0,al=dN*cosD(az)+dE*sinD(az),of=-dN*sinD(az)+dE*cosD(az);
+  return{cards:[card('Station',fsta(s0+al),{key:1}),card('Offset',f(Math.abs(of),3)+' ft '+(of>=0?'Right':'Left'),{key:1}),card('Distance from start',f(Math.hypot(dN,dE),3)+' ft')],
+   steps:[['ΔN, ΔE',f(dN,3)+', '+f(dE,3),''],['Along','ΔN cos Az + ΔE sin Az',f(al,3)],['Offset','−ΔN sin Az + ΔE cos Az (+ = right)',fp(of,3)]]};
+ }});
+def({id:'cutfill',g:'stake',title:'Cut / Fill Sheet',desc:'Cut or fill at each stake. Ground above design is a cut. Shown in decimal feet and feet and inches for the crew.',
+ wide:1,inputs:[ROWS('r','Stakes',[{k:'p',t:'text',label:'Point'},{k:'d',t:'num',label:'Design elev'},{k:'gr',t:'num',label:'Ground / stake elev'}],{rows:4})],
+ example:ex({},{r:[{p:'101',d:'5412.50',gr:'5413.75'},{p:'102',d:'5412.10',gr:'5411.62'},{p:'103',d:'5411.70',gr:'5411.70'},{p:'104',d:'5411.30',gr:'5409.88'}]}),
+ run(v){
+  const r=v.r.filter(x=>fin(x.d)&&fin(x.gr));need(r.length,'Enter at least one point.');let mc=0,mf=0;
+  const rows=r.map((x,i)=>{const c=x.gr-x.d;if(c>mc)mc=c;if(-c>mf)mf=-c;const t=Math.abs(c)<0.005?'On grade':(c>0?'C ':'F ')+f(Math.abs(c),2);return{cells:[x.p||String(i+1),f(x.d,2),f(x.gr,2),t,Math.abs(c)<0.005?'':fFtIn(Math.abs(c),8)],cls:c>=0.005?'c':c<=-0.005?'f':''};});
+  return{cards:[card('Max cut',mc?'C '+f(mc,2):'None',{key:1,tone:mc?'bad':''}),card('Max fill',mf?'F '+f(mf,2):'None',{key:1,tone:mf?'fill':''}),card('Points',String(r.length))],
+   tables:[{title:'Stake marks',head:['Point','Design','Ground','Mark','Ft-In'],rows:rows.map(x=>x.cells),cls:rows.map(x=>x.cls)}],steps:[['Rule','Cut/Fill = Ground − Design; + is cut, − is fill','']]};
+ }});
+def({id:'slopestake',g:'stake',title:'Slope Staking',desc:'Catch points where the cut or fill slope meets the ground, assuming the ground is a uniform slope from centerline. Cut or fill is detected from the ground at the shoulder.',
+ inputs:[H('Template'),N('cl','Centerline finish elevation',{unit:'ft'}),N('b2','Centerline to hinge (shoulder)',{unit:'ft'}),N('cr','Cross slope down from CL',{unit:'%',signed:1,ph:'2.0'}),N('sc','Cut slope',{unit:'H:1V',ph:'2'}),N('sf','Fill slope',{unit:'H:1V',ph:'3'}),
+  H('Ground'),N('eg','Ground elevation at CL',{unit:'ft',full:true}),N('gl','Left ground slope',{unit:'%',signed:1,hint:'+ rises away from CL'}),N('gr','Right ground slope',{unit:'%',signed:1,hint:'+ rises away from CL'})],
+ example:ex({cl:'5400.00',b2:'18',cr:'2',sc:'2',sf:'3',eg:'5402.50',gl:'8',gr:'-5'}),
+ run(v){
+  need([v.cl,v.b2,v.eg].every(fin),'Enter centerline elevation, hinge distance and ground at CL.');const c=(fin(v.cr)?v.cr:2)/100,sc=fin(v.sc)?v.sc:2,sf=fin(v.sf)?v.sf:3,Eh=v.cl-c*v.b2,cards=[],rows=[],st=[['Hinge elevation','CL − cross slope × b = '+v.cl+' − '+c+' × '+v.b2,f(Eh,3)]];
+  const side=(nm,gp)=>{const g=(fin(gp)?gp:0)/100,Egh=v.eg+g*v.b2,cut=Egh>=Eh;let x,den;
+   if(cut){den=1/sc-g;if(den<=0)return rows.push([nm,'Cut','No catch, ground steeper than cut slope','','','']);x=(v.eg-Eh+v.b2/sc)/den;}
+   else{den=g+1/sf;if(den<=0)return rows.push([nm,'Fill','No catch, ground falls steeper than fill slope','','','']);x=(Eh-v.eg+v.b2/sf)/den;}
+   const ec=v.eg+g*x,d=Math.abs(ec-Eh),mark=(cut?'C ':'F ')+f(d,2)+' @ '+f(x,2)+' '+nm[0];
+   cards.push(card(nm+' stake',mark,{key:1,tone:cut?'bad':'fill'}));rows.push([nm,cut?'Cut':'Fill',f(x,2),f(ec,3),(cut?'C ':'F ')+f(d,2),f(x-v.b2,2)]);
+   st.push([nm+' catch',cut?'x = (Eg − Eh + b/s)/(1/s − g) = ('+v.eg+' − '+f(Eh,3)+' + '+v.b2+'/'+sc+') / (1/'+sc+' − '+g+')':'x = (Eh − Eg + b/s)/(g + 1/s) = ('+f(Eh,3)+' − '+v.eg+' + '+v.b2+'/'+sf+') / ('+g+' + 1/'+sf+')',f(x,3)+' ft']);};
+  side('Left',v.gl);side('Right',v.gr);
+  return{cards,tables:[{title:'Slope stakes',head:['Side','Type','Offset from CL','Catch elev','Cut/Fill','Beyond hinge'],rows}],steps:st};
+ }});
+
+/* =========================================================
+   APP ENGINE
+   ========================================================= */
+const KEY='survcalc.v4';let STORE={theme:'light',work:true,last:'traverse',calc:{}};
+try{const s=JSON.parse(localStorage.getItem(KEY)||'null');if(s&&typeof s==='object')STORE=Object.assign(STORE,s);}catch(e){}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(STORE));}catch(e){}};
+const byId=Object.fromEntries(C.map(c=>[c.id,c]));
+let H0='';try{H0=location.hash.slice(1);}catch(x){}
+let cur=byId[H0]||byId[STORE.last]||C[0];
+const $=s=>document.querySelector(s);
+const stOf=c=>(STORE.calc[c.id]=STORE.calc[c.id]||{vals:{},rows:{},grid:{}});
+function initState(c){const s=stOf(c);c.inputs.forEach(i=>{if(i.t==='sel'&&s.vals[i.k]==null)s.vals[i.k]=i.opts[0][0];if(i.t==='rows'&&!s.rows[i.k])s.rows[i.k]=Array.from({length:i.rows||3},()=>({}));if(i.t==='rows')s.rows[i.k].forEach(r=>i.cols.forEach(cl=>{if(cl.t==='sel'&&r[cl.k]==null)r[cl.k]=cl.opts[0][0];}));if(i.t==='grid'&&!s.grid[i.k])s.grid[i.k]={};});return s;}
+function readVals(c,s){
+  const v={};
+  c.inputs.forEach(i=>{if(i.t==='num')v[i.k]=num(s.vals[i.k]);else if(i.t==='dms')v[i.k]=rdms(s.vals,i.k);else if(i.t==='sel')v[i.k]=s.vals[i.k];});
+  c.inputs.forEach(i=>{
+   if(i.t==='rows')v[i.k]=(s.rows[i.k]||[]).map(r=>{const o={};i.cols.forEach(cl=>{o[cl.k]=cl.t==='num'?num(r[cl.k]):cl.t==='dms'?rdms(r,cl.k):(r[cl.k]==null?'':r[cl.k]);});return o;});
+   if(i.t==='grid'){const g={};Object.entries(s.grid[i.k]||{}).forEach(([k,x])=>g[k]=num(x));v[i.k]=g;}
+  });return v;
+}
+const lbl=(x,v)=>typeof x==='function'?x(v):x;
+const val=x=>esc(x==null?'':x);
+function boxNum(attrs,raw,o,v){
+  const u=lbl(o.unit,v),ph=lbl(o.ph,v);
+  return '<div class="box"><input '+attrs+' inputmode="decimal" autocomplete="off" spellcheck="false" value="'+val(raw)+'" placeholder="'+esc(ph||'')+'">'+(o.signed?'<button type="button" class="pm" tabindex="-1" aria-label="Toggle sign">±</button>':'')+(u?'<span class="sfx">'+esc(u)+'</span>':'')+'</div>';
+}
+function boxDms(pre,src,signed){
+  const one=(x,sfx,ph)=>'<div class="box"><input '+pre+' data-p="'+x+'" inputmode="decimal" autocomplete="off" value="'+val(src[x])+'" placeholder="'+ph+'" aria-label="'+({d:'degrees',m:'minutes',s:'seconds'}[x])+'">'+(x==='d'&&signed?'<button type="button" class="pm" tabindex="-1" aria-label="Toggle sign">±</button>':'')+'<span class="sfx">'+sfx+'</span></div>';
+  return '<div class="dms">'+one('d','°','0')+one('m',"'",'00')+one('s','"','00')+'</div>';
+}
+function dmsSrc(o,k){return{d:o[k+'_d'],m:o[k+'_m'],s:o[k+'_s']};}
+function renderInputs(){
+  const c=cur,s=initState(c),v=readVals(c,s);let h='';let uid=0;
+  c.inputs.forEach(i=>{
+   if(i.show&&!i.show(v))return;const L=esc(lbl(i.label,v)),full=i.full?' full':'',id='f'+(uid++);
+   if(i.t==='h'){h+='<div class="sech">'+L+'</div>';return;}
+   if(i.t==='num'){h+='<div class="fld'+full+'"><label for="'+id+'">'+L+'</label>'+boxNum('id="'+id+'" data-k="'+i.k+'"'+(i.sta?' data-sta="1"':''),s.vals[i.k],i,v)+(i.hint?'<div class="hint">'+esc(i.hint)+'</div>':'')+'</div>';return;}
+   if(i.t==='dms'){h+='<div class="fld'+full+'"><span class="lab">'+L+'</span>'+boxDms('data-k="'+i.k+'"',dmsSrc(s.vals,i.k),i.signed)+(i.hint?'<div class="hint">'+esc(i.hint)+'</div>':'')+'</div>';return;}
+   if(i.t==='sel'){
+    if(i.seg&&i.opts.length<=6)h+='<div class="fld'+full+'"><span class="lab">'+L+'</span><div class="seg" role="group" aria-label="'+L+'">'+i.opts.map(o=>'<button type="button" data-seg="'+i.k+'" data-v="'+esc(o[0])+'" class="'+(s.vals[i.k]===o[0]?'on':'')+'" aria-pressed="'+(s.vals[i.k]===o[0])+'">'+esc(o[1])+'</button>').join('')+'</div></div>';
+    else h+='<div class="fld'+full+'"><label for="'+id+'">'+L+'</label><div class="box"><select id="'+id+'" data-k="'+i.k+'">'+i.opts.map(o=>'<option value="'+esc(o[0])+'"'+(s.vals[i.k]===o[0]?' selected':'')+'>'+esc(o[1])+'</option>').join('')+'</select></div></div>';return;}
+   if(i.t==='rows'){
+    const cols=i.cols.filter(cl=>!cl.show||cl.show(v));
+    h+='<div class="rt"><div class="lab" style="margin-bottom:6px">'+L+'</div><div class="rtw"><table><caption class="sr">'+esc(L)+'</caption><thead><tr><th scope="col">#</th>'+cols.map(cl=>'<th scope="col">'+esc(lbl(cl.label,v))+'</th>').join('')+'<th scope="col"><span class="sr">Remove row</span></th></tr></thead><tbody>';
+    s.rows[i.k].forEach((r,ri)=>{h+='<tr><td class="n">'+(ri+1)+'</td>';cols.forEach(cl=>{const at='data-r="'+i.k+'" data-i="'+ri+'" data-c="'+cl.k+'"';
+      if(cl.t==='sel')h+='<td><div class="box"><select '+at+' aria-label="'+esc(lbl(cl.label,v))+'">'+cl.opts.map(o=>'<option value="'+esc(o[0])+'"'+(r[cl.k]===o[0]?' selected':'')+'>'+esc(o[1])+'</option>').join('')+'</select></div></td>';
+      else if(cl.t==='dms')h+='<td>'+boxDms(at,dmsSrc(r,cl.k))+'</td>';
+      else if(cl.t==='text')h+='<td><div class="box"><input '+at+' value="'+val(r[cl.k])+'" placeholder="'+(ri+1)+'" aria-label="'+esc(lbl(cl.label,v))+'" style="font-family:var(--sans);width:96px"></div></td>';
+      else h+='<td><div class="box"><input '+at+(cl.sta?' data-sta="1"':'')+' inputmode="decimal" autocomplete="off" value="'+val(r[cl.k])+'" aria-label="'+esc(lbl(cl.label,v))+'" style="min-width:90px"></div></td>';});
+     h+='<td><button type="button" class="del" data-del="'+i.k+'" data-i="'+ri+'" aria-label="Delete row '+(ri+1)+'">×</button></td></tr>';});
+    h+='</tbody></table></div><button type="button" class="addr" data-add="'+i.k+'">+ Add row</button></div>';return;}
+   if(i.t==='grid'){
+    const nr=fin(v.nr)?Math.max(1,Math.min(12,Math.round(v.nr))):3,nc=fin(v.nc)?Math.max(1,Math.min(12,Math.round(v.nc))):3,g=s.grid[i.k];
+    h+='<div class="rt"><div class="lab" style="margin-bottom:6px">'+L+'</div><div class="grid"><table><caption class="sr">'+esc(L)+'</caption><tr><td></td>'+Array.from({length:nc+1},(_,j)=>'<th scope="col">C'+j+'</th>').join('')+'</tr>';
+    for(let a=0;a<=nr;a++){h+='<tr><th scope="row">R'+a+'</th>';for(let b=0;b<=nc;b++){const ea=a===0||a===nr,eb=b===0||b===nc,cl=ea&&eb?'c1':(ea||eb)?'c2':'';h+='<td class="'+cl+'"><div class="box"><input data-g="'+i.k+'" data-cell="'+a+'_'+b+'" inputmode="decimal" value="'+val(g[a+'_'+b])+'" aria-label="Row '+a+' column '+b+'"></div></td>';}h+='</tr>';}
+    h+='</table></div><div class="legend"><span><i style="border-color:#C98600"></i>Corner × 1</span><span><i style="border-color:var(--fill)"></i>Edge × 2</span><span><i style="border-color:var(--line)"></i>Interior × 4</span></div></div>';}
+  });
+  $('#fields').innerHTML=h||'<div class="hint" style="grid-column:1/-1">No inputs needed. This is a reference chart.</div>';
+  markBad();
+}
+function markBad(){
+  document.querySelectorAll('#fields input').forEach(el=>{
+   if(el.closest('.dms'))return;const raw=el.value.trim(),txt=!el.hasAttribute('inputmode');el.closest('.box').classList.toggle('bad',!txt&&raw!==''&&!fin(num(raw)));});
+  document.querySelectorAll('#fields .dms').forEach(d=>{const ins=[...d.querySelectorAll('input')],o={x_d:ins[0].value,x_m:ins[1].value,x_s:ins[2].value},any=ins.some(e=>e.value.trim()!=='');const ok=!any||fin(rdms(o,'x'));ins.forEach(e=>e.closest('.box').classList.toggle('bad',!ok));});
+}
+function cardHTML(x){return '<div class="rc'+(x.key?' key':'')+(x.tone&&!x.key?' '+x.tone:'')+'" data-copy="'+esc(x.v)+'" title="Click to copy"><div class="l">'+esc(x.l)+'</div><div class="v">'+esc(x.v)+'</div><span class="cp" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"/></svg></span></div>';}
+function compute(){
+  const c=cur,s=stOf(c),v=readVals(c,s),el=$('#results');let o;
+  try{o=c.run(v);}catch(e){
+   if(e instanceof UErr){el.innerHTML=e.soft?'<div class="empty"><b>'+esc(e.message)+'</b>Results update as you type. Tap Example to load a worked problem.</div>':'<div class="msg err" role="alert">⚠ '+esc(e.message)+'</div>';}
+   else{el.innerHTML='<div class="msg err" role="alert">Something went wrong in this calculation. Check the inputs.</div>';console.error(e);}return;}
+  let h='';
+  if(o.cards&&o.cards.length)h+='<div class="cards">'+o.cards.map(cardHTML).join('')+'</div>';
+  if(o.badges&&o.badges.length)h+='<div class="badges">'+o.badges.map(b=>'<span class="bdg '+b.tone+'">'+esc(b.t)+'</span>').join('')+'</div>';
+  if(o.notes&&o.notes.length)h+='<div class="notes">'+o.notes.map(n=>'<p>'+esc(n)+'</p>').join('')+'</div>';
+  (o.tables||[]).forEach(t=>{h+='<div class="card ot"><h2>'+esc(t.title)+'</h2><div class="sc"><table><caption class="sr">'+esc(t.title)+'</caption><thead><tr>'+t.head.map(x=>'<th scope="col">'+esc(x)+'</th>').join('')+'</tr></thead><tbody>'+
+   t.rows.map((r,ri)=>'<tr class="'+(t.hl===ri?'hl':'')+(t.tot&&ri===t.rows.length-1?' tot':'')+'">'+r.map((x,ci)=>'<td'+(t.cls&&t.cls[ri]&&ci===3?' class="'+t.cls[ri]+'"':'')+'>'+esc(x)+'</td>').join('')+'</tr>').join('')+'</tbody></table></div></div>';});
+  if(STORE.work&&o.steps&&o.steps.length)h+='<details class="card steps" open><summary>Step by step</summary>'+o.steps.map((x,i)=>'<div class="st"><span class="i">'+(i+1)+'</span><span class="sl">'+esc(x[0])+'</span><span class="se">'+esc(x[1])+'</span><span class="sr">'+esc(x[2]||'')+'</span></div>').join('')+'</details>';
+  el.innerHTML=h;
+}
+function renderNav(){
+  const q=($('#q').value||'').trim().toLowerCase();let h='';
+  GROUPS.forEach(([gid,gname,ic])=>{const items=C.filter(c=>c.g===gid&&(!q||(c.title+' '+gname+' '+(c.desc||'')).toLowerCase().includes(q)));if(!items.length)return;
+   h+='<div class="grp"><div class="gh"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="'+ic+'"/></svg>'+esc(gname)+'</div>'+items.map(c=>'<button class="ni'+(c===cur?' on':'')+'" data-go="'+c.id+'"'+(c===cur?' aria-current="page"':'')+'>'+esc(c.title)+'</button>').join('')+'</div>';});
+  $('#nav').innerHTML=h||'<div style="padding:14px;color:var(--onbrand2);font-size:13px">No matches</div>';
+}
+function renderView(){
+  const c=cur,g=GROUPS.find(x=>x[0]===c.g);
+  $('#crumb').innerHTML=esc(g[1])+' / <b>'+esc(c.title)+'</b>';document.title=c.title+' · SurvCalc Pro';
+  $('#bEx').style.display=c.example?'':'none';$('#bClr').style.display=c.inputs.length?'':'none';
+  $('#view').innerHTML='<div class="hd"><h1>'+esc(c.title)+'</h1><p>'+esc(c.desc||'')+'</p>'+(c.formula?'<div class="formula">'+esc(c.formula)+'</div>':'')+'</div>'+
+   '<div class="layout'+(c.wide||!c.inputs.length?' stack':'')+'">'+(c.inputs.length?'<section class="card inputs" aria-label="Inputs"><div class="ct"><span class="dot"></span>Inputs</div><div class="fields" id="fields"></div></section>':'<div id="fields" hidden></div>')+'<section class="results" id="results" aria-live="polite"></section></div>'+
+   '<p class="disc">Results are a field and classroom aid. Verify critical work independently before staking, recording or certifying. SurvCalc Pro, developed by Jeff Weygandt, PLS, R&amp;R Engineers | Surveyors, for Community College of Aurora and Metropolitan State University of Denver Construction Management.</p>';
+  renderNav();if(c.inputs.length)renderInputs();compute();
+}
+function go(id){if(!byId[id])return;cur=byId[id];STORE.last=id;save();try{if(location.hash.slice(1)!==id)history.replaceState(null,'','#'+id);}catch(x){}document.body.classList.remove('nav-open');renderView();window.scrollTo(0,0);}
+/* events */
+const fieldsEv=e=>{
+  const t=e.target,c=cur,s=stOf(c);let rr=false;
+  if(t.dataset.k){if(t.dataset.p)s.vals[t.dataset.k+'_'+t.dataset.p]=t.value;else s.vals[t.dataset.k]=t.value;const def=c.inputs.find(i=>i.k===t.dataset.k);rr=def&&def.rerender&&e.type==='change'||(def&&def.rerender&&def.t==='num');}
+  else if(t.dataset.r){const row=s.rows[t.dataset.r][+t.dataset.i];if(t.dataset.p)row[t.dataset.c+'_'+t.dataset.p]=t.value;else row[t.dataset.c]=t.value;}
+  else if(t.dataset.g){s.grid[t.dataset.g][t.dataset.cell]=t.value;}else return;
+  save();if(rr&&t.tagName!=='INPUT')renderInputs();else if(rr){const pos=t.selectionStart,k=t.dataset.k;renderInputs();const n=document.querySelector('#fields input[data-k="'+k+'"]:not([data-p])');if(n){n.focus();try{n.setSelectionRange(pos,pos);}catch(x){}}}
+  else markBad();compute();
+};
+document.addEventListener('input',e=>{if(e.target.closest('#fields'))fieldsEv(e);});
+document.addEventListener('change',e=>{if(e.target.closest('#fields')&&e.target.tagName==='SELECT')fieldsEv(e);});
+document.addEventListener('click',e=>{
+  const t=e.target.closest('button,[data-copy]');if(!t)return;const s=stOf(cur);
+  if(t.dataset.go)return go(t.dataset.go);
+  if(t.dataset.seg){s.vals[t.dataset.seg]=t.dataset.v;save();renderInputs();compute();return;}
+  if(t.dataset.add){const def=cur.inputs.find(i=>i.k===t.dataset.add),r={};def.cols.forEach(cl=>{if(cl.t==='sel')r[cl.k]=cl.opts[0][0];});s.rows[t.dataset.add].push(r);save();renderInputs();compute();const ins=document.querySelectorAll('#fields tbody tr:last-child input');if(ins[0])ins[0].focus();return;}
+  if(t.dataset.del){const a=s.rows[t.dataset.del];a.splice(+t.dataset.i,1);if(!a.length)a.push({});initState(cur);save();renderInputs();compute();return;}
+  if(t.classList.contains('pm')){const inp=t.parentElement.querySelector('input');let x=inp.value.trim();inp.value=x.startsWith('-')?x.slice(1):'-'+(x||'');inp.dispatchEvent(new Event('input',{bubbles:true}));inp.focus();return;}
+  if(t.dataset.copy!=null){const txt=t.dataset.copy.replace(/,(?=\d{3})/g,'');try{navigator.clipboard.writeText(txt).then(()=>toast('Copied '+txt),()=>toast('Copy not available'));}catch(x){toast('Copy not available');}}
+});
+let tt;function toast(m){const el=$('#toast');el.textContent=m;el.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>el.classList.remove('show'),1400);}
+$('#q').addEventListener('input',renderNav);
+$('#q').addEventListener('keydown',e=>{if(e.key==='Enter'){const b=document.querySelector('#nav .ni');if(b)go(b.dataset.go);}});
+document.addEventListener('keydown',e=>{if((e.key==='/'&&!/INPUT|SELECT|TEXTAREA/.test(document.activeElement.tagName))||(e.key.toLowerCase()==='k'&&(e.metaKey||e.ctrlKey))){e.preventDefault();document.body.classList.add('nav-open');$('#q').focus();$('#q').select();}if(e.key==='Escape')document.body.classList.remove('nav-open');});
+$('#scrim').onclick=()=>document.body.classList.remove('nav-open');
+$('#bEx').onclick=()=>{if(!cur.example)return;STORE.calc[cur.id]=JSON.parse(JSON.stringify(cur.example));initState(cur);save();renderInputs();compute();toast('Example loaded');};
+$('#bClr').onclick=()=>{STORE.calc[cur.id]={vals:{},rows:{},grid:{}};initState(cur);save();renderInputs();compute();};
+$('#bWork').onclick=()=>{STORE.work=!STORE.work;save();$('#bWork').setAttribute('aria-pressed',STORE.work);compute();};
+const applyTheme=()=>{document.documentElement.dataset.theme=STORE.theme;document.querySelector('meta[name=theme-color]').content=STORE.theme==='dark'?'#07111A':'#0E2A3B';};
+$('#bTheme').onclick=()=>{STORE.theme=STORE.theme==='dark'?'light':'dark';save();applyTheme();};
+window.addEventListener('hashchange',()=>{const id=location.hash.slice(1);if(byId[id]&&byId[id]!==cur)go(id);});
+applyTheme();$('#bWork').setAttribute('aria-pressed',STORE.work);
+if(!STORE.calc[cur.id]&&cur.example){STORE.calc[cur.id]=JSON.parse(JSON.stringify(cur.example));}
+/* =========================================================
+   GALAXY MENU  (total station + prism poles)
+   ========================================================= */
+(function(){
+const PAL={angles:['#FFE7A3','#F2A900','#5E3B00'],distance:['#A8F5E8','#14A38F','#043A33'],datum:['#BFE0FF','#2F7BD8','#0A2350'],
+ convert:['#E4CFFF','#8B5CF6','#2A0E61'],level:['#CFF8B4','#3FA34D','#103A18'],curves:['#FFEBC7','#D9A35B','#55360F'],
+ cogo:['#FFBFA8','#D2482A','#470F04'],traverse:['#DDF8FF','#4CC3E6','#0A3F54'],tri:['#FFD0EA','#E0569B','#4A0829'],
+ earth:['#F3D8B8','#9A6236','#2E1706'],stake:['#EEFFB2','#9CC827','#2F4008']};
+const gx=$('#gx'),stage=$('#gxStage'),pw=$('#gxPlanets'),cv=$('#gxStars'),ctx=cv.getContext('2d'),nameEl=$('#gxName'),sun=$('#gxSun'),beam=$('#gxBeam');
+const RM=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+const GS=GROUPS.map(g=>({id:g[0],name:g[1],ic:g[2],pal:PAL[g[0]]||['#ddd','#888','#222'],items:C.filter(c=>c.g===g[0])})).filter(g=>g.items.length);
+const N=GS.length,STEP=2*Math.PI/N,PH=2.3; /* prism element is 1em wide, 2.3em tall */
+const sty=p=>'--p1:'+p[0]+';--p2:'+p[1]+';--p3:'+p[2];
+const plate=(g,id)=>'<defs><radialGradient id="pl'+id+'" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="'+g.pal[0]+'"/><stop offset=".55" stop-color="'+g.pal[1]+'"/><stop offset="1" stop-color="'+g.pal[2]+'"/></radialGradient></defs>'+
+ '<circle cx="20" cy="11.5" r="10.6" fill="url(#pl'+id+')" stroke="#F4F7FA" stroke-width="1.4"/>'+
+ '<g transform="translate(14,5.5) scale(.5)" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="'+g.ic+'"/></g>';
+const prismSVG=(g,i)=>'<svg viewBox="0 0 40 92" aria-hidden="true"><defs><linearGradient id="pole'+i+'" x1="0" x2="1"><stop offset="0" stop-color="#8E99A4"/><stop offset=".45" stop-color="#F3F6F8"/><stop offset="1" stop-color="#7D8893"/></linearGradient>'+
+ '<radialGradient id="gl'+i+'" cx=".38" cy=".32" r=".75"><stop offset="0" stop-color="#FFFFFF"/><stop offset=".35" stop-color="#9FE8FF"/><stop offset="1" stop-color="#1C5B78"/></radialGradient></defs>'+
+ '<rect x="18.4" y="38" width="3.2" height="50" rx="1" fill="url(#pole'+i+')"/>'+
+ [46,52,58,64,70,76,82].map(y=>'<rect x="18.4" y="'+y+'" width="3.2" height=".7" fill="#33404C" opacity=".55"/>').join('')+
+ '<rect x="18.1" y="40" width="3.8" height="4.2" rx=".8" fill="'+g.pal[1]+'"/>'+
+ '<circle cx="23.6" cy="55" r="1.9" fill="#1E2A33" stroke="#B9C3CC" stroke-width=".6"/><circle cx="23.6" cy="55" r="1" fill="#7CF29A"/>'+
+ '<path d="M19 88h2l-1 4z" fill="#C7D0D8"/>'+
+ '<path d="M10.5 30a9.5 9.5 0 0 0 19 0" fill="none" stroke="#2A333C" stroke-width="2.4"/><rect x="18.6" y="36.5" width="2.8" height="3" fill="#2A333C"/>'+
+ '<circle cx="20" cy="29" r="8.6" fill="#161C22" stroke="#4A5661" stroke-width="1"/>'+
+ '<circle class="glass" cx="20" cy="29" r="6.1" fill="url(#gl'+i+')"/>'+
+ '<path d="M20 29V23M20 29l5.2 3M20 29l-5.2 3" stroke="#FFFFFF" stroke-width=".6" opacity=".55"/>'+
+ '<circle class="flash" cx="20" cy="29" r="6.1" fill="#FF4D4D" opacity="0"/>'+
+ plate(g,i)+'</svg>';
+pw.innerHTML=GS.map((g,i)=>'<button class="gx-pl gx-prism" data-pi="'+i+'" style="'+sty(g.pal)+'" aria-label="'+esc(g.name)+', '+g.items.length+' calculators">'+prismSVG(g,i)+'</button>').join('');
+const pls=[...pw.children];
+/* total station */
+sun.innerHTML='<svg viewBox="0 0 60 100" aria-hidden="true"><defs><linearGradient id="tsb" x1="0" x2="1"><stop offset="0" stop-color="#C98600"/><stop offset=".45" stop-color="#FFC93D"/><stop offset="1" stop-color="#B07400"/></linearGradient>'+
+ '<linearGradient id="tsl" x1="0" x2="1"><stop offset="0" stop-color="#7A8794"/><stop offset=".5" stop-color="#D5DCE2"/><stop offset="1" stop-color="#6B7783"/></linearGradient></defs>'+
+ '<path d="M27 64L7 98M33 64L53 98M30 64v32" stroke="url(#tsl)" stroke-width="3.2" stroke-linecap="round"/>'+
+ '<path d="M5 97.5h5M50 97.5h5M28 95.5h4" stroke="#2A333C" stroke-width="3" stroke-linecap="round"/>'+
+ '<rect x="15" y="60" width="30" height="5" rx="1.5" fill="#2A333C"/>'+
+ '<rect x="19" y="53" width="22" height="7" rx="1.5" fill="#3A4650"/><circle cx="21" cy="58.5" r="1.6" fill="#55616C"/><circle cx="39" cy="58.5" r="1.6" fill="#55616C"/><circle cx="30" cy="59" r="1.6" fill="#55616C"/>'+
+ '<rect x="16" y="38" width="28" height="16" rx="3" fill="url(#tsb)"/>'+
+ '<rect x="18.5" y="41.5" width="23" height="9" rx="1.5" fill="#0C1A20" stroke="#1E2A33"/><text id="tsLcd" x="109.1" y="172.4" transform="scale(.275)" text-anchor="middle" font-family="monospace" font-size="12" fill="#7CF2D0">HA</text>'+
+ '<path d="M16 41V19a3 3 0 0 1 3-3h4v25zM44 41V19a3 3 0 0 0-3-3h-4v25z" fill="url(#tsb)"/>'+
+ '<circle cx="30" cy="28" r="4.2" fill="#2A333C"/>'+
+ '<g id="tsScope"><rect x="25.2" y="22" width="9.6" height="17" rx="4.4" fill="#232B33" stroke="#56636F" stroke-width=".8"/><rect x="25.2" y="35.5" width="9.6" height="3.5" rx="1.5" fill="#3B4855"/><circle cx="30" cy="39" r="3.2" fill="#0C1A20" stroke="#6FD3FF" stroke-width=".8"/><circle cx="29" cy="38.2" r=".9" fill="#CFF3FF"/></g>'+
+ '<rect x="27.5" y="12" width="5" height="4" rx="1" fill="#2A333C"/></svg>';
+let th=0,W=0,H=0,cx=0,cy=0,rx=0,ry=0,P=60,front=0,dpr=1,raf=0,anim=null,isOpen=false,TS={x:0,y:0,w:0,h:0,k:1},haEl=null;
+{const gi=STORE.gi;const k=GS.findIndex(g=>g.id===(gi||(cur&&cur.g)));if(k>=0)th=-k*STEP;}
+/* stars */
+let stars=[],shoot=null,lastShoot=0;
+function mkStars(){const n=Math.round(Math.min(420,W*H/2600));stars=[];for(let i=0;i<n;i++){const l=Math.random();stars.push({x:Math.random(),y:Math.random(),l:l<.6?0:l<.9?1:2,r:(l<.6?.5:l<.9?.9:1.4)*(.7+Math.random()*.6),ph:Math.random()*6.28,sp:.5+Math.random()*1.6,c:Math.random()<.12?'#FFD9A0':Math.random()<.18?'#A8C8FF':'#FFFFFF'});}}
+function drawStars(t){
+ ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,W,H);const par=[.02,.05,.10];
+ for(const s of stars){let x=(s.x*W+th*par[s.l]*W)%W;if(x<0)x+=W;const tw=RM?1:.55+.45*Math.sin(t*.001*s.sp+s.ph);
+  ctx.globalAlpha=(.35+.5*(s.l/2))*tw+.1;ctx.fillStyle=s.c;ctx.beginPath();ctx.arc(x,s.y*H,s.r,0,6.283);ctx.fill();
+  if(s.l===2&&tw>.9){ctx.globalAlpha=.25*tw;ctx.fillRect(x-s.r*3,s.y*H-.3,s.r*6,.6);ctx.fillRect(x-.3,s.y*H-s.r*3,.6,s.r*6);}}
+ if(!RM){if(!shoot&&t-lastShoot>6000+Math.random()*9000){lastShoot=t;const a=.35+Math.random()*.35;shoot={x:Math.random()*W*.8,y:Math.random()*H*.4,vx:Math.cos(a)*.9,vy:Math.sin(a)*.9,life:0};}
+  if(shoot){shoot.life+=16;const k=shoot.life,x=shoot.x+shoot.vx*k,y=shoot.y+shoot.vy*k,a=Math.max(0,1-k/900);const g=ctx.createLinearGradient(x,y,x-shoot.vx*120,y-shoot.vy*120);g.addColorStop(0,'rgba(255,255,255,'+a+')');g.addColorStop(1,'rgba(255,255,255,0)');ctx.globalAlpha=1;ctx.strokeStyle=g;ctx.lineWidth=1.4;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x-shoot.vx*120,y-shoot.vy*120);ctx.stroke();if(k>900)shoot=null;}}
+ ctx.globalAlpha=1;}
+/* layout */
+function size(){
+ W=gx.clientWidth;H=gx.clientHeight;dpr=Math.min(2,window.devicePixelRatio||1);cv.width=W*dpr;cv.height=H*dpr;
+ const tall=H>W*1.3,hint=gx.querySelector('.gx-hint'),tb=gx.querySelector('.gx-top');hint.style.display=H<520?'none':'';
+ const topY=tb.offsetHeight+6,hintH=H<520?0:hint.offsetHeight+14,nameH=118,botY=H-hintH-nameH-8,avail=Math.max(140,botY-topY);
+ P=Math.max(34,Math.min(Math.min(W,H)*(tall?.15:.11),84,avail*.16));
+ rx=Math.min(W*(tall?.40:.40),440);ry=Math.max(24,Math.min(rx*(tall?.98:.44),(avail-(PH*P*.42+4))/2));
+ P=Math.max(30,Math.min(P,ry/2.45));ry=Math.max(24,Math.min(rx*(tall?.98:.44),(avail-(PH*P*.42+4))/2));
+ const backUp=PH*P*.42+4;
+ cx=W/2;cy=topY+backUp+ry+Math.max(0,(avail-(2*ry+backUp))/2);
+ const o=$('#gxOrb'),o2=$('#gxOrb2');Object.assign(o.style,{left:(cx-rx)+'px',top:(cy-ry)+'px',width:2*rx+'px',height:2*ry+'px'});
+ Object.assign(o2.style,{left:(cx-rx*1.32)+'px',top:(cy-ry*1.32)+'px',width:2.64*rx+'px',height:2.64*ry+'px'});
+ /* instrument: feet near orbit centre, fit between top bar and centre */
+ let Ih=Math.min(P*3.3,cy+P*.1-topY-2);const Iw=Ih*.6,feet=cy+P*.1;TS={w:Iw,h:Ih,x:cx-Iw/2,y:feet-Ih,k:Iw/60};
+ Object.assign(sun.style,{width:Iw+'px',height:Ih+'px',left:TS.x+'px',top:TS.y+'px'});
+ const G=Ih*2.2;Object.assign($('#gxGlow').style,{width:G+'px',height:G+'px',left:(cx-G/2)+'px',top:(feet-Ih*.62-G/2)+'px'});
+ beam.setAttribute('viewBox','0 0 '+W+' '+H);beam.setAttribute('width',W);beam.setAttribute('height',H);
+ nameEl.style.top=Math.min(cy+ry+10,botY+4)+'px';nameEl.innerHTML='';mkStars();place();}
+const p2=n=>(n<10?'0':'')+n;
+function haTxt(deg){deg=((deg%360)+360)%360;let s=Math.round(deg*3600);const d=Math.floor(s/3600);s-=d*3600;const m=Math.floor(s/60);s-=m*60;return (d%360)+'°'+p2(m)+"'"+p2(s)+'"';}
+function place(){
+ let best=-2,bi=0;
+ pls.forEach((el,i)=>{const a=th+i*STEP,c=Math.cos(a),d=(c+1)/2,s=.45+.6*d,x=cx+rx*Math.sin(a),y=cy+ry*c;el._x=x;el._y=y;el._s=s;
+  el.style.fontSize=P+'px';el.style.transform='translate('+(x-P/2)+'px,'+(y-PH*P)+'px) scale('+s.toFixed(3)+')';
+  el.style.zIndex=String(10+Math.round(d*80));el.style.opacity=(.40+.60*d).toFixed(3);el.style.filter=d<.5?'brightness('+(.55+.9*d).toFixed(2)+')':'';
+  if(c>best){best=c;bi=i;}});
+ if(bi!==front||!nameEl.innerHTML){front=bi;const g=GS[front];nameEl.innerHTML='<b>'+esc(g.name)+'</b><span>'+g.items.length+' calculator'+(g.items.length>1?'s':'')+' · tap the prism to open</span><span class="ha" aria-hidden="true"></span><div class="gx-dots" aria-hidden="true">'+GS.map((_,i)=>'<i class="'+(i===front?'on':'')+'"></i>').join('')+'</div>';
+  haEl=nameEl.querySelector('.ha');pls.forEach((el,i)=>el.tabIndex=i===front?0:-1);}
+ /* aim the instrument */
+ const ha=-th*180/Math.PI,h=haTxt(ha);if(haEl)haEl.textContent='HA '+h;const lcd=document.getElementById('tsLcd');if(lcd)lcd.textContent=h;
+ const el=pls[front],gx_=el._x,gy=el._y-el._s*PH*P*(1-29/92),k=TS.k,hx=TS.x+30*k,hy=TS.y+28*k;
+ const ang=Math.atan2(gy-hy,gx_-hx)*180/Math.PI-90;const sc=document.getElementById('tsScope');if(sc)sc.setAttribute('transform','rotate('+ang.toFixed(2)+' 30 28)');
+ const r=(ang+90)*Math.PI/180,ox=hx+Math.cos(r)*11*k,oy=hy+Math.sin(r)*11*k;
+ const off=Math.abs(((th+front*STEP)%(2*Math.PI)+3*Math.PI)%(2*Math.PI)-Math.PI),lock=Math.max(0,1-off/(STEP*.35));
+ beam.innerHTML='<line x1="'+ox+'" y1="'+oy+'" x2="'+gx_+'" y2="'+gy+'" stroke="#FF3B3B" stroke-width="5" stroke-linecap="round" opacity="'+(.18*lock).toFixed(3)+'"/>'+
+  '<line class="bm" x1="'+ox+'" y1="'+oy+'" x2="'+gx_+'" y2="'+gy+'" stroke="#FF6A5C" stroke-width="1.6" stroke-linecap="round" opacity="'+(.95*lock).toFixed(3)+'"/>'+
+  '<circle cx="'+gx_+'" cy="'+gy+'" r="'+(3+5*lock)+'" fill="#FF5A4A" opacity="'+(.5*lock).toFixed(3)+'"/>';
+ /* graduated circle under the instrument */
+ const fx=cx,fy=cy+P*.1,R1=Math.min(rx*.34,TS.w*1.25),R2=R1*(ry/rx);let t='<ellipse cx="'+fx+'" cy="'+fy+'" rx="'+R1+'" ry="'+R2+'" fill="none" stroke="rgba(160,200,240,.30)" stroke-width="1"/>';
+ for(let dg=0;dg<360;dg+=10){const a=th+dg*Math.PI/180,c=Math.cos(a),sn=Math.sin(a),L=dg%30?0.9:0.8;t+='<line x1="'+(fx+R1*sn)+'" y1="'+(fy+R2*c)+'" x2="'+(fx+R1*L*sn)+'" y2="'+(fy+R2*L*c)+'" stroke="rgba(190,220,250,'+(c>-0.2?.55:.22)+')" stroke-width="'+(dg%90?1:1.8)+'"/>';}
+ $('#gxCircle').innerHTML=t;
+}
+function loop(t){if(!isOpen)return;if(anim){const k=Math.min(1,(t-anim.t0)/anim.dur),e=1-Math.pow(1-k,3);th=anim.a+(anim.b-anim.a)*e;place();if(k>=1){const cb=anim.cb;anim=null;STORE.gi=GS[front].id;save();flash();if(cb)cb();}}
+ else if(Math.abs(vel)>0.00002&&!drag){th+=vel*16;vel*=0.94;place();if(Math.abs(vel)<=0.00025){vel=0;snap();}}
+ drawStars(t);raf=requestAnimationFrame(loop);}
+function flash(){const f=pls[front]&&pls[front].querySelector('.flash');if(!f||RM)return;f.style.transition='none';f.style.opacity='.85';requestAnimationFrame(()=>{f.style.transition='opacity .6s';f.style.opacity='0';});}
+function rotTo(target,cb,dur){anim={a:th,b:target,t0:performance.now(),dur:RM?1:(dur||460),cb};}
+function snap(cb){rotTo(Math.round(th/STEP)*STEP,cb);}
+function goPlanet(i,cb){const k=Math.round(th/STEP);let tgt=-i*STEP;const base=k*STEP;tgt+=Math.round((base-tgt)/(2*Math.PI))*2*Math.PI;
+ if(Math.abs(tgt-th)>Math.PI+.01)tgt+=tgt>th?-2*Math.PI:2*Math.PI;rotTo(tgt,cb);}
+/* drag + inertia */
+let drag=null,vel=0,moved=false;
+stage.addEventListener('pointerdown',e=>{if(gx.classList.contains('sheet'))return;drag={x:e.clientX,y:e.clientY,th:th,lx:e.clientX,lt:performance.now(),id:e.pointerId};moved=false;vel=0;anim=null;});
+stage.addEventListener('pointermove',e=>{if(!drag)return;const dx=e.clientX-drag.x;if(!moved&&(Math.abs(dx)>6||Math.abs(e.clientY-drag.y)>6)){moved=true;try{stage.setPointerCapture(drag.id);}catch(x){}}
+ th=drag.th+dx/(rx*1.05);const now=performance.now(),dt=now-drag.lt;if(dt>0){vel=(e.clientX-drag.lx)/(rx*1.05)/dt*.9+vel*.1;}drag.lx=e.clientX;drag.lt=now;place();});
+const endDrag=()=>{if(!drag)return;const was=moved;drag=null;if(!was){vel=0;return;}if(Math.abs(vel)<0.0004){vel=0;snap();}vel=Math.max(-.012,Math.min(.012,vel));};
+stage.addEventListener('pointerup',endDrag);stage.addEventListener('pointercancel',endDrag);
+let wheelT=0;gx.addEventListener('wheel',e=>{if(gx.classList.contains('sheet'))return;e.preventDefault();const now=performance.now();if(now-wheelT<260)return;wheelT=now;const d=Math.abs(e.deltaX)>Math.abs(e.deltaY)?e.deltaX:e.deltaY;if(Math.abs(d)<4)return;step(d>0?1:-1);},{passive:false});
+function step(n){vel=0;const base=anim?anim.b:Math.round(th/STEP)*STEP;rotTo(base-n*STEP);}
+pw.addEventListener('click',e=>{const b=e.target.closest('.gx-pl');if(!b)return;if(moved){moved=false;return;}const i=+b.dataset.pi;
+ if(i===front&&!anim)openSheet(i);else goPlanet(i,()=>openSheet(i));});
+sun.addEventListener('click',()=>{if(moved){moved=false;return;}openSheet(-1);});
+/* sheet */
+const list=$('#gxList'),q=$('#gxQ');
+function itemHTML(c){const p=(GS.find(g=>g.id===c.g)||GS[0]).pal;return '<button class="gx-item'+(c===cur?' on':'')+'" data-gcalc="'+c.id+'" style="'+sty(p)+'"><span class="moon" aria-hidden="true"></span><span class="tx"><span class="t">'+esc(c.title)+'</span><span class="d">'+esc(c.desc||'')+'</span></span><svg class="ch" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>';}
+function fillSearch(){const s=q.value.trim().toLowerCase();const r=C.filter(c=>!s||(c.title+' '+(c.desc||'')+' '+(GROUPS.find(g=>g[0]===c.g)||['',''])[1]).toLowerCase().includes(s));
+ list.innerHTML=r.length?r.map(itemHTML).join(''):'<div class="gx-none">No calculators match that.</div>';}
+function openSheet(i){const mini=$('#gxMini');mini.className='mini';mini.style.cssText='';
+ if(i<0){$('#gxShT').textContent='All calculators';$('#gxShS').textContent=C.length+' calculators on '+N+' prisms';mini.innerHTML='<svg viewBox="8 10 44 56" width="40" height="40">'+sun.querySelector('svg').innerHTML.replace(/id="(\w+)"/g,'id="m$1"').replace(/url\(#(\w+)\)/g,'url(#m$1)')+'</svg>';
+  $('#gxSrch').hidden=false;fillSearch();}
+ else{const g=GS[i];$('#gxShT').textContent=g.name;$('#gxShS').textContent=g.items.length+' calculator'+(g.items.length>1?'s':'');mini.innerHTML='<svg viewBox="8 0 24 24" width="40" height="40">'+plate(g,'m'+i)+'</svg>';
+  $('#gxSrch').hidden=true;list.innerHTML=g.items.map(itemHTML).join('');}
+ gx.classList.add('sheet');list.scrollTop=0;setTimeout(()=>{if(i<0&&matchMedia('(pointer:fine)').matches)q.focus();else{const f=list.querySelector('.gx-item');if(f)f.focus({preventScroll:true});}},RM?0:200);}
+function closeSheet(){if(!gx.classList.contains('sheet'))return;gx.classList.remove('sheet');const f=pls[front];if(f)f.focus({preventScroll:true});}
+q.addEventListener('input',fillSearch);
+q.addEventListener('keydown',e=>{if(e.key==='Enter'){const b=list.querySelector('.gx-item');if(b)b.click();}});
+list.addEventListener('click',e=>{const b=e.target.closest('[data-gcalc]');if(!b)return;close(true);go(b.dataset.gcalc);});
+$('#gxShX').onclick=closeSheet;$('#gxScrim').onclick=closeSheet;$('#gxFind').onclick=()=>openSheet(-1);
+function open(){if(isOpen)return;isOpen=true;document.body.classList.add('gx-open');const a=$('.app');if(a)a.inert=true;
+ $('#gxCloseT').textContent=cur?'Back to '+cur.title:'Back';$('#gxClose').hidden=!cur;
+ nameEl.innerHTML='';size();cancelAnimationFrame(raf);raf=requestAnimationFrame(loop);setTimeout(()=>{gx.focus({preventScroll:true});flash();},60);}
+function close(silent){if(!isOpen)return;isOpen=false;gx.classList.remove('sheet');document.body.classList.remove('gx-open');const a=$('.app');if(a)a.inert=false;cancelAnimationFrame(raf);if(!silent){const m=$('#bGal');if(m&&m.offsetParent)m.focus();}}
+$('#gxClose').onclick=()=>close();
+addEventListener('resize',()=>{if(isOpen)size();});
+document.addEventListener('keydown',e=>{if(!isOpen)return;const inS=gx.classList.contains('sheet');
+ if(e.key==='Escape'){e.preventDefault();e.stopImmediatePropagation();if(inS)closeSheet();else if(cur)close();return;}
+ if(inS)return;
+ if(e.key==='ArrowRight'||e.key==='ArrowDown'){e.preventDefault();e.stopImmediatePropagation();step(1);setTimeout(()=>pls[front]&&pls[front].focus({preventScroll:true}),RM?0:480);}
+ else if(e.key==='ArrowLeft'||e.key==='ArrowUp'){e.preventDefault();e.stopImmediatePropagation();step(-1);setTimeout(()=>pls[front]&&pls[front].focus({preventScroll:true}),RM?0:480);}
+ else if(e.key==='/'){e.preventDefault();e.stopImmediatePropagation();openSheet(-1);}
+},true);
+window.GX={open,close,openSheet,get front(){return GS[front].id}};
+})();
+
+$('#bGal').onclick=()=>GX.open();
+$('#menu').onclick=()=>GX.open();
+
+go(cur.id);
+if(!H0)GX.open();
+window.SC={C,byId,num,rdms,fdms,fbrg,fsta,fFtIn,go};
+</script>
+<script>
+/* offline support when served from a web address (does nothing when opened as a downloaded file) */
+try{if('serviceWorker' in navigator&&/^https?:$/.test(location.protocol)){addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){});});}}catch(e){}
+</script>
+</body>
+</html>
