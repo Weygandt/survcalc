@@ -1,0 +1,1073 @@
+<!doctype html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Stake Reader. How to read survey stakes in the field and what should be on them. A field reference for construction managers.">
+<meta name="theme-color" content="#0E2A3B">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Stake Reader">
+<title>Stake Reader</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230E2A3B'/%3E%3Cpath d='M27 10h10v36l-5 9-5-9z' fill='%23E7CB9C' stroke='%23F2A900' stroke-width='2'/%3E%3Cpath d='M37 12l13 5-13 5z' fill='%23F2A900'/%3E%3C/svg%3E">
+<style>
+:root{--bg:#F3F6F8;--card:#FFFFFF;--card2:#F7F9FB;--ink:#0B1B2B;--ink2:#3A4D60;--ink3:#5C6F82;--line:#D5DDE4;--brand:#0E2A3B;--brand2:#173B52;--acc:#F2A900;--accInk:#1F1500;
+ --ok:#177245;--okbg:#E3F4EA;--bad:#B42318;--badbg:#FDE8E6;--warn:#8A5A00;--warnbg:#FFF4D6;--focus:#1D6FD8;--wood:#E7CB9C;--wood2:#D6B47E;--woodInk:#16110A;--sel:#FFE38A;
+ --mono:ui-monospace,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;--sans:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0B141C;--card:#13212D;--card2:#182A38;--ink:#EEF3F8;--ink2:#C3D0DC;--ink3:#97A9BA;--line:#2A3D4E;--brand:#0A1F2D;--brand2:#173B52;
+ --ok:#5BD08F;--okbg:#123726;--bad:#FF8A80;--badbg:#3D1A18;--warn:#FFD36A;--warnbg:#3A2E0E;--focus:#7FB8FF;--sel:#FFD45C;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0B141C;--card:#13212D;--card2:#182A38;--ink:#EEF3F8;--ink2:#C3D0DC;--ink3:#97A9BA;--line:#2A3D4E;--brand:#0A1F2D;--brand2:#173B52;
+ --ok:#5BD08F;--okbg:#123726;--bad:#FF8A80;--badbg:#3D1A18;--warn:#FFD36A;--warnbg:#3A2E0E;--focus:#7FB8FF;--sel:#FFD45C;color-scheme:dark}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.5;-webkit-text-size-adjust:100%}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.skip{position:absolute;left:-999px;top:0;background:var(--acc);color:var(--accInk);padding:8px 12px;z-index:100;border-radius:0 0 8px 0}
+.skip:focus{left:0}
+header.top{position:sticky;top:0;z-index:40;background:var(--brand);color:#F1F5F8;padding:calc(10px + env(safe-area-inset-top)) 16px 10px;display:flex;align-items:center;gap:12px}
+.mk{width:38px;height:38px;border-radius:10px;background:#F2A900;display:grid;place-items:center;flex:none}
+.brand b{display:block;font-size:17px;font-weight:800;letter-spacing:-.01em;line-height:1.2}
+.brand span{display:block;font-size:12px;color:#B9CCDC}
+.sp{flex:1}
+.tbtn{height:38px;min-width:38px;padding:0 10px;border-radius:10px;border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.08);color:#F1F5F8;cursor:pointer;display:inline-flex;align-items:center;gap:6px;font-size:13.5px;font-weight:600}
+.tbtn svg{width:18px;height:18px}
+nav.tabs{display:flex;gap:4px;background:var(--brand);padding:0 12px 10px;overflow-x:auto;position:sticky;top:58px;z-index:39}
+nav.tabs button{flex:none;border:0;background:transparent;color:#C9D7E2;padding:8px 14px;border-radius:9px;cursor:pointer;font-weight:650;font-size:14.5px;display:inline-flex;align-items:center;gap:7px}
+nav.tabs button svg{width:18px;height:18px}
+nav.tabs button[aria-current="page"]{background:var(--acc);color:var(--accInk)}
+main{max-width:1100px;margin:0 auto;padding:16px 16px 40px}
+h1{font-size:clamp(22px,4.6vw,30px);line-height:1.2;margin:4px 0 6px;letter-spacing:-.02em}
+h2{font-size:19px;margin:22px 0 10px;letter-spacing:-.01em}
+h3{font-size:16px;margin:0 0 8px}
+p{margin:0 0 10px}
+.lede{color:var(--ink2);margin-bottom:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}
+.notice{display:flex;gap:10px;align-items:flex-start;background:var(--warnbg);color:var(--ink);border:1px solid var(--line);border-left:5px solid var(--acc);border-radius:12px;padding:12px 14px;font-size:14.5px;margin:0 0 16px}
+.notice svg{flex:none;width:20px;height:20px;margin-top:2px;color:var(--warn)}
+.search{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:0 12px;height:46px;margin:0 0 6px}
+.search svg{width:18px;height:18px;color:var(--ink3);flex:none}
+.search input{flex:1;min-width:0;border:0;background:transparent;outline:0;font-size:16px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
+.scard{display:flex;gap:12px;align-items:flex-start;text-align:left;width:100%;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:13px;cursor:pointer}
+.scard:hover{border-color:var(--ink3)}
+.scard b{display:block;font-size:15.5px}
+.scard span.s{display:block;font-size:13.5px;color:var(--ink2);margin-top:2px}
+.sw{display:inline-flex;gap:3px;flex:none;margin-top:3px}
+.sw i{width:14px;height:30px;border-radius:3px;border:1px solid rgba(0,0,0,.25);display:block}
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;padding:4px 10px 4px 6px;border-radius:999px;background:var(--card2);border:1px solid var(--line);margin:0 6px 6px 0}
+.chip i{width:14px;height:14px;border-radius:50%;border:1px solid rgba(0,0,0,.3);display:block}
+.back{display:inline-flex;align-items:center;gap:6px;background:none;border:0;color:var(--ink2);cursor:pointer;padding:6px 0;font-weight:600}
+.back svg{width:18px;height:18px}
+.detail{display:grid;grid-template-columns:minmax(220px,300px) 1fr;gap:18px;align-items:start;margin-top:8px}
+@media (max-width:760px){.detail{grid-template-columns:1fr}}
+/* lath drawing */
+.stage{background:linear-gradient(var(--card2),var(--card2)) ;border:1px solid var(--line);border-radius:14px;padding:18px 12px 0;display:flex;flex-direction:column;align-items:center;position:relative;overflow:hidden}
+.stage .cap{font-size:12px;color:var(--ink3);text-align:center;margin:10px 0 12px}
+.lathbox{position:relative;display:flex;flex-direction:column;align-items:center}
+.flags{display:flex;gap:4px;margin-bottom:-2px;z-index:2}
+.flags i{width:20px;height:42px;display:block;border:1px solid rgba(0,0,0,.35);border-radius:2px 2px 6px 6px;transform:rotate(-6deg)}
+.flags i:nth-child(2){transform:rotate(7deg)}
+.flags i.white{background:repeating-linear-gradient(45deg,#fff 0 6px,#E6E6E2 6px 8px)!important}
+.lath{width:min(210px,62vw);background:linear-gradient(90deg,var(--wood2),var(--wood) 18%,var(--wood) 82%,var(--wood2));border:1px solid #9C7A45;border-bottom:0;padding:12px 8px 16px;display:flex;flex-direction:column;gap:4px;min-height:200px;border-radius:3px 3px 0 0}
+.lath button{display:block;width:100%;border:2px solid transparent;background:transparent;color:var(--woodInk);font:800 17px var(--mono);letter-spacing:.02em;text-align:center;padding:6px 4px;border-radius:6px;cursor:pointer;word-break:break-word}
+.lath button:hover{border-color:rgba(0,0,0,.25)}
+.lath button[aria-pressed="true"]{background:var(--sel);border-color:#7A5A00;color:#1A1200}
+.lath .hint{font:600 12px var(--sans);color:#5A4520;text-align:center;margin-top:auto;padding-top:8px}
+.tipwrap{display:flex;align-items:flex-end;gap:10px;position:relative;width:100%;justify-content:center}
+
+.ground{width:calc(100% + 24px);margin-left:-12px;height:30px;background:linear-gradient(#8C7556,#6D5A40);border-top:3px solid #4F4130;position:relative;z-index:1}
+.scene{display:flex;align-items:flex-end;justify-content:center;gap:12px;position:relative;z-index:2;margin-bottom:-14px}
+.hubbox{display:flex;flex-direction:column;align-items:center;gap:4px;margin-bottom:4px}
+.hub{position:relative;width:34px;height:30px;background:linear-gradient(90deg,#B98D52,#D7B07A);border:1px solid #6E5230;border-radius:3px}
+.hub:after{content:'';position:absolute;left:50%;top:4px;width:7px;height:7px;margin-left:-3.5px;border-radius:50%;background:#C9CED3;border:1px solid #555}
+.hub.paint{box-shadow:0 0 0 6px rgba(240,111,168,.55)}
+.hublab{font-size:12px;font-weight:800;color:var(--ink2);letter-spacing:.04em}
+
+.pin{display:flex;flex-direction:column;align-items:center;margin-top:20px}
+.pin .fl{background:#F06FA8;border:1px solid rgba(0,0,0,.35);padding:10px 14px;border-radius:3px;min-width:110px}
+.pin .fl button{background:transparent;border:2px solid transparent;font:800 22px var(--mono);color:#1A0A12;cursor:pointer;padding:2px 8px;border-radius:6px;width:100%}
+.pin .fl button[aria-pressed="true"]{background:var(--sel);border-color:#7A5A00}
+.pin .wire{width:3px;height:120px;background:#8A929A}
+/* explain */
+.explain{scroll-margin-top:84px;border-left:5px solid var(--acc);background:var(--card);border-radius:12px;border-top:1px solid var(--line);border-right:1px solid var(--line);border-bottom:1px solid var(--line);padding:14px 16px;margin-bottom:14px;min-height:96px}
+.explain .k{font:800 18px var(--mono);display:inline-block;background:var(--wood);color:var(--woodInk);padding:2px 8px;border-radius:6px;margin-bottom:8px}
+.explain .lbl{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink3);margin-bottom:4px}
+.explain p{margin:0;font-size:15.5px}
+.sec{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-bottom:12px}
+.sec h2,.sec h3{display:flex;align-items:center;gap:8px;font-size:16px;margin:0 0 8px}
+.sec h2 svg,.sec h3 svg{width:18px;height:18px;flex:none}
+.sec ul{margin:0;padding-left:20px}
+.sec li{margin:0 0 6px}
+.sec.must h2,.sec.must h3{color:var(--ok)} .sec.watch h2,.sec.watch h3{color:var(--bad)}
+.math{font:600 15px var(--mono);background:var(--card2);border:1px solid var(--line);border-radius:8px;padding:10px 12px;margin-top:6px;overflow-wrap:anywhere}
+.pn{display:flex;gap:10px;justify-content:space-between;margin-top:10px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:44px;padding:0 16px;border-radius:11px;border:1px solid var(--line);background:var(--card);cursor:pointer;font-weight:650}
+.btn.pri{background:var(--brand2);border-color:var(--brand2);color:#fff}
+.btn.acc{background:var(--acc);border-color:var(--acc);color:var(--accInk)}
+.btn svg{width:18px;height:18px}
+/* decode */
+.ab{display:grid;grid-template-columns:150px 1fr;gap:12px;padding:11px 4px;border-bottom:1px solid var(--line);align-items:baseline}
+.ab b{font:800 16px var(--mono)}
+.tag{display:inline-block;font-size:12px;font-weight:700;padding:1px 7px;border-radius:999px;margin-left:6px;vertical-align:1px}
+.tag.book{background:var(--okbg);color:var(--ok)}.tag.common{background:var(--card2);color:var(--ink3);border:1px solid var(--line)}
+@media (max-width:520px){.ab{grid-template-columns:1fr;gap:2px}}
+/* tools */
+.tools{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
+.field{display:flex;flex-direction:column;gap:4px;margin-bottom:10px}
+.field label{font-size:13.5px;font-weight:650;color:var(--ink2)}
+.field input,.field select{height:46px;border:1px solid var(--line);border-radius:10px;background:var(--card2);padding:0 12px;font-size:16px;font-family:var(--mono)}
+.field select{font-family:var(--sans)}
+.row{display:flex;gap:8px}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden;height:46px;flex:none}
+.seg button{border:0;background:var(--card2);padding:0 16px;font:800 16px var(--mono);cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--brand2);color:#fff}
+.out{border-radius:10px;padding:12px 14px;margin-top:4px;background:var(--card2);border:1px solid var(--line);font-size:15px}
+.out .big{font:800 22px var(--mono);display:block;margin-bottom:2px}
+.out.ok{background:var(--okbg);border-color:transparent}.out.bad{background:var(--badbg);border-color:transparent}.out.warn{background:var(--warnbg);border-color:transparent}
+/* quiz */
+.qwrap{max-width:720px}
+.prog{height:8px;background:var(--card2);border-radius:4px;overflow:hidden;margin:6px 0 14px;border:1px solid var(--line)}
+.prog i{display:block;height:100%;background:var(--acc)}
+.opt{display:block;width:100%;text-align:left;padding:13px 14px;margin:0 0 8px;border-radius:12px;border:1px solid var(--line);background:var(--card);cursor:pointer;font-size:15.5px}
+.opt:hover{border-color:var(--ink3)}
+.opt.right{background:var(--okbg);border-color:var(--ok)} .opt.wrong{background:var(--badbg);border-color:var(--bad)}
+.opt[disabled]{cursor:default}
+.fb{margin-top:6px;padding:12px 14px;border-radius:12px;background:var(--card2);border:1px solid var(--line)}
+.qlath{display:inline-block;font:800 18px var(--mono);background:var(--wood);color:var(--woodInk);padding:4px 10px;border-radius:6px}
+/* tables */
+table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;font-size:14.5px}
+caption{text-align:left;font-weight:700;padding:0 0 8px;font-size:15px}
+th,td{text-align:left;padding:9px 11px;border-bottom:1px solid var(--line);vertical-align:top}
+thead th{background:var(--brand2);color:#fff;font-size:13.5px}
+tbody th{font-weight:650}
+.tw{overflow-x:auto;margin-bottom:6px;-webkit-overflow-scrolling:touch}
+.swc{display:inline-block;width:16px;height:16px;border-radius:4px;border:1px solid rgba(0,0,0,.3);vertical-align:-3px;margin-right:6px}
+ol.req,ul.chk{padding-left:22px;margin:0}
+ol.req li,ul.chk li{margin:0 0 8px}
+footer{max-width:1100px;margin:0 auto;padding:6px 16px calc(90px + env(safe-area-inset-bottom));color:var(--ink3);font-size:12.5px}
+@media (max-width:760px){
+ nav.tabs{position:fixed;top:auto;bottom:0;left:0;right:0;justify-content:space-around;padding:6px 4px calc(6px + env(safe-area-inset-bottom));gap:0;border-top:1px solid rgba(255,255,255,.12)}
+ nav.tabs button{flex-direction:column;gap:2px;font-size:12px;padding:6px 6px;min-width:62px}
+ nav.tabs button svg{width:22px;height:22px}
+ main{padding-bottom:30px}
+}
+@media print{nav.tabs,header.top .tbtn{display:none}}
+/* vertical lath */
+.vl{position:relative;width:var(--w);height:var(--h);background:linear-gradient(90deg,var(--wood2),var(--wood) 16%,var(--wood) 84%,var(--wood2));border:1px solid #9C7A45;border-bottom:0;border-radius:3px 3px 0 0}
+.vl .face{position:absolute;left:0;top:var(--h);width:var(--h);height:var(--w);transform-origin:0 0;transform:rotate(-90deg);display:flex;flex-direction:column;justify-content:center;padding:8px 10px}
+.vl .face button,.vl .face span{display:block;flex:1;max-height:34px;width:100%;border:2px solid transparent;background:transparent;color:var(--woodInk);font:800 16px var(--mono);letter-spacing:.03em;text-align:center;padding:0 6px;border-radius:6px;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:28px}
+.vl .face span{cursor:default}
+.vl .face button:hover{border-color:rgba(0,0,0,.25)}
+.vl .face button[aria-pressed="true"]{background:var(--sel);border-color:#7A5A00;color:#1A1200}
+.pointy{width:0;height:0;border-left:calc(var(--w)/2) solid transparent!important;border-right:calc(var(--w)/2) solid transparent!important;border-top:26px solid var(--wood2)}
+/* read */
+textarea{width:100%;border:1px solid var(--line);border-radius:10px;background:var(--card2);padding:10px 12px;font:600 16px/1.5 var(--mono);text-transform:uppercase;resize:vertical;color:var(--ink)}
+.flbl{font-size:13.5px;font-weight:650;color:var(--ink2)}
+.fchips{display:flex;flex-wrap:wrap;gap:6px}
+.fchips button{display:inline-flex;align-items:center;gap:6px;min-height:38px;padding:0 12px;border-radius:999px;border:1px solid var(--line);background:var(--card2);cursor:pointer;font-size:14px;font-weight:600}
+.fchips button i{width:14px;height:14px;border-radius:50%;border:1px solid rgba(0,0,0,.3)}
+.fchips button[aria-pressed="true"]{background:var(--brand2);border-color:var(--brand2);color:#fff}
+.rline .k{font:800 16px var(--mono);display:inline-block;background:var(--wood);color:var(--woodInk);padding:2px 8px;border-radius:6px}
+.rline.flash{outline:3px solid var(--acc)}
+ul.dl{margin:8px 0 0;padding-left:18px}ul.dl li{margin:0 0 6px}ul.dl li b{font-family:var(--mono)}ul.dl li.unk{color:var(--ink2)}
+.need{display:flex;gap:6px;align-items:flex-start;color:var(--warn);font-size:14px;margin-top:4px;font-weight:600}
+.need svg{width:16px;height:16px;flex:none;margin-top:2px}
+ul.ck{list-style:none;padding:0;margin:0}ul.ck li{display:flex;gap:8px;align-items:center;margin:0 0 5px}ul.ck li svg{width:18px;height:18px;flex:none}
+ul.ck li.y svg{color:var(--ok)}ul.ck li.n{font-weight:650}ul.ck li.n svg{color:var(--bad)}
+details summary{cursor:pointer;padding:2px 0}
+/* request */
+.rq{grid-template-columns:minmax(300px,1.1fr) 1fr}
+@media (max-width:860px){.rq{grid-template-columns:1fr}}
+.rd{grid-template-columns:minmax(280px,1fr) 1.1fr}
+@media (max-width:760px){.rd{grid-template-columns:1fr}}
+fieldset{border:1px solid var(--line);border-radius:12px;padding:10px 12px 4px;margin:6px 0 12px}
+legend{font-weight:750;padding:0 6px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media (max-width:420px){.row2{grid-template-columns:1fr}}
+.field textarea{font-family:var(--sans);font-weight:500;text-transform:none}
+#rt{text-transform:uppercase}
+.hintx{font-size:12.5px;color:var(--ink3)}
+.req6{font-size:12px;font-weight:700;padding:1px 7px;border-radius:999px;margin-left:4px;vertical-align:1px}
+.req6.y{background:var(--okbg);color:var(--ok)}.req6.n{background:var(--badbg);color:var(--bad)}
+label.cb{display:flex;gap:10px;align-items:flex-start;margin:0 0 10px;font-size:14.5px;cursor:pointer}
+label.cb input{width:20px;height:20px;flex:none;margin-top:1px;accent-color:var(--brand2)}
+pre.reqout{white-space:pre-wrap;font:500 14px/1.55 var(--mono);background:var(--card2);border:1px solid var(--line);border-radius:10px;padding:12px;margin:0 0 10px;max-height:460px;overflow:auto}
+.acts{display:flex;gap:8px;flex-wrap:wrap}.acts a.btn{text-decoration:none;color:var(--ink)}
+nav.tabs .mo{display:none}
+@media (max-width:760px){nav.tabs .dk{display:none}nav.tabs .mo{display:inline-flex}}
+/* ===== HOME (galaxy ring of stakes) ===== */
+.gx{position:fixed;inset:0;z-index:80;display:none;overflow:hidden;color:#EEF3F8;font-family:var(--sans);
+ background:radial-gradient(1200px 700px at 78% 12%,rgba(124,77,255,.20),transparent 60%),radial-gradient(900px 600px at 10% 85%,rgba(0,170,200,.16),transparent 60%),radial-gradient(700px 500px at 50% 55%,rgba(242,169,0,.07),transparent 65%),#04070D;
+ touch-action:none;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent}
+body.gx-open .gx{display:block} body.gx-open{overflow:hidden}
+.gx:focus{outline:none}
+.gx canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.gx-top{position:absolute;left:0;right:0;top:0;z-index:120;display:flex;align-items:center;gap:10px;padding:calc(12px + env(safe-area-inset-top)) 16px 12px}
+.gx-brand{display:flex;align-items:center;gap:10px;min-width:0}
+.gx-brand .mk{width:34px;height:34px;border-radius:10px}
+.gx-brand b{display:block;font-size:16px;font-weight:800}
+.gx-brand span{display:block;font-size:11.5px;color:#A9BACB}
+.gx-sp{flex:1}
+.gx-btn{display:inline-flex;align-items:center;gap:7px;height:40px;padding:0 13px;border-radius:12px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.07);color:#EEF3F8;font:600 13.5px var(--sans);cursor:pointer}
+.gx-btn svg{width:17px;height:17px;flex:none}
+.gx-btn:hover{background:rgba(255,255,255,.13)}
+.gx-btn:focus-visible,.gx-st:focus-visible,.gx-cm:focus-visible,.gx-item:focus-visible{outline:3px solid #7FB8FF;outline-offset:3px}
+.gx-stage{position:absolute;inset:0;z-index:10}
+.gx-orbit{position:absolute;border:1px solid rgba(160,190,230,.16);border-radius:50%;pointer-events:none}
+.gx-orbit.o2{border-style:dashed;border-color:rgba(160,190,230,.08)}
+.gx-glow{position:absolute;border-radius:50%;pointer-events:none;z-index:49;background:radial-gradient(circle,rgba(255,200,60,.22) 0,rgba(242,169,0,.10) 30%,rgba(120,180,255,.05) 55%,transparent 70%);animation:gxpulse 5s ease-in-out infinite}
+@keyframes gxpulse{50%{opacity:.7;transform:scale(1.06)}}
+.gx-cm{position:absolute;border:0;padding:0;background:none;cursor:pointer;z-index:50}
+.gx-cm svg{width:100%;height:100%;display:block;filter:drop-shadow(0 4px 10px rgba(0,0,0,.6));overflow:visible}
+.gx-st{position:absolute;left:0;top:0;border:0;padding:0;background:none;cursor:pointer;width:1em;height:2.6em;transform-origin:50% 100%;will-change:transform,opacity;border-radius:.2em}
+.gx-st svg{display:block;width:1em;height:2.6em;overflow:visible}
+.gx-line{position:absolute;left:0;top:0;z-index:85;pointer-events:none;overflow:visible}
+.gx-name{position:absolute;left:0;right:0;text-align:center;z-index:110;pointer-events:none;padding:0 16px}
+.gx-name b{display:block;font-size:clamp(22px,5.4vw,34px);font-weight:800;letter-spacing:-.02em;text-shadow:0 2px 18px rgba(0,0,0,.6)}
+.gx-name span{display:block;margin-top:4px;font-size:13.5px;color:#B9C8D6}
+.gx-dots{display:flex;gap:6px;justify-content:center;margin-top:12px}
+.gx-dots i{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.25)}
+.gx-dots i.on{background:#F2A900;width:18px;border-radius:4px}
+.gx-hint{position:absolute;left:0;right:0;bottom:calc(14px + env(safe-area-inset-bottom));text-align:center;z-index:110;font-size:11.5px;color:#8FA3B6;pointer-events:none;padding:0 16px;line-height:1.5}
+.gx-hint b{color:#C4D2DE;font-weight:600}
+.gx-sheet{position:absolute;left:0;right:0;bottom:0;z-index:150;max-height:78%;display:flex;flex-direction:column;background:rgba(10,18,30,.9);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+ border-top:1px solid rgba(255,255,255,.14);border-radius:22px 22px 0 0;box-shadow:0 -20px 60px rgba(0,0,0,.55);transform:translateY(105%);transition:transform .32s cubic-bezier(.2,.8,.2,1);padding-bottom:env(safe-area-inset-bottom)}
+.gx.sheet .gx-sheet{transform:none}
+.gx-scrim{position:absolute;inset:0;z-index:140;background:rgba(0,0,0,.35);opacity:0;pointer-events:none;transition:opacity .25s}
+.gx.sheet .gx-scrim{opacity:1;pointer-events:auto}
+.gx-grab{width:42px;height:5px;border-radius:3px;background:rgba(255,255,255,.25);margin:9px auto 2px}
+.gx-sh{display:flex;align-items:center;gap:12px;padding:10px 16px 12px}
+.gx-sh h2{margin:0;font-size:19px;font-weight:800;color:#EEF3F8}
+.gx-sh p{margin:2px 0 0;font-size:12.5px;color:#A9BACB}
+.gx-sh .x{margin-left:auto}
+.gx-search{margin:0 16px 10px;display:flex;align-items:center;gap:8px;height:44px;padding:0 12px;border-radius:12px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16)}
+.gx-search[hidden]{display:none}
+.gx-search svg{width:18px;height:18px;color:#A9BACB;flex:none}
+.gx-search input{flex:1;min-width:0;background:none;border:0;outline:0;color:#EEF3F8;font:500 16px var(--sans)}
+.gx-search input::placeholder{color:#8FA3B6}
+.gx-list{overflow-y:auto;padding:2px 10px 16px;-webkit-overflow-scrolling:touch;touch-action:pan-y}
+.gx-item{display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:12px 10px;border:0;border-radius:12px;background:none;color:#EEF3F8;cursor:pointer;font-family:var(--sans)}
+.gx-item:hover,.gx-item:active{background:rgba(255,255,255,.08)}
+.gx-item .sw i{height:26px;width:10px}
+.gx-item .t{display:block;font-size:15.5px;font-weight:650}
+.gx-item .d{display:block;font-size:12.5px;color:#A9BACB;margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.gx-item .tx{min-width:0;flex:1}
+.gx-item .ch{width:18px;height:18px;color:#6F8498;flex:none}
+.gx-none{padding:18px 16px;color:#A9BACB;font-size:14px}
+@media (min-width:760px){.gx-sheet{left:50%;right:auto;width:520px;margin-left:-260px;bottom:24px;border-radius:22px;border:1px solid rgba(255,255,255,.14);max-height:min(640px,80%)}
+ .gx:not(.sheet) .gx-sheet{transform:translateY(calc(100% + 40px))}}
+@media (max-width:520px){.gx-btn .tl{display:none}.gx-btn{padding:0 11px}}
+@media (prefers-reduced-motion:reduce){.gx-glow{animation:none}.gx-sheet,.gx-scrim{transition:none}}
+.homebtn{margin-right:2px}
+.rq .field input{font-family:var(--sans);font-weight:500}
+
+/* lath in the book's format: top zone across, flagging, then written down the lath */
+.scene2{display:flex;align-items:stretch;justify-content:center;gap:22px;position:relative;z-index:2;margin-bottom:-14px}
+.scene2.cross{padding:0 14px}
+.scene2.cross .lface:first-child{transform:rotate(-4deg);transform-origin:bottom center}
+.scene2.cross .lface:nth-child(2){transform:rotate(4deg);transform-origin:bottom center}
+.lface{display:flex;flex-direction:column;align-items:center}
+.llab{font:800 12px var(--sans);letter-spacing:.12em;color:var(--ink3);margin-bottom:6px}
+.lath3{position:relative;flex:1;width:84px;min-height:280px;background:linear-gradient(90deg,var(--wood2),var(--wood) 14%,var(--wood) 86%,var(--wood2));border:1px solid #9C7A45;border-bottom:0;border-radius:3px 3px 0 0;padding:8px 4px 16px;display:flex;flex-direction:column;align-items:center}
+.ztop{display:flex;flex-direction:column;align-items:center;gap:2px;min-height:34px;width:100%}
+.fband{width:116px;height:28px;margin:4px 0 6px;display:flex;align-items:center;justify-content:center;pointer-events:none}
+.fwave{width:116px;height:100%;overflow:visible}
+.zbody{display:flex;flex-direction:column;align-items:center;gap:2px;width:100%}
+.lath3 .lm{border:2px solid transparent;background:transparent;color:var(--woodInk);border-radius:7px;cursor:pointer;font:800 16px/1.15 var(--mono);letter-spacing:.02em;padding:3px 2px;display:flex;flex-direction:column;align-items:center;max-width:100%}
+.lath3 div.lm{cursor:default}
+.lath3 .lm.la{width:100%}
+.lath3 .lm .ac{display:block;max-width:100%;overflow-wrap:anywhere;text-align:center}
+.lath3 .lm .circ{display:inline-flex;align-items:center;justify-content:center;min-width:34px;height:34px;padding:0 3px;border:2px solid var(--woodInk);border-radius:50%;font-size:14px;letter-spacing:0}
+.lath3 .lm .vt{writing-mode:vertical-rl;text-orientation:mixed;white-space:nowrap;display:inline-block;padding:2px 0}
+.lath3 .lm .dc{font-size:12px;line-height:1;display:inline-block}
+.lath3 .lm .vt .dc{vertical-align:super;border-left:2px solid currentColor;padding-left:1px;margin-left:1px}
+.lath3 .lm .ac .dc{vertical-align:super;border-bottom:2px solid currentColor}
+.lath3 button.lm:hover{border-color:rgba(0,0,0,.25)}
+.lath3 button.lm[aria-pressed="true"]{background:var(--sel);border-color:#7A5A00;color:#1A1200}
+.lath3 button.lm[aria-pressed="true"] .circ{border-color:#1A1200}
+.tip2{width:0;height:0;border-left:42px solid transparent;border-right:42px solid transparent;border-top:22px solid var(--wood2)}
+.scene2.bt{align-items:flex-end;margin-bottom:-6px}
+.btb{display:flex;flex-direction:column-reverse;align-items:center;gap:6px;border:2px solid transparent;background:transparent;border-radius:10px;padding:6px 10px;cursor:pointer;color:var(--ink)}
+.btb:hover{border-color:var(--line)}
+.btb[aria-pressed="true"]{background:var(--sel);border-color:#7A5A00;color:#1A1200}
+.btl{font:800 15px var(--mono)}
+.btl .dc{font-size:12px;border-bottom:2px solid currentColor;vertical-align:super}
+</style>
+<link rel="apple-touch-icon" sizes="180x180" href="icons/icon-180.png">
+<link rel="manifest" href="manifest.webmanifest">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <div class="mk" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0E2A3B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3h4v14l-2 4-2-4z"/><path d="M14 4l5 2.2-5 2.2" fill="#0E2A3B"/></svg></div>
+  <div class="brand"><b>Stake Reader</b><span>Reading survey stakes in the field</span></div>
+  <div class="sp"></div>
+  <button class="tbtn" id="theme" aria-label="Switch light or dark"><span id="themeT">Dark</span></button>
+</header>
+<nav class="tabs" aria-label="Sections">
+  <button data-tab="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="7" r="3"/><path d="M6 21v-4a6 6 0 0 1 12 0v4"/><path d="M3 21h18"/></svg>Home</button>
+  <button data-tab="stakes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 3h4v14l-2 4-2-4z"/><path d="M14 4l5 2-5 2"/></svg>Stakes</button>
+  <button data-tab="read"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h10M4 12h10M4 18h7"/><circle cx="18" cy="16" r="3"/><path d="M20.5 18.5L22 20"/></svg>Read</button>
+  <button data-tab="request"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16v12H8l-4 4z"/><path d="M8 9h8M8 12h5"/></svg>Request</button>
+  <button data-tab="tools" class="dk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8M8 12h2M12 12h2M8 16h2M12 16h2"/></svg>Cut &amp; Fill</button>
+  <button data-tab="check" class="dk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg>Field Check</button>
+  <button data-tab="rules" class="dk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h9l3 3v15H6z"/><path d="M9 10h6M9 14h6M9 18h4"/></svg>Rules</button>
+  <button data-tab="more" class="mo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg>More</button>
+</nav>
+<main id="main" tabindex="-1"></main>
+<footer>Conventions and colors follow <i>Construction Layout &amp; Survey Control</i> (Front Range commercial practice). Lath layouts are typical, not a standard. Example numbers are made up. Always confirm with your surveyor's staking legend and cut sheet.<br>Developed by Jeff Weygandt, PLS · R&amp;R Engineers | Surveyors</footer>
+<div class="gx" id="gx" tabindex="-1" role="dialog" aria-modal="true" aria-label="Stake Reader home">
+  <canvas id="gxStars" aria-hidden="true"></canvas>
+  <div class="gx-top">
+    <div class="gx-brand"><div class="mk" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0E2A3B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3h4v14l-2 4-2-4z"/><path d="M14 4l5 2.2-5 2.2" fill="#0E2A3B"/></svg></div><div><b>Stake Reader</b><span>Pick a stake to check</span></div></div>
+    <div class="gx-sp"></div>
+    <button class="gx-btn" id="gxFind" aria-label="Search all stakes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><span class="tl">Search</span></button>
+    <button class="gx-btn" id="gxClose" aria-label="Close home and return"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg><span class="tl" id="gxCloseT">Back</span></button>
+  </div>
+  <div class="gx-stage" id="gxStage">
+    <div class="gx-orbit o2" id="gxOrb2"></div>
+    <div class="gx-orbit" id="gxOrb"></div>
+    <div class="gx-glow" id="gxGlow"></div>
+    <button class="gx-cm" id="gxCM" aria-label="Construction manager, search all stakes"></button>
+    <div id="gxStakes"></div>
+    <svg class="gx-line" id="gxLine" aria-hidden="true"></svg>
+  </div>
+  <div class="gx-name" id="gxName" aria-live="polite"></div>
+  <div class="gx-hint"><b>Swipe</b> to turn the CM · <b>Tap a stake</b> to open it · Tap the CM to search everything<br>Developed by Jeff Weygandt, PLS · R&amp;R Engineers | Surveyors</div>
+  <div class="gx-scrim" id="gxScrim"></div>
+  <section class="gx-sheet" id="gxSheet" aria-labelledby="gxShT">
+    <div class="gx-grab" aria-hidden="true"></div>
+    <div class="gx-sh"><span id="gxMini" aria-hidden="true"></span><div><h2 id="gxShT"></h2><p id="gxShS"></p></div><button class="gx-btn x" id="gxShX" aria-label="Back to home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <div class="gx-search" id="gxSrch" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="gxQ" type="search" placeholder="Search stakes and shorthand" autocomplete="off" aria-label="Search stakes and shorthand"></div>
+    <div class="gx-list" id="gxList"></div>
+  </section>
+</div>
+
+<script>
+/* ===== STAKE LIBRARY =====
+   Colors follow the Construction Stake Color Reference in Construction Layout & Survey Control.
+   Lath layouts are typical, not a standard. Example numbers are made up for this tool. */
+const COLORS={pink:{n:'Pink',c:'#F06FA8'},green:{n:'Green',c:'#2FA35A'},orange:{n:'Orange',c:'#FF8A1F'},white:{n:'White',c:'#F4F4F2'},
+ blue:{n:'Blue',c:'#2F7FE0'},purple:{n:'Purple',c:'#8E5BD8'},red:{n:'Red',c:'#E0362C'},yellow:{n:'Yellow',c:'#F5D31F'},none:{n:'Pin flag',c:'#F06FA8'}};
+const PHASES=[['control','Control and Boundary'],['earth','Earthwork'],['util','Underground Utilities'],['struct','Foundations and Structure'],['flat','Curb, Paving and Flatwork'],['change','Changes']];
+/* Stake faces follow the R&R stake detail sheets (book Appendix pages 38 to 47).
+   Front, above the flagging: circled offset, then the ID written across, one word per line.
+   Front, below the flagging: grades written down the lath. Decimals are written small and underlined.
+   Back: calculated stake point number, EL = hub elevation, and the station. */
+const T=(r,k,d)=>({z:'top',r:[].concat(r),k,d});          /* written across, above the flagging */
+const H=(r,k,d)=>({z:'body',h:1,r:[].concat(r),k,d});     /* written across, below the flagging */
+const V=(t,k,d)=>({z:'body',r:[t],k,d});                  /* written down the lath */
+const O=(ft,d)=>({z:'top',circ:true,r:[ft],k:'off',d:d||('Offset '+ft.replace("'",'')+' ft. The circled number is the offset distance from the hub to the design point.')});
+const PT=n=>T(n,'pt','Calculated stake point number. It matches the cut sheet and the crew\'s data collector. Give this number when you call about a stake.');
+const HUBEL=(v)=>V('EL='+v,'elev','Hub elevation, '+v+' ft: the elevation of the top of the hub next to this lath. Design minus the hub elevation is the cut or fill on the front.');
+const STA=(v)=>V(v,'sta','Station '+v+' along the line.');
+const STAKES=[
+{id:'cp',ph:'control',name:'Control point',flag:['pink'],paint:true,hub:true,faces:['GUARD LATH','GUARD LATH'],
+ sum:'A wood hub and tack, or #5 rebar with a pink plastic cap stamped CONTROL POINT, guarded by two crossed lath. Pink flagging and pink paint.',
+ front:[V('CP#100','id','Control point 100. It matches the surveyor\'s control list, which gives its coordinates and elevation.'),V('SAVE','note','Do not disturb. Control lost mid project stops layout until the surveyor resets and checks it.')],
+ back:[V('CP#100','id','The second guard lath says the same thing, so the point can be found from any direction.'),V('SAVE','note','Do not disturb.')],
+ hubNote:'The tack in the top of the 3/4" x 3/4" hub, or the rebar cap, is the actual point. The lath only guard it. Never measure from the lath.',
+ must:['Point number (CP#)','SAVE','Two guard lath, pink flagging and pink paint','Hub and tack, or #5 rebar with a pink cap stamped CONTROL POINT'],
+ watch:['Control inside the grading limits gets driven over. Primary control belongs outside the disturbance area.','A leaning guard lath or a chewed up hub means the point may have moved. Report it, do not reset it.','Never move a hub yourself.'],
+ acc:'Set and checked by the licensed surveyor. Primary control is the reference for every tolerance on the job.'},
+{id:'bm',ph:'control',name:'Benchmark',flag:['pink','green'],hub:true,
+ sum:'The vertical reference. Pink hub or lath with green flagging, per the book\'s color system.',
+ front:[T(['BM 3'],'id','Benchmark 3. Match it to the benchmark on the plans or the control sheet.'),V('EL=5418.42','elev','Elevation of the benchmark, 5,418.42 ft. Every grade nearby traces back to it.')],
+ back:[V('TOP OF HUB','note','Which exact spot the elevation belongs to.'),V('NAVD 88','datum','Vertical datum. If the plans use a different datum, every elevation is off by the difference. Confirm it at kickoff.')],
+ hubNote:'The elevation belongs to one exact spot. If it is not obvious which spot, ask.',
+ must:['Benchmark ID','Elevation to the hundredth','Which spot the elevation applies to','Datum'],
+ watch:['Benchmarks for piers and foundations should be set by differential leveling, not GNSS.','A new benchmark should be checked into a second, independent benchmark.'],
+ acc:'Finish floor and foundation work needs ±0.02 ft vertical, so the benchmark has to be better than that.'},
+{id:'prop',ph:'control',name:'Property corner',flag:['pink'],
+ sum:'A legal boundary monument. Pink means precision or property. Do not disturb.',
+ front:[T(['PROP','COR'],'id','Property corner. A legal boundary, not a construction point.'),V('SAVE','note','Do not disturb.')],
+ back:[V('#5 REBAR W/CAP','mon','What the monument is: #5 rebar with a cap stamped with the surveyor\'s license number.')],
+ must:['What the monument is','A witness lath so it can be found','Ties and photos documented before ground disturbance'],
+ watch:['Many states restrict disturbing boundary monuments.','Do not measure setbacks from a pin you found. Call the surveyor.'],
+ acc:'Legal significance. Only the licensed surveyor sets, resets, or certifies a property corner.'},
+{id:'limits',ph:'earth',name:'Limits / silt fence',flag:['orange'],
+ sum:'Construction boundary and erosion control extents. Orange is the workhorse color, so read the lath.',
+ front:[V('SILT FENCE','id','What the line is. Silt fence goes on this line.')],
+ back:[PT('1501')],
+ must:['What the line is','A stake at every angle point'],
+ watch:['Orange paint on the ground near a trench is an 811 communications locate, not a survey line.'],
+ acc:'Rough. Typically within a few tenths of a foot.'},
+{id:'blue',ph:'earth',name:'Blue tops',flag:[],bluetop:true,
+ sum:'A wood hub with blue whiskers, driven so its top is right at grade. No lath. Set on a 50 ft grid or at 50 ft intervals.',
+ front:[V('TOP = GRADE','note','The top of the hub is set right at grade: subgrade, finished grade, or bottom of asphalt, or what the contractor requested. The blue whiskers make it easy to see from the machine.')],back:[],
+ hubNote:'The top of the blue top is set at subgrade, finished grade, or bottom of asphalt, or as the contractor requests. The grader trims to the top of the hub.',
+ must:['Blue whiskers so the operator can see it','Top of hub set at the requested grade','50 ft grid or 50 ft interval'],
+ watch:['Know which grade the tops are set to: subgrade, finished grade, or bottom of asphalt. Ask before trimming.','A blue top that gets hit is no longer at grade.'],
+ acc:'Finish grading ±0.05 ft.'},
+{id:'pondstory',ph:'earth',name:'Pond slope stake (story calls)',flag:['orange'],hub:true,
+ sum:'Detention pond stake set 5 ft outside top of bank every 25 ft. Standard calls: each call is separated by a single slash and every distance and cut is from the hub.',
+ front:[O("5'","Offset 5 ft. The hub sits 5 ft outside the top of bank."),T(['POND'],'id','Detention pond.'),V("TBK 5' C 0.50",'grade','Top of bank is 5 ft out from the hub, 0.50 ft below the hub.'),V('/','note','Single slash: standard calls. Each call is measured from the hub.'),V("TOE 21' C 4.50",'grade','Toe of slope is 21 ft out from the hub, 4.50 ft below the hub.'),V('/','note','Single slash: the next call is also from the hub.'),V("CL 46' C 5.00",'grade','Pond bottom at centerline, 46 ft out from the hub, 5.00 ft below the hub.')],
+ back:[PT('712'),HUBEL('5420.00')],
+ must:['Circled offset','POND','Each call: what it is, distance, cut or fill','Point number and hub EL on the back'],
+ watch:['Standard calls stand alone. One bad measurement does not carry into the next one.','Know whether you are reading / (from the hub) or // (from the last point) before you measure.'],
+ acc:'Rough grading, ±0.10 ft.',ex:{ref:5420.00,des:5415.00,what:'pond bottom at CL'}},
+{id:'pondprog',ph:'earth',name:'Pond slope stake (progressive)',flag:['orange'],hub:true,
+ sum:'Same pond, progressive calls. Calls are separated by a double slash and each one starts where the last one ended.',
+ front:[O("5'","Offset 5 ft. The hub sits 5 ft outside the top of bank."),T(['POND'],'id','Detention pond.'),V("TBK 5' C 0.50",'grade','From the hub to top of bank: 5 ft out, 0.50 ft down.'),V('//','note','Double slash: progressive. The next call starts at top of bank.'),V("TOE 16' C 4.00",'grade','From top of bank down the 4:1 slope: 16 ft out, 4.00 ft down.'),V('//','note','Double slash: the next call starts at the toe.'),V("CL 25' C 0.50",'grade','From the toe across the 2% bottom: 25 ft out, 0.50 ft down.')],
+ back:[PT('712'),HUBEL('5420.00')],
+ must:['Circled offset','POND','Each call: what it is, distance, cut or fill','Point number and hub EL on the back'],
+ watch:['Check the totals: 5 + 16 + 25 = 46 ft, and 0.50 + 4.00 + 0.50 = 5.00 ft. They should match the standard calls.','One bad measurement carries into every call after it.'],
+ acc:'Rough grading, ±0.10 ft.'},
+{id:'rg',ph:'earth',name:'Rough grade stake',flag:['orange'],hub:true,
+ sum:'Earthwork grade stake. Tells the grading crew how much to cut or fill at this spot.',
+ front:[T(['RG'],'id','Rough grade. For grading reference only. Nothing gets built from it.'),V('C 1.84','grade','Cut 1.84 ft. Hub 5,421.96 minus rough grade 5,420.12.')],
+ back:[PT('2215'),HUBEL('5421.96')],
+ must:['RG','Cut or fill','Point number and hub EL on the back'],
+ watch:['RG stakes get consumed by grading. That is expected.','Machine control is not the final authority on finished grade. Pads are accepted only after an independent check.'],
+ acc:'±0.10 ft horizontal and vertical. GNSS acceptable, level check at acceptance.',ex:{ref:5421.96,des:5420.12,what:'rough grade'}},
+{id:'env',ph:'earth',name:'Building envelope (rough)',flag:['purple'],hub:true,
+ sum:'Rough building outline for grading. Purple in the book\'s system. Not to be built from.',
+ front:[T(['RG','BLDG A'],'id','Rough grade, Building A envelope. For grading only.'),V('F 0.62 SG','grade','Fill 0.62 ft to subgrade. Hub 5,419.88, subgrade 5,420.50.')],
+ back:[PT('2301'),HUBEL('5419.88')],
+ must:['RG and which building','Cut or fill and what it is to'],
+ watch:['Never set forms, footings, or anchor rods from envelope stakes. Order building layout.'],
+ acc:'±0.10 ft. Grading reference only.',ex:{ref:5419.88,des:5420.50,what:'subgrade'}},
+{id:'stmpipe',ph:'util',name:'Storm drain main',flag:['orange'],hub:true,
+ sum:'Line and grade for a storm pipe. Per the R&R sheet: 50 ft interval in tangents, 25 ft in curves, and every angle point. Offset as requested by the contractor.',
+ front:[O("10'"),V('STORM','id','Storm drain.'),V('C 7.86 INV','grade','Cut 7.86 ft from the top of the hub to the pipe invert. Hub 5,416.20 minus invert 5,408.34.')],
+ back:[HUBEL('5416.20'),PT('3108'),STA('1+50')],
+ must:['Circled offset','STORM','Cut to invert','Hub EL, point number and station on the back'],
+ watch:['Confirm the cut is to invert, not top of pipe.','Storm can run as flat as 0.5%. There is almost no room for error.','Every crossing, tee, wye and connection gets staked no matter the spacing.'],
+ acc:'±0.05 ft horizontal, ±0.02 to 0.05 ft vertical. Inverts by differential leveling.',ex:{ref:5416.20,des:5408.34,what:'invert'}},
+{id:'stmmh',ph:'util',name:'Storm drain manhole',flag:['orange'],hub:true,
+ sum:'Two offsets for each manhole, on the manhole centerlines. Each lath carries every invert and the rim.',
+ front:[O("10'"),T(['SD','MH'],'id','Storm drain manhole.'),V('C 9.12 INV IN W','grade','Cut 9.12 ft to the invert of the pipe coming in from the west (5,406.26).'),V('//','note','Separator between the inverts.'),V('C 9.22 INV OUT E','grade','Cut 9.22 ft to the invert of the pipe going out to the east (5,406.16). Out is always lower than in.'),V('F 0.47 RIM','grade','Fill 0.47 ft to the rim (5,415.85).')],
+ back:[T(['4104'],'pt','Calculated stake point number.'),STA('1+28.50'),HUBEL('5415.38')],
+ must:['Circled offset','SD MH','Every invert, with direction','Rim','Point number, station and hub EL on the back'],
+ watch:['The out invert should be lower than every in invert. If it is not, stop.','A connection to an existing structure is not complete until the existing invert is confirmed.'],
+ acc:'±0.05 ft horizontal, ±0.02 to 0.05 ft vertical on inverts.',ex:{ref:5415.38,des:5406.26,what:'invert in'}},
+{id:'inlet',ph:'util',name:'Storm drain curb inlet',flag:['orange','white'],hub:true,
+ sum:'One stake on the inlet centerline at the flowline, offset back from the curb. Graded to top back of curb.',
+ front:[O("15'"),T(['℄','INLET','ON','℄'],'id','Centerline of inlet on centerline. The stake is on the inlet centerline.'),V('F 1.20 TBC','grade','Fill 1.20 ft to top back of curb. Hub 5,413.20, TBC 5,414.40.')],
+ back:[PT('6316'),HUBEL('5413.20'),STA('0+75')],
+ must:['Circled offset','℄ INLET ON ℄','Grade to TBC','Point number, hub EL and station on the back'],
+ watch:['Inlet grade has to match the curb grade or water will not get in.'],
+ acc:'Same as curb: ±0.03 ft horizontal, ±0.02 to 0.03 ft vertical.',ex:{ref:5413.20,des:5414.40,what:'TBC'}},
+{id:'grate',ph:'util',name:'Storm drain inlet (area)',flag:['orange'],hub:true,
+ sum:'Four hubs at 10.00 ft on the two inlet centerlines. Each lath gives the cut to invert and the fill to grate.',
+ front:[O("10'"),T(['℄','INLET'],'id','On the inlet centerline.'),V('C 6.22 INV','grade','Cut 6.22 ft to the invert. Hub 5,410.62 minus invert 5,404.40.'),V('/','note','Separator.'),V('F 0.23 GRATE','grade','Fill 0.23 ft to the grate (5,410.85).')],
+ back:[PT('6506'),HUBEL('5410.62'),STA('3+25')],
+ must:['Circled offset','℄ INLET','Cut to invert and fill to grate','Point number, hub EL and station on the back'],
+ watch:['Four hubs, one on each side, so the box can be strung both ways.'],
+ acc:'±0.05 ft horizontal, ±0.02 to 0.05 ft vertical.',ex:{ref:5410.62,des:5404.40,what:'invert'}},
+{id:'sanmh',ph:'util',name:'Sanitary manhole',flag:['green'],hub:true,
+ sum:'MH 1, one of two offset stakes. Inverts in and out plus the rim, all on one lath. Green flagging.',
+ front:[O("10'","Offset 10 ft to the manhole center."),T(['SAN','MH'],'id','Sanitary manhole.'),V('C 9.35 INV IN','grade','Cut 9.35 ft to the invert of the pipe coming in (5,411.10).'),V('C 9.55 INV OUT','grade','Cut 9.55 ft to the invert of the pipe going out (5,410.90). Out is always lower than in.'),V('F 0.75 RIM','grade','Fill 0.75 ft to the rim (5,421.20).')],
+ back:[PT('306'),STA('0+00'),V("(260' @ 1.00%)",'pipe','The run to the next manhole: 260 ft at 1.00% slope.'),HUBEL('5420.45')],
+ must:['Circled offset','SAN MH','Every invert, in and out, and the rim','Point number, station, run and slope, and hub EL on the back'],
+ watch:['The out invert should be lower than every in invert. If it is not, stop.','A sanitary backup is a public health problem. Flatter than design is a failure.','As builts of inverts and rims are required before backfill.'],
+ acc:'±0.05 ft horizontal, ±0.02 ft vertical on inverts.',ex:{ref:5420.45,des:5411.10,what:'invert in'}},
+{id:'sanpipe',ph:'util',name:'Sanitary main',flag:['green'],hub:true,
+ sum:'Sanitary line stake. One cut, to invert. Every 25 ft for the first 100 ft out of a manhole, then every 50 ft.',
+ front:[O("10'","Offset 10 ft to the pipe centerline."),T(['SAN'],'id','Sanitary sewer.'),V('C 8.42 INV','grade','Cut 8.42 ft to invert. Hub 5,418.62, invert 5,410.20.')],
+ back:[PT('303'),STA('1+00'),HUBEL('5418.62')],
+ must:['Circled offset','SAN','Cut to invert','Point number, station and hub EL on the back'],
+ watch:['Hub tops bounce around, but the inverts behind them rise smoothly. A cut that jumps means a blunder.'],
+ acc:'±0.05 ft horizontal, ±0.02 ft vertical.',ex:{ref:5418.62,des:5410.20,what:'invert'}},
+{id:'water',ph:'util',name:'Waterline',flag:['blue'],hub:true,
+ sum:'Same layout as the storm main sheet, blue flagging. Grades to top of pipe unless the plans say otherwise.',
+ front:[O("6'"),V('W 8"','id','Water, 8 inch.'),V('C 5.20 TOP','grade','Cut 5.20 ft to top of pipe. Hub 5,418.75, top of pipe 5,413.55.')],
+ back:[HUBEL('5418.75'),PT('6300'),STA('3+00')],
+ must:['Circled offset','W and pipe size','Cut to top of pipe','Hub EL, point number and station on the back'],
+ watch:['Cover has to beat frost depth, often 4 to 6 ft.','Check clearance at every crossing with sewer and storm.'],
+ acc:'Alignment and cover per the utility\'s standards.',ex:{ref:5418.75,des:5413.55,what:'top of pipe'}},
+{id:'fh',ph:'util',name:'Fire hydrant',flag:['blue'],hub:true,
+ sum:'Double offset, written as two circled offsets.',
+ front:[O("5'",'Double offset: 5 ft by 5 ft, on two lines at right angles. String the two stakes to find the center.'),T(['FH 2'],'id','Fire hydrant 2.'),V('C 0.62 FG','grade','Cut 0.62 ft to finish grade. Hub 5,419.40, FG 5,418.78.')],
+ back:[PT('6310'),HUBEL('5419.40')],
+ must:['Both offsets','Hydrant ID','What the grade is to'],
+ watch:['Hydrant height is set by the finish grade around it.'],
+ acc:'Per utility standards.',ex:{ref:5419.40,des:5418.78,what:'finish grade'}},
+{id:'gas',ph:'util',name:'Gas line',flag:['yellow'],hub:true,
+ sum:'Centerline stakes, graded to finish grade since gas needs cover, not slope.',
+ front:[T(['GAS','℄'],'id','Gas line, on the centerline.'),V('F 0.40 FG','grade','Fill 0.40 ft to finish grade. Hub 5,417.10, FG 5,417.50.')],
+ back:[PT('7205'),HUBEL('5417.10'),STA('2+75')],
+ must:['GAS','Grade to FG','Point number, hub EL and station on the back'],
+ watch:['Yellow paint on the ground is an 811 gas or oil locate, not a survey mark.'],
+ acc:'Per utility standards.',ex:{ref:5417.10,des:5417.50,what:'finish grade'}},
+{id:'lp',ph:'util',name:'Light pole base',flag:['red'],hub:true,
+ sum:'Two offsets on opposite sides, graded to finish grade.',
+ front:[O("4'"),T(['LP 7'],'id','Light pole 7. Careful, LP also means low point on curb plans.'),V('C 0.22 FG','grade','Cut 0.22 ft to finish grade. Hub 5,415.64, FG 5,415.42.')],
+ back:[PT('8107'),HUBEL('5415.64')],
+ must:['Circled offset','Pole ID','Grade to FG'],
+ watch:['String the two offsets to find the center. Do not eyeball it.'],
+ acc:'Within the lighting design tolerance.',ex:{ref:5415.64,des:5415.42,what:'finish grade'}},
+{id:'grid',ph:'struct',name:'Building grid line',flag:['pink'],hub:true,
+ sum:'Per the R&R building layout sheet: offset hubs on grid lines or to grid lines, outside the building. Pink flagging, 4 ft lath, hub and tack.',
+ front:[O("10'"),H(['1','LINE','ON','E','LINE'],'id','1 line on E line: this hub is on grid line 1, offset 10 ft from grid line E. The sheet\'s other example reads E LINE ON 1 LINE.')],
+ back:[PT('3100')],
+ hubNote:'The tack is on the grid line. Strings go tack to tack.',
+ must:['Circled offset','Which line it is on, and which line it is offset from','Point number on the back'],
+ watch:['Tape the spacings and both diagonals of every bay before forms go up.','Grid transfers up a multistory building come from site control, not the floor below.','If a hub gets hit, do not reset it. Call the surveyor.'],
+ acc:'±0.02 ft horizontal and vertical. Total station.'},
+{id:'corner',ph:'struct',name:'Building corner offset',flag:['pink'],hub:true,
+ sum:'Same format as the grid sheet, with the grade to the footing.',
+ front:[O("5'",'Offset 5 ft to the outside face of the wall, not its centerline.'),T(['NE','COR'],'id','Northeast corner.'),V('C 1.86 TOF','grade','Cut 1.86 ft to top of footing. Hub 5,419.76, TOF 5,417.90.')],
+ back:[PT('9101'),HUBEL('5419.76')],
+ must:['Circled offset, and face or centerline','Which corner','What the grade is to'],
+ watch:['A 12 inch wall staked to centerline instead of face is off by 6 inches.'],
+ acc:'±0.02 ft. Total station.',ex:{ref:5419.76,des:5417.90,what:'top of footing'}},
+{id:'dpier',ph:'struct',name:'Drilled pier offset',flag:['pink'],hub:true,
+ sum:'Two offsets to the center of each pier.',
+ front:[O("6'"),T(['PIER','D-7'],'id','Drilled pier D-7.'),V('C 2.30 TOP','grade','Cut 2.30 ft to top of pier. Hub 5,416.20, top of pier 5,413.90.')],
+ back:[PT('10207'),HUBEL('5416.20')],
+ must:['Circled offset','Pier number','Cut to top of pier'],
+ watch:['Drill depth comes from the structural drawings. Check it against the bottom of pier too.'],
+ acc:'Foundation layout, ±0.02 ft.',ex:{ref:5416.20,des:5413.90,what:'top of pier'}},
+{id:'apier',ph:'struct',name:'Aggregate pier flag',flag:['none'],pin:true,
+ sum:'Aggregate piers get a pink pin flag labeled with the pier number.',
+ front:[V('512','id','Pier 512. In the data collector it may be stored as point 10512.')],back:[],
+ must:['Pier number on the flag'],
+ watch:['Pin flags are easy to knock over or move. Spot check a few before the rig works an area.'],
+ acc:'Per the ground improvement design.'},
+{id:'curb',ph:'flat',name:'Curb and gutter',flag:['orange'],hub:true,
+ sum:'Curb stake at a PC, the book\'s Anatomy of a Stake. 25 ft interval plus angle points, PCs, PTs, HPs, LPs and GBs. Orange flagging, 4 ft lath, hub and tack.',
+ front:[O("3'","Offset 3 ft to the real point. The circled number is the offset."),T(['TBC','PC'],'id','Staked to top back of curb, at the PC (point of curvature). On an even station only TBC is written here.'),V('F+0.87 TBC','grade','Fill 0.87 ft. Measure up from the hub to TBC. Hub 5,410.23, TBC 5,411.10. The small underlined digits are hundredths.')],
+ back:[PT('406'),STA('1+30'),HUBEL('5410.23')],
+ must:['Circled offset','TBC, plus PC, PT, GB, HP, LP, BVC, EVC or RP when the stake is on one','Fill or cut to TBC','Point number, station and hub EL on the back'],
+ watch:['Get TBC wrong and gutter flow, pavement drainage, and inlet transitions all carry the error.','Check every tie in to existing curb.'],
+ acc:'±0.03 ft horizontal, ±0.02 to 0.03 ft vertical.',ex:{ref:5410.23,des:5411.10,what:'TBC'}},
+{id:'walk',ph:'flat',name:'Sidewalk',flag:['pink'],hub:true,
+ sum:'Same format as the curb sheet, graded to finish grade.',
+ front:[O("2'"),T(['WALK'],'id','Sidewalk.'),V('F 0.18 FG','grade','Fill 0.18 ft to finish grade. Hub 5,413.02, FG 5,413.20.')],
+ back:[PT('7306'),HUBEL('5413.02'),STA('1+50')],
+ must:['Circled offset','Grade to FG','Point number, hub EL and station on the back'],
+ watch:['Cross slope no steeper than 1:48 (about 2.08%).','Check accessible elements with a level before the pour.'],
+ acc:'Finish grade ±0.05 ft; accessible slopes checked with a level.',ex:{ref:5413.02,des:5413.20,what:'finish grade'}},
+{id:'corr',ph:'change',name:'Correction stake',flag:['white'],
+ sum:'White means something changed. Find out why before building from it or the old stake.',
+ front:[T(['CORR'],'id','Correction stake.'),V('C 2.14','grade','The corrected cut.'),V('WAS C 2.41','note','The old value. 0.27 ft is about 3¼ inches.')],
+ back:[V('11/18','note','Date of the correction. Anything built from the old stake before this date needs checking.'),PT('2215')],
+ must:['The new information','What it replaces','Date'],
+ watch:['Pull or mark the old stake so nobody builds from it.'],
+ acc:'Same as the work it corrects.'}
+];
+STAKES.forEach(s=>{const o=m=>m.z==='top'?0:m.k==='sta'?1:m.k==='elev'?3:2;s.back=s.back.map((m,i)=>[m,i]).sort((a,b)=>o(a[0])-o(b[0])||a[1]-b[1]).map(a=>a[0]);s.lines=[...s.front,...s.back].map(m=>({t:m.r.join(' '),k:m.k,d:m.d}));});
+const ABBR=[
+['C','Cut. Design is below the reference. Material comes out.','book'],['F','Fill. Design is above the reference. Material goes in.','book'],
+['O/S','Offset. Distance and direction from the design point to the stake.','common'],['STA','Station. 12+47.50 is 1,247.50 ft along the alignment.','book'],
+['LT / RT','Left or right of the alignment, looking up station.','common'],['N  S  E  W','Direction of the offset.','common'],
+['CL','Centerline.','common'],['TBC','Top of back of curb.','book'],['BC / BOC','Back of curb.','common'],['FL','Flowline. The low line water follows.','common'],
+['EP','Edge of pavement.','common'],['FG','Finish grade.','book'],['SG','Subgrade.','common'],['RG','Rough grade. For grading only, nothing built from it.','book'],
+['FF','Finish floor.','common'],['TOF','Top of footing.','common'],['TOW','Top of wall.','common'],['IE / INV','Invert elevation. Inside bottom of the pipe.','book'],
+['RIM','Top of the manhole or structure lid.','book'],['MH','Manhole.','common'],['TOP / TP','Top of pipe.','common'],['FH','Fire hydrant.','common'],
+['WV','Water valve.','common'],['LP','Light pole, or low point on a grading plan. Read the context.','common'],['HP','High point.','common'],
+['GB','Grade break.','common'],['PC / PT / PI','Curve points: point of curvature, point of tangency, point of intersection.','book'],
+['BM','Benchmark.','book'],['CP','Control point.','common'],['PT','Point, as in point number. Also point of tangency.','common'],
+['SF','Silt fence.','common'],['LOD','Limits of disturbance.','common'],['ENV','Envelope, as in building envelope.','common'],
+['STM','Storm sewer.','common'],['SAN','Sanitary sewer.','common'],['W','Water.','common'],['RCP','Reinforced concrete pipe.','common'],
+['PVC','Polyvinyl chloride pipe.','common'],['DIP','Ductile iron pipe.','common'],['HDPE','High density polyethylene pipe.','common'],
+['IN (W) / OUT (E)','Pipe entering from the west, leaving to the east.','common'],['WAS','Old value on a correction stake.','common'],['CTR','Center, as in offset to the manhole or pier center.','common'],['BW','Back of walk.','common'],['CORR','Correction stake.','common'],['EL=','Hub elevation, written on the back. On the storm main sheet the legend reads EL = HUB ELEVATION.','book'],['(10\')','Circled number: the offset to the real point.','book'],['/','Standard calls. Each call is measured from the hub.','book'],['//','Progressive calls, or a separator between grades on a manhole lath. Each call starts where the last one ended.','book'],['TBK','Top of bank.','book'],['TOE','Toe of slope.','book'],['(260\' @ 1.00%)','On the back of a manhole stake: run length and slope to the next manhole.','book'],['0⁸⁷','Small underlined digits are hundredths. F+0⁸⁷ is fill 0.87 ft.','book'],['℄','Centerline. ℄ INLET ON ℄: on the inlet centerline.','book'],['GRATE','Top of an inlet grate.','book'],['SD MH','Storm drain manhole.','book'],['1 LINE ON E LINE','On grid line 1, offset from grid line E.','book'],['SAVE','Do not disturb. Written on control point guard lath.','book'],['3\' x 3\'','Double offset: two distances at right angles.','book'],['BVC / EVC','Begin and end of a vertical curve.','book'],['RP','Radius point.','book'],['TOS','Top of stake. Cut and fill are measured from it.','book']];
+const ACC=[['Rough grading / mass earthwork','±0.10 ft','±0.10 ft','GNSS acceptable; level check at acceptance'],
+['Finish grading / paving','±0.05 ft','±0.05 ft','Total station or level'],['Curb and gutter','±0.03 ft','±0.02 to 0.03 ft','Total station and level'],
+['Storm drain and gravity utilities','±0.05 ft','±0.02 to 0.05 ft','Total station alignment; differential leveling for inverts'],
+['Sanitary sewer inverts','±0.05 ft','±0.02 ft','Differential leveling'],['Building / foundation layout','±0.02 ft','±0.02 ft','Total station'],
+['Finish floor elevation','N/A','±0.02 ft','Differential leveling'],
+['Structural anchor rods','1/8 in between rods in a group; 1/4 in between groups (AISC 303)','±1/2 in top of rod (AISC 303)','Total station and level; structural drawings govern if tighter']];
+const APWA=[['red','Red','Electric'],['yellow','Yellow','Gas and oil'],['orange','Orange','Communications'],['blue','Blue','Potable water'],
+['green','Green','Sewer and storm drains'],['purple','Purple','Reclaimed water'],['pink','Pink','Temporary survey markings'],['white','White','Proposed excavation']];
+const JUDGE=[
+{q:'A white stake sits next to an orange curb stake. They show different cuts. What do you do?',a:'Stop and find out why before building from either one',o:['Use the white stake, it is newer','Average the two cuts','Use the orange stake, it matches the color system'],e:'White means something changed. Find out what, pull or mark the old stake, and check anything already built from it.'},
+{q:'The grader says the pad is on grade per machine control. Concrete is tomorrow. What\'s next?',a:'Get an independent level check of the corners and center before accepting',o:['Accept it, machine control is accurate enough','Have the operator check it again with the same machine','Wait for the concrete crew to check it'],e:'Machine control is not the final authority on finished grade. A level check today costs an hour. Finding it tomorrow costs a day.'},
+{q:'Sanitary cuts run 8 to 10 ft along a run, then one stake shows C 14.20. Best move?',a:'Check it against the profile before the excavator gets there',o:['Dig it, the surveyor set it','Average it with the neighbors','Skip that stake'],e:'Either the design has an unusual drop there or the stake is wrong. The profile answers that in the office instead of a deep trench.'},
+{q:'There\'s an orange paint line on the ground next to the trench. What is it?',a:'An 811 locate for a communications line',o:['Rough grade','The storm line','Limits of disturbance'],e:'811 locates use the APWA colors. Orange paint means communications. Know which system you are reading.'},
+{q:'The foreman wants C 0.32 in inches. What do you tell him?',a:'About 3⅞ inches',o:['3.2 inches','3 inches','3⅛ inches'],e:'0.32 ft × 12 = 3.84 in, which rounds to 3⅞ in. 0.32 ft is not 3.2 inches.'},
+{q:'A loader clipped a building grid hub and the tack is gone. What do you do?',a:'Call the surveyor to reset it and check what was built from it',o:['Reset it from the string line','Tape it back in from the next hub','Leave it, there is a hub on the other end'],e:'Never move or reset a hub yourself. The surveyor resets it from control and confirms nothing built off it moved.'},
+{q:'The form crew wants to set footing forms from the purple stakes. Okay?',a:'No. Purple RG envelope stakes are for grading only, so order building layout',o:['Yes, if they double check with a tape','Yes, the corners are close enough','Only on the corners'],e:'Envelope stakes are rough. Building layout is ±0.02 ft from a total station.'},
+{q:'A sidewalk check across a 5 ft walk shows 0.12 ft of fall. Does it pass a 1:48 cross slope?',a:'No, it is 2.4%, over the 2.08% limit',o:['Yes, it is under 3%','Yes, it is 1.2%','Cannot tell without a level'],e:'0.12 ÷ 5 = 2.4%. The 1:48 limit is about 2.08%. Fix the forms before the pour.'},
+{q:'Curb stakes are graded to what, unless the plot says otherwise?',a:'Top of back of curb (TBC)',o:['Flowline','Finish grade of the pavement','Top of the stake'],e:'TBC governs the whole curb and gutter section.'},
+{q:'A stake two weeks old sits next to the haul road. Before building from it you should…',a:'Confirm it is current and has not been hit',o:['Use it, stakes do not change','Move it out of the way first','Ignore it and use the plans'],e:'Stakes get knocked, frost heaved, and superseded. When in doubt, ask the survey crew.'},
+{q:'Which of these is NOT one of the six elements of a good staking request?',a:'The crew\'s instrument brand',o:['Accuracy','Offsets','Current documents and issue date'],e:'The six: scope, purpose, accuracy, timing, offsets, and current documents.'},
+{q:'A storm manhole lath shows IN (W) C 9.12 and OUT (E) C 9.02. What\'s wrong?',a:'The out invert is higher than the in invert',o:['Nothing, out is usually higher','The rim is missing','The pipe sizes should differ'],e:'Water runs downhill. The outgoing invert has to be lower, so the out cut should be larger, not smaller.'}];
+
+/* ===== READ MY STAKE: parser (pure functions, testable in node) ===== */
+const DIRW={N:'north',S:'south',E:'east',W:'west',NE:'northeast',NW:'northwest',SE:'southeast',SW:'southwest',LT:'left of the alignment (looking up station)',RT:'right of the alignment (looking up station)'};
+const TARGETS=[['TOP PIER','top of pier'],['TOP OF PIPE','top of pipe'],['TOP','top of pipe'],['TP','top of pipe'],['INV','the pipe invert'],['IE','the pipe invert'],['FL','flowline'],['FG','finish grade'],['FF','finish floor'],['TBC','top of back of curb'],['SG','subgrade'],['TOF','top of footing'],['TOW','top of wall'],['RG','rough grade'],['RIM','the rim'],['EP','edge of pavement']];
+const MATS={RCP:'reinforced concrete pipe',PVC:'PVC pipe',DIP:'ductile iron pipe',HDPE:'HDPE pipe',CMP:'corrugated metal pipe',VCP:'vitrified clay pipe'};
+const WORDS={POND:'Detention pond',TBK:'Top of bank',TOE:'Toe of slope',SAN:'Sanitary sewer',STM:'Storm sewer',ST:'Storm sewer',W:'Water',WL:'Waterline',GAS:'Gas line',G:'Gas line',E:'Electric',CL:'Centerline',RG:'Rough grade. Grading reference only, nothing built from it.',ENV:'Envelope (rough building outline)',LOD:'Limits of disturbance',SF:'Silt fence',
+ TBC:'Top of back of curb is the grade reference',WALK:'Sidewalk',CORRECTION:'Correction stake. Something changed. Find out why before building from it or the old stake.',PROP:'Property',COR:'Corner',BLDG:'Building',GRID:'Building grid line',INLET:'Curb inlet',PIER:'Pier',FH:'Fire hydrant',WV:'Water valve',LP:'Light pole (or low point on a grading plan)',HP:'High point',GB:'Grade break',
+ BM:'Benchmark',CP:'Control point',PT:'Point number',MH:'Manhole',CB:'Catch basin or inlet',REBAR:'Rebar monument',CAP:'Capped monument',DO:'',NOT:'',DISTURB:'Do not disturb',FACE:'Measured to the face, not the centerline',OUTSIDE:'Outside',SILT:'Silt',FENCE:'Fence',NAVD:'Vertical datum NAVD 88',PC:'Point of curvature, where a curve begins',BVC:'Begin vertical curve',EVC:'End vertical curve',RP:'Radius point',ENV:'Envelope (rough building outline)',CORR:'Correction stake. Something changed. Find out why before building from it or the old stake',CTR:'Center',LINE:'',HUB:'',EL:'',SET:'Date the point was set',NGVD:'Vertical datum NGVD 29 (older datum, confirm it matches the plans)'};
+function fmt2(n){return (+n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});}
+function ftinR(x){const FR=['','⅛','¼','⅜','½','⅝','¾','⅞'];const e=Math.round(Math.abs(x)*96);const ft=Math.floor(e/96),r=e-ft*96,i=Math.floor(r/8),f=r%8;return ft+"' "+i+(f?FR[f]:'')+'"';}
+function targetOf(rest){rest=' '+rest.toUpperCase().replace(/[^A-Z ]/g,' ')+' ';for(const [k,v] of TARGETS){if(rest.includes(' '+k+' '))return v;}return null;}
+function parseLine(raw,face){
+ const line=raw.trim().toUpperCase().replace(/[’‘`]/g,"'").replace(/[“”]/g,'"').replace(/\s+/g,' ');const out=[];let m;if(!line)return out;
+ const used=[];const take=(re,fn)=>{let mm;const r=new RegExp(re.source,re.flags.includes('g')?re.flags:re.flags+'g');while((mm=r.exec(line))){const a=mm.index,b=a+mm[0].length;if(used.some(u=>a<u[1]&&b>u[0]&&!(/^\s/.test(mm[0])&&a+1>=u[1])))continue;fn(mm);used.push([mm.index,mm.index+mm[0].length]);}};
+ /* pond slope calls: TBK 5' C 0.50 / TOE 21' C 4.50 / CL 46' C 5.00 */
+ const prog=/\/\//.test(line);let nCall=0;const CALL={TBK:'Top of bank',TOB:'Top of bank',TOE:'Toe of slope',CL:'Pond bottom at centerline',BTM:'Bottom',BOT:'Bottom',HUB:'Hub'};
+ take(/\b(TBK|TOB|TOE|CL|BTM|BOT)\s*(\d+(?:\.\d+)?)\s*'\s*([CF])\s*[+-]?\s*(\d+(?:\.\d+)?)/,mm=>{const fromHub=!prog||nCall===0;nCall++;
+  out.push({k:'grade',t:mm[0],d:CALL[mm[1]]+': '+mm[2]+' ft out and '+fmt2(mm[4])+' ft '+(mm[3]==='C'?'down':'up')+(fromHub?' from the hub.':' from the previous call\'s point.')});});
+ if(nCall>1)out.push({k:'note',t:prog?'//':'/',d:prog?'Double slash: progressive calls. Each call starts where the last one ended. Add them up to get the totals from the hub.':'Single slash: standard calls. Every distance and cut is from the hub, so one bad measurement does not carry into the next.'});
+ take(/\(\s*(\d+(?:\.\d+)?)\s*'\s*@\s*(-?\d+(?:\.\d+)?)\s*%\s*\)/,mm=>out.push({k:'pipe',t:mm[0],d:'Run and slope: '+mm[1]+' ft of pipe at '+mm[2]+'% to the next structure.'}));
+ take(/(?:^|\s)([CF])\s*[+-]?\s*(\d+(?:\.\d+)?)\s*(?:INV|IE)\s*(IN|OUT)\b(?:\s+(N|S|E|W|NE|NW|SE|SW)\b)?(?:\s+(\d{1,2})\s*")?/,mm=>{const c=mm[1]==='C',inn=mm[3]==='IN',d=mm[4]?(inn?' from the ':' to the ')+DIRW[mm[4]]:'';
+  out.push({k:'pipe',t:mm[0].trim(),d:(c?'Cut ':'Fill ')+fmt2(mm[2])+' ft to the invert of the pipe '+(inn?'coming in':'going out')+d+(mm[5]?', '+mm[5]+' inch':'')+'. '+(c?'Measure down ':'Measure up ')+ftinR(mm[2])+' from the hub.',need:mm[4]||!/\bIN\b[\s\S]*\bIN\b|\bOUT\b[\s\S]*\bOUT\b/.test(line)?null:'Two pipes the same way with no direction. Which pipe is which? Check the cut sheet.'});});
+ take(/(?:^|\s)([CF])\s*[+-]?\s*(\d+(?:\.\d+)?)\s*RIM\b/,mm=>out.push({k:'grade',t:mm[0].trim(),d:(mm[1]==='C'?'Cut ':'Fill ')+fmt2(mm[2])+' ft to the rim. '+(mm[1]==='C'?'Measure down ':'Measure up ')+ftinR(mm[2])+' from the hub.'}));
+ /* pipe in/out with optional size and cut */
+ take(/\b(IN|OUT)\b\s*\(?\s*(N|S|E|W|NE|NW|SE|SW)?\s*\)?\s*(?:(\d{1,2})\s*(?:"|IN\b|INCH))?\s*(?:([CF])\s*(\d+(?:\.\d+)?))?/,mm=>{
+  const io=mm[1]==='IN'?'Pipe coming in':'Pipe going out',d=mm[2]?(mm[1]==='IN'?' from the '+DIRW[mm[2]]:' to the '+DIRW[mm[2]]):'',sz=mm[3]?', '+mm[3]+' inch':'';
+  let t=io+d+sz+'.';if(mm[4]){t+=' Invert is '+fmt2(mm[5])+' ft '+(mm[4]==='C'?'below':'above')+' the hub ('+ftinR(mm[5])+').';}
+  out.push({k:'pipe',t:mm[0].trim(),d:t,need:mm[2]?null:'No direction given for this pipe. Every pipe in and out should show its direction.'});});
+ take(/\bRIM\s*([CF])\s*(\d+(?:\.\d+)?)/,mm=>out.push({k:'grade',t:mm[0],d:(mm[1]==='C'?'Cut ':'Fill ')+fmt2(mm[2])+' ft to the manhole rim. Rim is '+(mm[1]==='C'?'below':'above')+' the hub ('+ftinR(mm[2])+').'}));
+ take(/\b(WAS)\s*([CF])\s*(\d+(?:\.\d+)?)/,mm=>out.push({k:'note',t:mm[0],d:'The old value: '+(mm[2]==='C'?'cut ':'fill ')+fmt2(mm[3])+' ft. Anything built from the old stake needs checking.'}));
+ /* plain cut/fill */
+ take(/(?:^|\s)(C|F|CUT|FILL)\s*[+-]?\s*(\d+(?:\.\d+)?)(?=\s|$)/,mm=>{if(used.some(u=>mm.index+1>=u[0]&&mm.index+1<u[1]))return;const c=mm[1][0]==='C',v=mm[2];const rest=line.slice(mm.index+mm[0].length).trim().split(' ').slice(0,2).join(' ');const before=line.slice(0,mm.index).trim().split(' ').slice(-1).join(' ');let tg=targetOf(rest)||targetOf(before);let implied=false;if(!tg){const om=line.match(/O\/S\s*(FL|TBC|FG)\b/);if(om){tg=(TARGETS.find(t=>t[0]===om[1])||[0,''])[1];implied=true;}}
+  const dec=v.includes('.')?v.split('.')[1]:'';
+  out.push({k:'grade',t:mm[0].trim(),d:(c?'Cut ':'Fill ')+fmt2(v)+' ft'+(tg?' to '+tg:'')+'. Design is '+fmt2(v)+' ft '+(c?'below':'above')+' the hub. '+(c?'Measure down ':'Measure up ')+ftinR(v)+'.'+(dec.length===2?' Feet and hundredths: .'+dec+' ft is not '+(+dec)+' inches. On the lath the hundredths are written small and underlined.':''),
+   need:tg?(implied?'Grade point not written. It is usually the same point as the offset ('+tg+'), as in the book\'s field notes. Confirm on the cut sheet.':null):'The stake does not say what the grade is to (invert, top of pipe, TBC, FG...). Check the cut sheet.',tg});});
+ take(/\bSTA\.?\s*(\d+)\s*\+\s*(\d{2}(?:\.\d+)?)/,mm=>{const ft=(+mm[1])*100+(+mm[2]);out.push({k:'sta',t:mm[0],d:'Station '+mm[1]+'+'+mm[2]+', which is '+ft.toLocaleString('en-US',{maximumFractionDigits:2})+' ft along the alignment from its start.'});});
+ take(/\b(MH|INLET|FH|LP|CP|BM|PT|PIER|CB|WV)\s*([A-Z]?-?\d+[A-Z]?)\s*\+\s*(\d+)/,mm=>out.push({k:'sta',t:mm[0],d:mm[3]+' ft from '+(WORDS[mm[1]]||mm[1]).toLowerCase()+' '+mm[2]+' along the line.'}));
+ /* offsets */
+ take(/\b(?:O\/S|OS|OFFSET|OFF)\s*(\d+(?:\.\d+)?)\s*(?:'|FT|FEET)?\s*(N|S|E|W|NE|NW|SE|SW|LT|RT|BC|BOC|BW|EP)?\b/,mm=>{const dir=mm[2];
+  out.push({k:'off',t:mm[0].trim(),d:'Offset '+mm[1]+' ft'+(dir?(DIRW[dir]?' '+DIRW[dir]:dir==='BC'||dir==='BOC'?' behind back of curb':dir==='BW'?' behind back of walk':' from edge of pavement'):'')+'. '+(dir&&DIRW[dir]&&dir.length<=2&&!['LT','RT'].includes(dir)?'As written here, the stake sits '+mm[1]+' ft '+DIRW[dir]+' of the point, so the point is '+mm[1]+' ft the opposite way. Confirm which way your crew writes it.':''),
+   need:dir?null:'No direction on the offset. Ask which way the point is from the stake.'});});
+ take(/(?:^|\s)(\d+(?:\.\d+)?)\s*(?:'|FT)\s*(?:O\/S\s*)?(N|S|E|W|NE|NW|SE|SW|LT|RT)?\s*(TO|OF)\s+([A-Z ]+)$/,mm=>{const tw=mm[4].trim(),tg=(TARGETS.find(t=>t[0]===tw)||[0,null])[1];out.push({k:'off',t:mm[0].trim(),d:mm[1]+' ft '+(mm[2]?DIRW[mm[2]]+' ':'')+(mm[3]==='TO'?'to ':'of ')+(tg||tw.toLowerCase())+'.'+(tw==='FL'?' The flowline point is that far from the stake.':'')});});
+ take(/(?:^|\s)(\d+(?:\.\d+)?)\s*(?:'|FT)\s*O\/S\s*(N|S|E|W|NE|NW|SE|SW|LT|RT)\b/,mm=>out.push({k:'off',t:mm[0].trim(),d:'Offset '+mm[1]+' ft '+DIRW[mm[2]]+'. The stake sits '+mm[1]+' ft '+DIRW[mm[2]]+' of the point. Confirm which way your crew writes it.'}));
+
+ /* offsets written the book's way: 10' O/S FL, circled (3'), double 3'x3' */
+ take(/\(\s*(\d+(?:\.\d+)?)\s*'?\s*\)/,mm=>out.push({k:'off',t:mm[0],d:'Offset '+mm[1]+' ft to the real point. The circled number is the offset.'}));
+ take(/(?:^|\s)(\d+(?:\.\d+)?)\s*'\s*[X×]\s*(\d+(?:\.\d+)?)\s*'?/,mm=>out.push({k:'off',t:mm[0].trim(),d:'Double offset: '+mm[1]+' ft and '+mm[2]+' ft on two lines at right angles. String the two stakes to find the point.'}));
+ take(/(?:^|\s)(\d+(?:\.\d+)?)\s*'\s*(?:O\/S|OS)\s*(FL|TBC|CL|BC|BOC|EP|BW|CTR|FACE|LINE\s*[A-Z0-9]+|GRID\s*[A-Z0-9]+)\b/,mm=>{const tw=mm[2].replace(/\s+/,' ');const nm={FL:'the flowline',TBC:'top back of curb',CL:'the centerline',BC:'the back of curb',BOC:'the back of curb',EP:'the edge of pavement',BW:'the back of walk',CTR:'the center of the structure',FACE:'the face of the wall (not its centerline)'}[tw]||tw.toLowerCase();
+  out.push({k:'off',t:mm[0].trim(),d:'Offset '+mm[1]+' ft to '+nm+'. The design point is '+mm[1]+' ft from this stake. Which side comes from the staking request and the cut sheet.'});});
+ take(/(?:^|\s)(\d{1,3})\+(\d{2}(?:\.\d+)?)(?=\s|$)/,mm=>{if(used.some(u=>mm.index+1>=u[0]&&mm.index+1<u[1]))return;const ft=(+mm[1])*100+(+mm[2]);out.push({k:'sta',t:mm[0].trim(),d:'Station '+mm[1]+'+'+mm[2]+', '+ft.toLocaleString('en-US',{maximumFractionDigits:2})+' ft along the alignment. In the book\'s format it goes on the back with the hub elevation.'});});
+ take(/\bIE\s+(N|S|E|W|NE|NW|SE|SW)\s+(\d{4,5}\.\d{1,3})/,mm=>out.push({k:'elev',t:mm[0],d:'Design invert of the pipe on the '+DIRW[mm[1]]+' side, '+mm[2]+' ft.'}));
+ take(/\b(?:(RIM|IE|INV|FG|TOP|TBC|TOF|TOW|FF|SG)\s*(?:EL|ELEV)?|EL|ELEV)\s*=?\s*(\d{4,5}\.\d{1,3})\b/,mm=>{if(used.some(u=>mm.index>=u[0]&&mm.index<u[1]))return;const lab=mm[1]||'';const nm={RIM:'the rim',IE:'the pipe invert',INV:'the pipe invert',FG:'finish grade',TOP:'the top (of pipe or pier)',TBC:'top back of curb',TOF:'top of footing',TOW:'top of wall',FF:'finish floor',SG:'subgrade'}[lab]||'the design point';
+  out.push({k:'elev',t:mm[0].trim(),d:!lab&&face==='back'?'Hub elevation, '+mm[2]+' ft: the top of the hub next to this lath. Hub minus the design elevation is the cut on the front. Check one with a level and the math.':'Design elevation of '+nm+', '+mm[2]+' ft. Confirm the datum.'});});
+ /* pipe size and material */
+ take(/(?:^|\s)(\d{1,2})\s*(?:"|IN\b|INCH)\s*(RCP|PVC|DIP|HDPE|CMP|VCP)?/,mm=>{if(used.some(u=>mm.index>=u[0]&&mm.index<u[1]))return;out.push({k:'pipe',t:mm[0].trim(),d:mm[1]+' inch'+(mm[2]?' '+MATS[mm[2]]:' pipe')+'.'});});
+ take(/\b(RCP|PVC|DIP|HDPE|CMP|VCP)\b/,mm=>{if(used.some(u=>mm.index>=u[0]&&mm.index<u[1]))return;out.push({k:'pipe',t:mm[0],d:MATS[mm[1]]+'.'});});
+ /* elevations */
+ take(/\b(?:EL\.?|ELEV)\s*(\d{1,2},?\d{3}\.\d{1,3})/,mm=>used.some(u=>mm.index>=u[0]&&mm.index<u[1])?0:out.push({k:'elev',t:mm[0],d:'Elevation '+mm[1]+' ft. Confirm the datum and exactly which spot it belongs to.'}));
+ take(/\b(\d{1,2})\/(\d{1,2})(?:\/(\d{2,4}))?\b/,mm=>{if(used.some(u=>mm.index>=u[0]&&mm.index<u[1]))return;out.push({k:'note',t:mm[0],d:'A date, probably when it was set or corrected. Older stakes may have been hit or superseded.'});});
+ /* ids */
+ take(/\b(MH|INLET|FH|LP|CP|BM|PT|PIER|CB|WV)\s*([A-Z]?-?\d+[A-Z]?)\b(?!\s*\+)/,mm=>{if(used.some(u=>mm.index>=u[0]&&mm.index<u[1]))return;out.push({k:'id',t:mm[0],d:(WORDS[mm[1]]||mm[1])+' '+mm[2]+'. Find it on the plans and the cut sheet.'});});
+ take(/\bGRID\s*(?:LINE\s*)?([A-Z0-9.]+)\b/,mm=>out.push({k:'id',t:mm[0],d:'On grid line '+mm[1]+'. Pull strings hub to hub along the grid.'}));
+ take(/\b(NE|NW|SE|SW)\s*COR\b/,mm=>out.push({k:'id',t:mm[0],d:DIRW[mm[1]][0].toUpperCase()+DIRW[mm[1]].slice(1)+' corner.'}));
+ /* leftover words */
+ let rest=line;used.sort((a,b)=>b[0]-a[0]).forEach(u=>{rest=rest.slice(0,u[0])+' '.repeat(u[1]-u[0])+rest.slice(u[1]);});
+ const seen=new Set();rest.split(/[\s,()]+/).filter(Boolean).forEach(w=>{if(seen.has(w))return;seen.add(w);const ww=w.replace(/[^A-Z0-9'"\/.+-]/g,'');if(!ww)return;
+  if(WORDS[ww]!==undefined){if(WORDS[ww]&&!(ww==='PIER'&&/TOP PIER/.test(line)))out.push({k:'word',t:ww,d:WORDS[ww].replace(/\.$/,'')+'.'});}
+  else if(/^\d{3,6}$/.test(ww)&&face==='back')out.push({k:'pt',t:ww,d:'Calculated stake point number. It matches the cut sheet and the crew\'s data collector.'});
+  else if(/^\d{1,6}\.?\d*$/.test(ww)&&!/^(88|29)$/.test(ww))out.push({k:'unk',t:ww,d:'A bare number. Could be a point number or a pier number. Ask if it is not obvious.'});
+  else if(/^(88|29)$/.test(ww)){}
+  else if(TARGETS.some(t=>t[0]===ww)){}
+  else if(['/','//','TO','OF','THE','AND','W/','@','FT','FEET','LINE','PIPE','OUT','IN','A','B','C','D'].includes(ww)){}
+  else out.push({k:'unk',t:ww,d:'Not something this guide recognizes. Ask the crew, and ask them to add it to the staking legend.'});});
+ return out;}
+const TYPES=[['pondprog',l=>/\bPOND\b|\bTBK\b|\bTOE\b/.test(l)&&/\/\//.test(l)],['pondstory',l=>/\bPOND\b|\bTBK\b|\bTOE\b/.test(l)],['sanmh',l=>/\bSAN\b/.test(l)&&/\bMH\b/.test(l)],['stmmh',l=>/\b(STM|ST|STORM)\b/.test(l)&&/\bMH\b/.test(l)],['sanmh',l=>/\bMH\b/.test(l)&&/\bIN\b|\bOUT\b/.test(l)],
+ ['inlet',l=>/\bINLET\b/.test(l)],['fh',l=>/\bFH\b/.test(l)],['corr',l=>/\bCORRECTION\b|\bWAS\b/.test(l)],['env',l=>/\bENV\b/.test(l)],['rg',l=>/\bRG\b/.test(l)],['bm',l=>/\bBM\b/.test(l)],['cp',l=>/\bCP\b/.test(l)],
+ ['prop',l=>/\bPROP\b/.test(l)],['grid',l=>/\bGRID\b/.test(l)],['corner',l=>/\bCOR\b/.test(l)],['dpier',l=>/\bPIER\b/.test(l)],['sanpipe',l=>/\bSAN\b/.test(l)],['stmpipe',l=>/\b(STM|STORM)\b/.test(l)],
+ ['water',l=>/(^|\s)(W|WL|WATER)(\s|$)|\bW\s*\d/.test(l)],['gas',l=>/\bGAS\b/.test(l)],['lp',l=>/\bLP\b/.test(l)],['walk',l=>/\bWALK\b/.test(l)],['curb',l=>/\bTBC\b|O\/S\s*(FL|BC)\b/.test(l)],['limits',l=>/\bSF\b|\bLOD\b|SILT/.test(l)]];
+function guessType(text){const t=' '+text.toUpperCase().replace(/\s+/g,' ')+' ';for(const [id,f] of TYPES){if(f(t))return id;}return null;}
+function checklist(text,items){const t=text.toUpperCase();const has={
+ id:items.some(i=>i.k==='id'||i.k==='word'),grade:items.some(i=>i.k==='grade'),target:items.some(i=>i.k==='grade'&&!i.need)||/\b(INV|TOP|FG|FF|TBC|SG|TOF|TOW|RIM)\b/.test(t),
+ off:items.some(i=>i.k==='off'),offdir:items.some(i=>i.k==='off'&&!i.need),sta:items.some(i=>i.k==='sta'),pipe:items.some(i=>i.k==='pipe')};
+ return has;}
+if(typeof module!=='undefined')module.exports={parseLine,guessType,checklist};
+
+/* ===== REQUEST LAYOUT presets (book Chapter 11 and 12) ===== */
+const REQ=[
+{id:'rg',n:'Rough grade / overlot',purpose:'Grading reference for mass earthwork',scope:'Rough grade stakes for the [area], building envelope for [building]',acc:'±0.10 ft horizontal and vertical. GNSS acceptable, level check at acceptance.',off:'On point, or offset as needed to survive grading',grade:'Cut or fill to rough grade',notes:['Label building envelope stakes RG. Nothing is built from them.','Confirm the machine control surface matches the plans before grading starts.'],deliv:['cut']},
+{id:'ox',n:'Over-excavation',purpose:'Stake and verify the over-excavation bottom before engineered fill',scope:'Over-excavation limits and grades for [pad or building]',acc:'Bottom at or below the required elevation. Any point more than 0.10 ft high fails.',off:'On point',grade:'Grades to the required over-excavation elevation, not finish grade',notes:['Report points much deeper than required to the superintendent and geotechnical engineer.'],deliv:['cut','verify']},
+{id:'storm',n:'Storm sewer',purpose:'Line and grade for pipe installation',scope:'Storm from MH-[ ] to MH-[ ], with inverts at each structure, plus inlets [ ]',acc:'±0.05 ft horizontal, ±0.02 to 0.05 ft vertical. Inverts by differential leveling.',off:'[ ] ft [direction] of centerline',grade:'Cut to invert',notes:['Three stakes per manhole: two offsets with rim and every invert with pipe direction, plus a center lath.','Pipe stakes every 25 ft for the first 100 ft, then every 50 ft. Stake every crossing, tee, wye and connection.','Curb inlets: two offsets on the inlet centerline at the flowline, graded to TBC.','Verify the existing invert at the tie in before staking.'],deliv:['cut','asbuilt']},
+{id:'san',n:'Sanitary sewer',purpose:'Line and grade for pipe installation',scope:'Sanitary from MH-[ ] to MH-[ ], including the tie in at existing MH-[ ]',acc:'±0.05 ft horizontal, ±0.02 ft vertical. Differential leveling.',off:'[ ] ft [direction] of centerline',grade:'Cut to invert',notes:['Three stakes per manhole: two offsets with rim, every invert, pipe size and flow direction, plus a center lath.','Pipe stakes every 25 ft for the first 100 ft, then every 50 ft. Stake every tee, wye and connection.','Verify the existing invert at the tie in against the design.'],deliv:['cut','asbuilt']},
+{id:'water',n:'Waterline',purpose:'Alignment and cover for water main installation',scope:'Water main from [ ] to [ ], with hydrants, valves and vaults',acc:'Alignment and cover per the utility\'s standards.',off:'[ ] ft [direction] of centerline',grade:'Cut or fill to top of pipe',notes:['Double offset hydrants, meters and vaults, with cuts to top of pipe, rim, flange, or finish grade as specified.','Show crossings with sewer and storm.'],deliv:['cut']},
+{id:'dry',n:'Gas, electric, light poles',purpose:'Alignment for dry utilities and pole bases',scope:'[Gas / conduit / light poles / transformer pads] at [ ]',acc:'Per the utility and lighting design.',off:'Light poles: two offsets on opposite sides. Pads: corners on offsets.',grade:'Grade to finish grade',notes:['Show crossing utilities already in place.'],deliv:['cut']},
+{id:'apier',n:'Aggregate piers',purpose:'Pier locations for ground improvement',scope:'Aggregate piers [range] per the pier plan dated [ ]',acc:'Per the ground improvement design.',off:'On point, pin flag at each pier',grade:'None, unless a benchmark is requested',notes:['Pin flag at each pier labeled with the pier number.','If a benchmark is needed, set it by differential leveling and check it to a second control point.'],deliv:['bm']},
+{id:'dpier',n:'Drilled piers',purpose:'Pier locations and reference elevations for drilling',scope:'Drilled piers [ ] through [ ]',acc:'Foundation layout, ±0.02 ft.',off:'Two offsets to the center of each pier, [ ] ft',grade:'Cut to top of pier, or the reference elevation at the stake',notes:['If a benchmark is needed, set it by differential leveling and check it to a second control point.'],deliv:['cut','bm']},
+{id:'found',n:'Building corners / foundation',purpose:'Formwork for footings and foundation walls',scope:'Building [ ] corners [ ] through [ ], foundation walls on sheet [ ]',acc:'±0.02 ft horizontal and vertical. Total station.',off:'[ ] ft outside the wall face',grade:'Cut or fill to top of footing / top of wall',notes:['State whether offsets are to the face or the centerline of the wall.','Benchmark near the building by differential leveling if requested.'],deliv:['cut','bm']},
+{id:'grid',n:'Building grid',purpose:'Structural layout of columns, walls and anchor rods',scope:'Grid lines [ ] to [ ] and [ ] to [ ]',acc:'±0.02 ft. Total station.',off:'Offset hubs [ ] ft outside the building on each grid line',grade:'Finish floor reference if requested',notes:['A hub at each end of every grid line so strings can be pulled across.','Upper floors transferred from site control, not from the floor below.'],deliv:['bm']},
+{id:'curb',n:'Curb and gutter',purpose:'Forming and grading curb and gutter',scope:'Curb from Sta [ ] to Sta [ ], including the tie in to existing curb at [ ]',acc:'±0.03 ft horizontal, ±0.02 to 0.03 ft vertical.',off:'[ ] ft behind back of curb, every [ ] ft',grade:'Grade to TBC',notes:['Tighter spacing through curves and grade breaks.','Check every tie in to existing curb before forming.'],deliv:['cut']},
+{id:'walk',n:'Sidewalk / flatwork',purpose:'Forming walks, ramps and flatwork',scope:'Walks, ramps and landings at [ ]',acc:'Finish grade ±0.05 ft. Accessible slopes checked with a level.',off:'[ ] ft behind back of walk',grade:'Grade to finish grade',notes:['Cross slope no steeper than 1:48 (about 2.08%). Running slope limits on accessible routes.','Level check of accessible elements before the pour.'],deliv:['cut','verify']},
+{id:'ctrl',n:'Control / benchmarks',purpose:'Working control for layout',scope:'Control points and benchmarks for [area or phase]',acc:'Set and checked by the licensed surveyor.',off:'Outside the disturbance area',grade:'Benchmark elevations on the project datum',notes:['Check new points into existing control. Protect with lath and flagging and add them to the logistics plan.'],deliv:['ctrl']},
+{id:'other',n:'Other',purpose:'',scope:'',acc:'',off:'',grade:'',notes:[],deliv:[]}];
+const DELIV={cut:'Cut sheet',asbuilt:'As built shots before backfill',bm:'Benchmark near the work',verify:'Verification shots after the work',ctrl:'Updated control list with coordinates'};
+function buildRequest(f,P){const L=[];const v=x=>(x||'').trim();const today=new Date();
+ L.push('SURVEY LAYOUT REQUEST');if(v(f.project))L.push('Project: '+v(f.project));L.push('Requested by: '+(v(f.who)||'[name]')+(v(f.phone)?', '+v(f.phone):''));
+ L.push('Date: '+today.toLocaleDateString('en-US'));L.push('Work: '+P.n);L.push('');
+ L.push('1. Scope: '+(v(f.scope)||'[exactly which points, lines or elevations]'));
+ L.push('2. Purpose: '+(v(f.purpose)||'[what the stakes are for]'));
+ L.push('3. Accuracy: '+(v(f.acc)||'[tolerance the work needs]'));
+ L.push('4. Timing: stakes needed by '+(f.need?new Date(f.need+'T12:00').toLocaleDateString('en-US'):'[date]')+(f.start?'. Work starts '+new Date(f.start+'T12:00').toLocaleDateString('en-US'):'')+'.');
+ L.push('5. Offsets: '+(v(f.off)||'[on point, or distance and direction]'));
+ L.push('6. Current documents: '+(v(f.docs)||'[plan sheets and design file issue date]'));
+ if(v(f.grade))L.push('Grades to: '+v(f.grade));
+ const notes=(f.notes||[]);if(notes.length){L.push('');L.push('Staking notes:');notes.forEach(n=>L.push('- '+n));}
+ const d=(f.deliv||[]).map(k=>DELIV[k]).filter(Boolean);if(d.length){L.push('');L.push('Deliverables: '+d.join('; ')+'.');}
+ if(v(f.site)){L.push('');L.push('Site notes: '+v(f.site));}
+ return L.join('\n');}
+function completeness(f){const has=[!!(f.scope||'').trim()&&!/\[\s*\]/.test(f.scope),!!(f.purpose||'').trim(),!!(f.acc||'').trim(),!!f.need,!!(f.off||'').trim()&&!/\[\s*\]/.test(f.off),!!(f.docs||'').trim()];return has;}
+if(typeof module!=='undefined')module.exports={REQ,buildRequest,completeness};
+
+</script>
+<script>
+(function(){
+const $=s=>document.querySelector(s),main=$('#main');
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const K='stakereader.v1';let ST={};try{ST=JSON.parse(localStorage.getItem(K)||'{}')||{};}catch(e){}
+const save=()=>{try{localStorage.setItem(K,JSON.stringify(ST));}catch(e){}};
+const IC={back:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>',
+ search:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>',
+ warn:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 3l10 18H2z"/><path d="M12 10v5M12 18h0"/></svg>',
+ ok:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg>',
+ eye:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>',
+ ruler:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 17L17 3l4 4L7 21z"/><path d="M7 13l2 2M10 10l2 2M13 7l2 2"/></svg>',
+ next:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>'};
+/* theme */
+function applyTheme(){const t=ST.theme;if(t)document.documentElement.setAttribute('data-theme',t);else document.documentElement.removeAttribute('data-theme');
+ const dark=t?t==='dark':matchMedia('(prefers-color-scheme: dark)').matches;$('#themeT').textContent=dark?'Light':'Dark';}
+try{matchMedia('(prefers-color-scheme: dark)').addEventListener('change',applyTheme);}catch(e){}
+$('#theme').onclick=()=>{const dark=ST.theme?ST.theme==='dark':matchMedia('(prefers-color-scheme: dark)').matches;ST.theme=dark?'light':'dark';save();applyTheme();};applyTheme();
+/* number helpers */
+const f2=n=>Math.abs(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+const FR=['','⅛','¼','⅜','½','⅝','¾','⅞'];
+function ftin(x){const e=Math.round(Math.abs(x)*12*8);const ft=Math.floor(e/96),r=e-ft*96,inch=Math.floor(r/8),fr=r%8;return ft+"' "+inch+(fr?FR[fr]:'')+'"';}
+function inches(x){const e=Math.round(Math.abs(x)*12*8),inch=Math.floor(e/8),fr=e%8;return inch+(fr?FR[fr]:'')+'"';}
+function cf(ref,des){const d=Math.round((ref-des)*100)/100;return d>0?{t:'C '+f2(d),w:'Cut',d}:d<0?{t:'F '+f2(d),w:'Fill',d}:{t:'On grade',w:'On grade',d:0};}
+const swatch=fl=>'<span class="sw" aria-hidden="true">'+fl.map(c=>'<i style="background:'+COLORS[c].c+'"></i>').join('')+'</span>';
+const flagNames=fl=>fl.map(c=>COLORS[c].n).join(' and ');
+/* routing */
+let route={tab:'stakes'};
+function go(h){try{location.hash=h;}catch(e){render(h);}}
+function parse(){let h='';try{h=(location.hash||'').slice(1);}catch(e){}return h;}
+addEventListener('hashchange',()=>render(parse()));
+document.querySelectorAll('nav.tabs button').forEach(b=>b.onclick=()=>{if(b.dataset.tab==='home'){if(window.HOME)HOME.open();}else go(b.dataset.tab);});
+function render(h){h=h||ST.tab||'stakes';const [tab,arg]=h.split('/');if(tab==='home'){if(window.HOME)HOME.open();return;}if(tab==='decode'){return go('read');}const T=['stakes','read','request','tools','check','rules','more'].includes(tab)?tab:'stakes';
+ if(T!=='stakes'||!arg){ST.tab=T;save();}
+ document.querySelectorAll('nav.tabs button').forEach(b=>b.setAttribute('aria-current',(b.dataset.tab===T||(b.dataset.tab==='more'&&['tools','check','rules','more'].includes(T)))?'page':'false'));
+ if(window.HOME)HOME.close(true);document.body.dataset.tab=T;({stakes:arg?()=>vStake(arg):vList,read:vRead,request:vRequest,tools:vTools,check:vCheck,rules:vRules,more:vMore})[T]();
+ try{scrollTo(0,0);}catch(e){}}
+/* ===== stake list ===== */
+function vList(){
+ main.innerHTML='<h1>Survey stakes</h1><p class="lede">Pick a stake to see what each line on it means, what should be on it, and what to watch for.</p>'+
+ '<div class="notice" role="note">'+IC.warn+'<div><b>Colors and lath layouts are not a national standard.</b> This guide follows the system in <i>Construction Layout &amp; Survey Control</i>, common on Front Range commercial work. Confirm the color scheme at kickoff and check stakes against the cut sheet.</div></div>'+
+ '<div class="search">'+IC.search+'<input id="q" type="search" placeholder="Search stakes, like manhole or curb" aria-label="Search stakes" autocomplete="off"></div><div id="res"></div>';
+ const q=$('#q'),res=$('#res');
+ const draw=()=>{const s=q.value.trim().toLowerCase();let h='';
+  PHASES.forEach(([p,pn])=>{const its=STAKES.filter(x=>x.ph===p&&(!s||(x.name+' '+x.sum+' '+x.lines.map(l=>l.t).join(' ')+' '+flagNames(x.flag)).toLowerCase().includes(s)));
+   if(!its.length)return;h+='<h2>'+pn+'</h2><div class="grid">'+its.map(x=>'<button class="scard" data-id="'+x.id+'">'+swatch(x.flag)+'<span><b>'+esc(x.name)+'</b><span class="s">'+esc(flagNames(x.flag))+(x.flag[0]==='none'?'':' flagging')+'</span></span></button>').join('')+'</div>';});
+  res.innerHTML=h||'<p class="lede" style="margin-top:14px">No stakes match that.</p>';};
+ q.oninput=draw;draw();res.onclick=e=>{const b=e.target.closest('[data-id]');if(b)go('stakes/'+b.dataset.id);};}
+/* ===== stake detail ===== */
+function vStake(id){const i=STAKES.findIndex(x=>x.id===id);if(i<0)return vList();const x=STAKES[i];
+ const ex=x.ex?cf(x.ex.ref,x.ex.des):null;
+ const drawing=x.pin?'<div class="pin"><div class="fl">'+x.front.map((m,j)=>'<button data-l="'+j+'" aria-pressed="false" aria-label="'+esc(m.r.join(' '))+', tap for meaning">'+esc(m.r.join(' '))+'</button>').join('')+'</div><div class="wire"></div></div><div class="ground"></div>':stakeHTML(x.front,x.back,x.flag,{interactive:true,hub:x.hub,paint:x.paint,faces:x.faces,cross:x.id==='cp',bluetop:x.bluetop});
+ main.innerHTML='<button class="back" id="bk">'+IC.back+'All stakes</button><h1>'+esc(x.name)+'</h1>'+
+  '<div>'+x.flag.map(c=>'<span class="chip"><i style="background:'+COLORS[c].c+'"></i>'+COLORS[c].n+(c==='none'?'':' flagging')+'</span>').join('')+(x.paint?'<span class="chip"><i style="background:#F06FA8"></i>Pink paint</span>':'')+'</div>'+
+  '<p class="lede">'+esc(x.sum)+'</p>'+
+  '<div class="detail"><div><div class="stage" role="group" aria-label="Drawing of the stake. Each marking is a button.">'+drawing+'<div class="cap">'+(x.bluetop?'No lath on a blue top. Tap the hub.':x.pin?'Aggregate piers get a pink pin flag. Tap the flag.':'Read it top to bottom. Above the flagging: the circled offset and what it is staked to. Down the lath: cut or fill in feet, small underlined digits are hundredths. Back: point number, station, hub elevation. Tap any item.')+'</div></div></div>'+
+  '<div><div class="explain" id="ex" aria-live="polite"><div class="lbl">Tap a marking</div><p>Each item on the '+(x.pin?'flag':'front and back of the lath')+' is a button. Tap one to see what it means and what the crew does with it.</p></div>'+
+  (x.hubNote?'<div class="sec"><h2>'+IC.eye+'The hub</h2><p style="margin:0">'+esc(x.hubNote)+'</p></div>':'')+
+  (ex?'<div class="sec"><h2>'+IC.ruler+'Check the math</h2><p style="margin:0 0 4px">Cut or fill is the hub elevation (EL= on the back) minus the design. Plus means the hub is above grade, a cut. Minus means a fill.</p><div class="math">'+f2(x.ex.ref)+' hub − '+f2(x.ex.des)+' '+esc(x.ex.what)+' = '+ex.t+'</div><p style="margin:8px 0 0;font-size:14.5px;color:var(--ink2)">'+(ex.d>0?'Measure down ':'Measure up ')+ftin(ex.d)+' from the top of the hub to '+esc(x.ex.what)+'.</p></div>':'')+
+  '<div class="sec must"><h2>'+IC.ok+'What should be on it</h2><ul>'+x.must.map(m=>'<li>'+esc(m)+'</li>').join('')+'</ul></div>'+
+  '<div class="sec watch"><h2>'+IC.warn+'Watch for</h2><ul>'+x.watch.map(m=>'<li>'+esc(m)+'</li>').join('')+'</ul></div>'+
+  '<div class="sec"><h2>'+IC.ruler+'Layout accuracy</h2><p style="margin:0">'+esc(x.acc)+'</p></div>'+
+  '<div class="pn">'+(i>0?'<button class="btn" data-go="'+STAKES[i-1].id+'">'+IC.back+esc(STAKES[i-1].name)+'</button>':'<span></span>')+(i<STAKES.length-1?'<button class="btn" data-go="'+STAKES[i+1].id+'">'+esc(STAKES[i+1].name)+IC.next+'</button>':'')+'</div></div></div>';
+ $('#bk').onclick=()=>go('stakes');
+ main.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>go('stakes/'+b.dataset.go));
+ const exEl=$('#ex'),KIND={pt:'Point number',id:'Identification',elev:'Elevation',datum:'Datum',mon:'Monument',note:'Note',grade:'Grade',sta:'Station',off:'Offset',pipe:'Pipe'};
+ main.querySelectorAll('[data-l]').forEach(b=>b.onclick=()=>{main.querySelectorAll('[data-l]').forEach(o=>o.setAttribute('aria-pressed','false'));b.setAttribute('aria-pressed','true');
+  const l=x.lines[+b.dataset.l];let extra='';
+  if(l.k==='grade'){const m=l.t.match(/\b([CF])\s*([\d.]+)/);if(m){const v=parseFloat(m[2]);extra='<p style="margin-top:8px;color:var(--ink2);font-size:14.5px">In feet and inches: '+ftin(v)+(m[1]==='C'?' down':' up')+'. Feet and hundredths, not inches: 0.'+m[2].split('.')[1]+' ft is '+inches(v-Math.floor(v))+', not '+m[2].split('.')[1].replace(/^0/,'')+' inches.</p>';}}
+  const side=x.pin?'':(+b.dataset.l<x.front.length?'Front · ':'Back · ');exEl.innerHTML='<div class="lbl">'+side+KIND[l.k]+'</div><span class="k">'+esc(l.t)+'</span><p>'+esc(l.d)+'</p>'+extra;
+  const r=exEl.getBoundingClientRect();if(r.top>innerHeight*.55||r.bottom<80){try{exEl.scrollIntoView({block:'start',behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});}catch(e){}}});
+}
+/* ===== decode ===== */
+function vDecode(){
+ main.innerHTML='<h1>Decode the shorthand</h1><p class="lede">Common lath abbreviations. <span class="tag book">Book</span> terms are defined in <i>Construction Layout &amp; Survey Control</i>. <span class="tag common">Common</span> terms are widespread field shorthand that varies by crew, so confirm them with your surveyor.</p>'+
+ '<div class="search">'+IC.search+'<input id="q" type="search" placeholder="Type what you see on the lath, like IE or TBC" aria-label="Search abbreviations" autocomplete="off"></div><div class="card" style="padding:4px 12px" id="res"></div>';
+ const q=$('#q'),res=$('#res');const draw=()=>{const s=q.value.trim().toLowerCase();const r=ABBR.filter(a=>!s||(a[0]+' '+a[1]).toLowerCase().includes(s));
+  res.innerHTML=r.length?r.map(a=>'<div class="ab"><b>'+esc(a[0])+'</b><span>'+esc(a[1])+'<span class="tag '+a[2]+'">'+(a[2]==='book'?'Book':'Common')+'</span></span></div>').join(''):'<p style="padding:12px 0;margin:0">Nothing matches that. Ask the survey crew, and ask them to add it to the staking legend.</p>';};
+ q.oninput=draw;draw();}
+/* ===== tools ===== */
+const TOL=[['Rough grading / mass earthwork',0.10,0.10],['Finish grading / paving',0.05,0.05],['Curb and gutter',0.02,0.03],['Storm drain and gravity utilities',0.02,0.05],['Sanitary sewer inverts',0.02,0.02],['Building / foundation layout',0.02,0.02],['Finish floor elevation',0.02,0.02]];
+function vTools(){
+ main.innerHTML='<h1>Cut &amp; Fill</h1><p class="lede">Quick field math. Grades are in feet and hundredths, same as the leveling rod.</p><div class="tools">'+
+ '<section class="card" aria-labelledby="t1"><h2 id="t1" style="margin-top:0">Read a lath</h2><div class="field"><label for="amt">What the lath says</label><div class="row"><div class="seg" role="group" aria-label="Cut or fill"><button data-cf="C" aria-pressed="true">C</button><button data-cf="F" aria-pressed="false">F</button></div><input id="amt" inputmode="decimal" placeholder="2.32" aria-label="Amount in feet" style="flex:1;min-width:0"></div></div><div class="out" id="o1" aria-live="polite">Enter the amount from the lath.</div></section>'+
+ '<section class="card" aria-labelledby="t2"><h2 id="t2" style="margin-top:0">Top of stake to design</h2><div class="field"><label for="ref">Top of stake elevation</label><input id="ref" inputmode="decimal" placeholder="5421.96"></div><div class="field"><label for="des">Design elevation</label><input id="des" inputmode="decimal" placeholder="5420.12"></div><div class="out" id="o2" aria-live="polite">Enter both elevations.</div></section>'+
+ '<section class="card" aria-labelledby="t3"><h2 id="t3" style="margin-top:0">Tolerance check</h2><div class="field"><label for="wt">Work type</label><select id="wt">'+TOL.map((t,i)=>'<option value="'+i+'">'+t[0]+'</option>').join('')+'</select></div><div class="field"><label for="dz">Design elevation</label><input id="dz" inputmode="decimal" placeholder="5418.75"></div><div class="field"><label for="mz">Checked elevation</label><input id="mz" inputmode="decimal" placeholder="5418.70"></div><div class="out" id="o3" aria-live="polite">Vertical targets are from the book\'s accuracy table.</div></section></div>';
+ let sign='C';const num=v=>{v=String(v).replace(/[,\s]/g,'');return v===''||isNaN(+v)?null:+v;};
+ const r1=()=>{const a=num($('#amt').value),o=$('#o1');if(a===null){o.className='out';o.textContent='Enter the amount from the lath.';return;}
+  o.className='out';o.innerHTML='<span class="big">'+sign+' '+f2(a)+' = '+ftin(a)+'</span>'+(sign==='C'?'Design is '+f2(a)+' ft <b>below</b> the top of stake. Material comes out. Measure down from the top of stake.':'Design is '+f2(a)+' ft <b>above</b> the top of stake. Material goes in. Measure up from the top of stake.');};
+ main.querySelectorAll('[data-cf]').forEach(b=>b.onclick=()=>{sign=b.dataset.cf;main.querySelectorAll('[data-cf]').forEach(o=>o.setAttribute('aria-pressed',o===b?'true':'false'));r1();});
+ $('#amt').oninput=r1;
+ const r2=()=>{const a=num($('#ref').value),b=num($('#des').value),o=$('#o2');if(a===null||b===null){o.className='out';o.textContent='Enter both elevations.';return;}
+  const r=cf(a,b);o.className='out';o.innerHTML='<span class="big">'+r.t+'</span>'+f2(a)+' − '+f2(b)+(r.d?' = '+(r.d>0?'':'−')+f2(r.d)+' ft. That is '+ftin(r.d)+(r.d>0?' of cut.':' of fill.'):'. Top of stake is on grade.');};
+ $('#ref').oninput=r2;$('#des').oninput=r2;
+ const r3=()=>{const t=TOL[+$('#wt').value],a=num($('#dz').value),b=num($('#mz').value),o=$('#o3');if(a===null||b===null){o.className='out';o.textContent='Vertical target for this work: ±'+f2(t[1])+(t[2]!==t[1]?' to '+f2(t[2]):'')+' ft.';return;}
+  const dev=Math.round((b-a)*1000)/1000,ad=Math.abs(dev);const word=dev>0?'high':dev<0?'low':'on grade';
+  if(ad<=t[1]+1e-9){o.className='out ok';o.innerHTML='<span class="big">Within ±'+f2(t[1])+'</span>'+(dev?f2(dev)+' ft '+word+' ('+inches(dev)+').':'Right on grade.');}
+  else if(ad<=t[2]+1e-9){o.className='out warn';o.innerHTML='<span class="big">'+f2(dev)+' ft '+word+'</span>Inside the loose end of the book\'s range (±'+f2(t[2])+') but outside the tight end (±'+f2(t[1])+'). Check the project spec.';}
+  else{o.className='out bad';o.innerHTML='<span class="big">Out by '+f2(ad-t[2])+' ft</span>'+f2(dev)+' ft '+word+' ('+inches(dev)+'). Target is ±'+f2(t[2])+' ft. Stop and call the surveyor before building on it.';}};
+ ['#wt','#dz','#mz'].forEach(s=>$(s).addEventListener('input',r3));$('#wt').onchange=r3;r3();}
+/* ===== field check ===== */
+const shuf=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
+const first=s=>{const i=s.indexOf('. ');return i>0?s.slice(0,i+1):s;};
+function makeRound(){const Q=[];
+ shuf(JUDGE).slice(0,5).forEach(j=>Q.push({q:j.q,a:j.a,o:shuf([j.a,...j.o]),e:j.e}));
+ const cq=[['green','Sanitary sewer (gravity)'],['blue','Waterline'],['yellow','Gas line'],['red','Electric and light poles'],['purple','Rough building envelope'],['white','Correction stake']];
+ shuf(cq).slice(0,2).forEach(([c,a])=>{const o=shuf(cq.filter(x=>x[1]!==a).map(x=>x[1])).slice(0,3);Q.push({q:'In the book\'s color system, '+COLORS[c].n.toLowerCase()+' flagging usually means…',a,o:shuf([a,...o]),e:'Colors are not a national standard. Confirm the scheme at kickoff.',sw:c});});
+ const pool=[];STAKES.forEach(s=>s.lines.forEach(l=>{if(l.k==='grade'||l.k==='off')pool.push({s,l});}));
+ shuf(pool).slice(0,2).forEach(({s,l})=>{const a=first(l.d);const others=shuf(pool.filter(p=>first(p.l.d)!==a&&p.l.k===l.k)).slice(0,3).map(p=>first(p.l.d));Q.push({q:'On a '+s.name.toLowerCase()+' stake, what does this mean?',lath:l.t,a,o:shuf([a,...others]),e:l.d});});
+ for(let k=0;k<1;k++){const ref=Math.round((5400+Math.random()*30)*100)/100,c=Math.round((0.3+Math.random()*3)*100)/100,isC=Math.random()<.6,des=Math.round((isC?ref-c:ref+c)*100)/100;
+  const a=f2(des),o=[f2(isC?ref+c:ref-c),f2(isC?ref-c-0.1:ref+c+0.1),f2(isC?ref-c/12:ref+c/12)];
+  Q.push({q:'Top of stake is '+f2(ref)+'. The lath reads '+(isC?'C ':'F ')+f2(c)+'. What is the design elevation?',a,o:shuf([a,...o]),e:(isC?'Cut means design is below the top of stake: ':'Fill means design is above the top of stake: ')+f2(ref)+(isC?' − ':' + ')+f2(c)+' = '+a+'.'});}
+ return shuf(Q);}
+let QZ=null;
+function vCheck(){if(!QZ||QZ.done){main.innerHTML='<div class="qwrap"><h1>Field Check</h1><p class="lede">Ten quick questions on reading stakes and acting on what they say. Field situations, color codes, lath markings, and a little math. Nothing is recorded.</p><button class="btn acc" id="start">Start a round</button></div>';$('#start').onclick=()=>{QZ={q:makeRound(),i:0,s:0};drawQ();};return;}drawQ();}
+function drawQ(){const z=QZ;if(z.i>=z.q.length){z.done=true;const pct=Math.round(z.s/z.q.length*100);
+  main.innerHTML='<div class="qwrap"><h1>Round done</h1><p class="lede" style="font-size:18px"><b>'+z.s+' of '+z.q.length+'</b> ('+pct+'%). '+(pct>=80?'Solid. You are reading the field right.':pct>=60?'Decent. Go back through the stakes you missed.':'Worth another pass through the stake library before your next site walk.')+'</p><button class="btn acc" id="again">New round</button> <button class="btn" id="lib">Stake library</button></div>';
+  $('#again').onclick=()=>{QZ={q:makeRound(),i:0,s:0};drawQ();};$('#lib').onclick=()=>go('stakes');return;}
+ const q=z.q[z.i];
+ main.innerHTML='<div class="qwrap"><p style="margin:0;color:var(--ink3);font-weight:650">Question '+(z.i+1)+' of '+z.q.length+'</p><div class="prog" aria-hidden="true"><i style="width:'+(z.i/z.q.length*100)+'%"></i></div>'+
+  '<h2 style="margin-top:0" id="qq">'+(q.sw?'<span class="swc" style="background:'+COLORS[q.sw].c+'"></span>':'')+esc(q.q)+'</h2>'+(q.lath?'<p><span class="qlath">'+esc(q.lath)+'</span></p>':'')+
+  '<div role="group" aria-labelledby="qq">'+q.o.map((o,j)=>'<button class="opt" data-o="'+j+'">'+esc(o)+'</button>').join('')+'</div><div id="fb" aria-live="polite"></div></div>';
+ main.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{const pick=q.o[+b.dataset.o],ok=pick===q.a;if(ok)z.s++;
+  main.querySelectorAll('.opt').forEach(o=>{o.disabled=true;if(q.o[+o.dataset.o]===q.a)o.classList.add('right');});if(!ok)b.classList.add('wrong');
+  $('#fb').innerHTML='<div class="fb"><b>'+(ok?'Right.':'Not quite.')+'</b> '+esc(q.e)+'</div><p style="margin-top:12px"><button class="btn pri" id="nx">'+(z.i+1<z.q.length?'Next question':'See results')+'</button></p>';
+  const nx=$('#nx');nx.focus();nx.onclick=()=>{z.i++;drawQ();try{scrollTo(0,0);}catch(e){}};});}
+/* ===== rules ===== */
+function vRules(){
+ const colorRows=[['Control','pink','Pink (paint)','Primary horizontal reference network. Pink paint on ground or hubs.'],['Benchmarks','pink+green','Pink and green','Vertical reference. Pink hub or lath with green flagging.'],['Property corners','pink','Pink','Legal boundary monuments. Handle with care.'],['Limits / silt fence','orange','Orange','Construction boundary and erosion control extents.'],['Rough grade','orange','Orange','Earthwork grade stakes for cuts and fills.'],['Storm sewer','orange','Orange','Storm drain pipe alignment and invert grades.'],['Storm inlets','orange+white','Orange and white','Curb inlets, distinguished from mainline storm stakes.'],['Sanitary sewer','green','Green','Gravity flow sewage. Invert cuts and rim elevations.'],['Waterline','blue','Blue','Potable water mains, services, and hydrants.'],['Building envelope (rough)','purple','Purple','Rough building outline. Not to be built from.'],['Building grid / foundation','pink','Pink','Precise structural layout. Grid lines, foundation corners.'],['Curb (final)','orange','Orange','Final curb and gutter stakes graded to TBC.'],['Sidewalk (final)','pink','Pink','Final sidewalk alignment and finish grade.'],['Electric / light poles','red','Red','Transformer pads, conduit runs, light pole bases.'],['Gas line','yellow','Yellow','Gas main and service alignment.'],['Correction stakes','white','White','Something was wrong. Investigate before building.']];
+ const sw=s=>s.split('+').map(c=>'<span class="swc" style="background:'+COLORS[c].c+'"></span>').join('');
+ main.innerHTML='<h1>Field rules</h1><p class="lede">What a construction manager checks before anyone builds from a stake.</p>'+
+ '<div class="sec"><h2>'+IC.ok+'Before you build from a stake</h2><ul class="chk">'+
+ ['Is it current? Stakes get knocked, frost heaved, and superseded. A white stake nearby means something changed.','Do you know the color scheme? Confirm it at kickoff. It is not a national standard.','What is the grade to? Invert, top of pipe, TBC, FG, subgrade, top of footing. The lath or cut sheet should say.','What is it measured from? Cut and fill are to the top of stake, unless the lath or cut sheet says top of hub or a mark.','Which way is the offset? Know the distance, the direction, and whether it is to the face or the centerline.','Does it match the cut sheet? Walk a few stakes and compare. Question outliers before the equipment shows up.','Is it a survey stake or an 811 mark? Paint on the ground follows a different color code.','Did a check fail? Stop and call the surveyor. Never move or reset a hub yourself.'].map(t=>{const [a,...b]=t.split('? ');return '<li><b>'+esc(a)+'?</b> '+esc(b.join('? '))+'</li>';}).join('')+'</ul></div>'+
+ '<div class="sec"><h2>'+IC.ruler+'A good staking request has six parts</h2><ol class="req">'+
+ [['Scope','Exactly which points, lines, or elevations. Storm from MH-3 to MH-7 with inverts at each structure.'],['Purpose','What the stakes are for: formwork, pipe grade, machine control reference, verification. Purpose drives the offset and detail.'],['Accuracy','The tolerance the work needs. Rough grade and anchor rods are worlds apart.'],['Timing','When stakes must be in, with time to catch an error before concrete or pipe goes in.'],['Offsets','On the point or offset to survive construction. A corner staked on the corner is gone when the footing is dug.'],['Current documents','Which plan sheets and design file issue date to stake from.']].map(r=>'<li><b>'+r[0]+':</b> '+esc(r[1])+'</li>').join('')+'</ol><p style="margin:10px 0 0;color:var(--ink2)">"Stake it" is not a staking request.</p></div>'+
+ '<h2>Stake colors in this guide</h2><div class="tw"><table><caption>Construction stake color reference (book system)</caption><thead><tr><th scope="col">Task</th><th scope="col">Color</th><th scope="col">Field note</th></tr></thead><tbody>'+colorRows.map(r=>'<tr><th scope="row">'+r[0]+'</th><td style="white-space:nowrap">'+sw(r[1])+r[2]+'</td><td>'+esc(r[3])+'</td></tr>').join('')+'</tbody></table></div>'+
+ '<p style="color:var(--ink2)">Orange is the workhorse. Pink means precision or property. Green means gravity sanitary. White means something changed.</p>'+
+ '<h2>Survey stakes are not 811 marks</h2><p>Utility locators mark underground lines with the APWA uniform color code. Both systems show up on the same site, and some colors mean different things.</p><div class="tw"><table><caption>APWA 811 locate colors</caption><thead><tr><th scope="col">Paint or flag</th><th scope="col">Means</th></tr></thead><tbody>'+APWA.map(r=>'<tr><th scope="row">'+sw(r[0])+r[1]+'</th><td>'+r[2]+'</td></tr>').join('')+'</tbody></table></div>'+
+ '<div class="notice" role="note">'+IC.warn+'<div>Orange paint near a trench is a communications line, not rough grade. White paint outlines where someone plans to dig, not a survey correction.</div></div>'+
+ '<h2>Layout accuracy by work type</h2><div class="tw"><table><caption>Typical layout accuracy targets</caption><thead><tr><th scope="col">Work type</th><th scope="col">Horizontal</th><th scope="col">Vertical</th><th scope="col">Preferred method</th></tr></thead><tbody>'+ACC.map(r=>'<tr><th scope="row">'+r[0]+'</th><td>'+r[1]+'</td><td>'+r[2]+'</td><td>'+r[3]+'</td></tr>').join('')+'</tbody></table></div>'+
+ '<p style="color:var(--ink2)">The more permanent and load bearing the work, the tighter the accuracy. Project specs, structural drawings, or agency standards may be tighter. When in doubt, use the tighter value.</p>';}
+/* ===== lath drawing, the book's format =====
+   Top, above the flagging: circled offset, then the ID written across.
+   Below the flagging: written down the lath. Small underlined digits are hundredths. */
+function decHTML(t){return esc(t).replace(/(\d)\.(\d{2,3})(?!\d)/g,'$1<span class="dc">$2</span>');}
+function waveSVG(flags){if(!flags||!flags.length||flags[0]==='none')return '';const n=flags.length;
+ return '<svg class="fwave" viewBox="0 0 120 '+(10+n*9)+'" preserveAspectRatio="none" aria-hidden="true" focusable="false">'+flags.map((c,k)=>{const y=8+k*9,col=COLORS[c].c;
+  return '<path d="M2 '+y+' C 22 '+(y-7)+', 38 '+(y+7)+', 60 '+y+' S 98 '+(y-7)+', 118 '+y+'" fill="none" stroke="#5A4A30" stroke-width="9" stroke-linecap="round" opacity=".35"/><path d="M2 '+y+' C 22 '+(y-7)+', 38 '+(y+7)+', 60 '+y+' S 98 '+(y-7)+', 118 '+y+'" fill="none" stroke="'+col+'" stroke-width="7" stroke-linecap="round"'+(c==='white'?' stroke-dasharray="6 2"':'')+'/>';}).join('')+'</svg>';}
+function markHTML(m,idx,o){const full=m.r.join(' ');let inner;
+ if(m.circ)inner='<span class="circ">'+esc(m.r[0])+'</span>';
+ else if(m.z==='top'||m.h)inner=m.r.map(x=>'<span class="ac">'+decHTML(x)+'</span>').join('');
+ else inner='<span class="vt">'+decHTML(m.r[0])+'</span>';
+ const cls='lm '+(m.circ?'lc':m.z==='top'||m.h?'la':'lv');
+ return o.interactive?'<button class="'+cls+'" data-l="'+idx+'" aria-pressed="false" aria-label="'+esc(full)+', tap for meaning">'+inner+'</button>':'<div class="'+cls+'" role="text" aria-label="'+esc(full)+'">'+inner+'</div>';}
+function topH(ms){return ms.filter(m=>m.z==='top').reduce((h,m)=>h+(m.circ?40:m.r.length*19+6),0);}
+function faceHTML(label,marks,flags,o){o=o||{};const base=o.base||0;
+ const idx=marks.map((m,j)=>[m,base+j]);const top=idx.filter(a=>a[0].z==='top'),body=idx.filter(a=>a[0].z!=='top');
+ return '<div class="lface"><div class="llab">'+esc(label)+'</div><div class="lath3"><div class="ztop"'+(o.th?' style="min-height:'+o.th+'px"':'')+'>'+top.map(a=>markHTML(a[0],a[1],o)).join('')+'</div>'+
+  '<div class="fband">'+waveSVG(flags)+'</div><div class="zbody">'+(body.length?body.map(a=>markHTML(a[0],a[1],o)).join(''):'')+'</div></div><div class="tip2" aria-hidden="true"></div></div>';}
+function stakeHTML(front,back,flags,o){o=o||{};const lab=o.faces||['FRONT','BACK'];
+ if(o.bluetop){const m=front[0];return '<div class="scene2 bt"><button class="lm btb" data-l="0" aria-pressed="false" aria-label="'+esc(m.r.join(' '))+', tap for meaning"><svg viewBox="0 0 120 90" width="150" height="112" aria-hidden="true" focusable="false"><g stroke="#2F6FD0" stroke-width="3" stroke-linecap="round"><path d="M60 40 L42 6"/><path d="M60 40 L52 2"/><path d="M60 40 L66 3"/><path d="M60 40 L78 8"/><path d="M60 40 L88 16"/><path d="M60 40 L32 16"/></g><rect x="47" y="38" width="26" height="50" fill="#D7B07A" stroke="#6E5230" stroke-width="2"/><rect x="47" y="38" width="26" height="7" fill="#2F6FD0"/></svg><span class="btl">'+decHTML(m.r[0])+'</span></button></div><div class="ground" aria-hidden="true"></div>';}
+ return '<div class="scene2'+(o.cross?' cross':'')+'">'+faceHTML(lab[0],front,flags,{interactive:o.interactive,base:0,th:Math.max(topH(front),back?topH(back):0)})+(back?faceHTML(lab[1],back,flags,{interactive:o.interactive,base:front.length,th:Math.max(topH(front),topH(back))}):'')+
+  (o.hub?'<div class="hubbox" aria-hidden="true"><span class="hublab">HUB</span><div class="hub'+(o.paint?' paint':'')+'"></div></div>':'')+'</div><div class="ground" aria-hidden="true"></div>';}
+/* ===== READ MY STAKE ===== */
+const EXAMPLES=[['Curb at a PC','(3\')\nTBC\nPC\nF+0.87 TBC','406\n1+30 EL=5410.23','orange'],['Sanitary manhole','(10\')\nSAN\nMH\nC 9.35 INV IN\nC 9.55 INV OUT\nF 0.75 RIM','306\n0+00 (260\' @ 1.00%) EL=5420.45','green'],['Pond, story calls','(5\')\nPOND\nTBK 5\' C 0.50 / TOE 21\' C 4.50 / CL 46\' C 5.00','712\nEL=5420.00','orange'],['Pond, progressive','(5\')\nPOND\nTBK 5\' C 0.50 // TOE 16\' C 4.00 // CL 25\' C 0.50','712\nEL=5420.00','orange'],['Something off','C 2.32\nOS 10\nSTM','','orange']];
+function linesToMarks(ls,face){const isBody=l=>/(^|\s)[CF]\s*[+-]?\s*\d|\bEL\s*=|\d\+\d\d|\/|\bINV\b|\bRIM\b/.test(l);let inBody=false;
+ return ls.map((l,k)=>{if(face==='back'){if(k===0&&/^\d{1,6}$/.test(l))return {z:'top',r:[l]};return {z:'body',r:[l]};}
+  if(!inBody&&isBody(l))inBody=true;const c=l.match(/^\(\s*(\d+(?:\.\d+)?\s*'?)\s*\)$/);
+  return inBody?{z:'body',r:[l]}:c?{z:'top',circ:true,r:[c[1]]}:{z:'top',r:[l]};});}
+function vRead(){const d=ST.read2||{front:'',back:'',flag:''};
+ main.innerHTML='<h1>Read my stake</h1><p class="lede">Type what is on the stake top to bottom, one line per line on the lath. Above the flagging first (circled offset, what it is staked to), then what is written down the lath. Then the back. Pick the flagging color if you know it.</p>'+
+ '<div class="detail rd"><div><div class="card"><div class="row2"><div class="field"><label for="rf1">Front</label><textarea id="rf1" rows="8" spellcheck="false" autocapitalize="characters" autocomplete="off" placeholder="(3\')&#10;TBC&#10;PC&#10;F+0.87 TBC">'+esc(d.front)+'</textarea></div><div class="field"><label for="rb1">Back</label><textarea id="rb1" rows="8" spellcheck="false" autocapitalize="characters" autocomplete="off" placeholder="406&#10;1+30 EL=5410.23">'+esc(d.back)+'</textarea></div></div>'+
+ '<div class="field"><span class="flbl" id="fcl">Flagging color</span><div class="fchips" role="group" aria-labelledby="fcl">'+['','pink','orange','green','blue','yellow','red','purple','white'].map(c=>'<button data-fc="'+c+'" aria-pressed="'+(d.flag===c)+'">'+(c?'<i style="background:'+COLORS[c].c+'"></i>'+COLORS[c].n:'Not sure')+'</button>').join('')+'</div></div>'+
+ '<div class="field"><span class="flbl">Try an example</span><div class="fchips">'+EXAMPLES.map((e,i)=>'<button data-ex="'+i+'">'+e[0]+'</button>').join('')+'</div></div></div>'+
+ '<div class="stage" id="rprev" style="margin-top:14px"></div></div><div id="rout" aria-live="polite"></div></div>'+
+ '<details class="sec" style="margin-top:18px"><summary><b>All shorthand</b> <span style="color:var(--ink3)">(abbreviation list)</span></summary><div id="abl" style="margin-top:8px"></div></details>';
+ $('#abl').innerHTML=ABBR.map(a=>'<div class="ab"><b>'+esc(a[0])+'</b><span>'+esc(a[1])+'<span class="tag '+a[2]+'">'+(a[2]==='book'?'Book':'Common')+'</span></span></div>').join('');
+ const tf=$('#rf1'),tb=$('#rb1');
+ const draw=()=>{d.front=tf.value;d.back=tb.value;ST.read2=d;save();
+  const fl=d.front.split('\n').map(s=>s.trim().toUpperCase()).filter(Boolean).slice(0,14),bl=d.back.split('\n').map(s=>s.trim().toUpperCase()).filter(Boolean).slice(0,10);
+  $('#rprev').innerHTML=(fl.length||bl.length)?stakeHTML(linesToMarks(fl,'front'),linesToMarks(bl,'back'),d.flag?[d.flag]:[],{hub:true})+'<div class="cap">Your stake, front and back.</div>':'<p style="padding:30px 10px;color:var(--ink3);text-align:center;margin:0">Your stake shows up here as you type.</p>';
+  if(!fl.length&&!bl.length){$('#rout').innerHTML='<div class="explain"><div class="lbl">Waiting</div><p>Type what is on the front. The example buttons fill in samples, straight from the book.</p></div>';return;}
+  const fi=fl.length?parseLine(fl.join(' '),'front'):[],bi=bl.length?parseLine(bl.join(' '),'back'):[],all=[...fi,...bi],txt=fl.join(' ')+' '+bl.join(' ');
+  const sec=(lab,its)=>'<div class="sec rline"><h2>'+lab+'</h2>'+(its.length?'<ul class="dl">'+its.map(it=>'<li class="'+(it.k==='unk'?'unk':'')+'"><b>'+esc(it.t)+'</b> '+esc(it.d)+(it.need?'<span class="need">'+IC.warn+esc(it.need)+'</span>':'')+'</li>').join('')+'</ul>':'<p style="margin:6px 0 0;color:var(--ink3)">Nothing here.</p>')+'</div>';
+  const tp=guessType(txt),S=tp?STAKES.find(s=>s.id===tp):null,has=checklist(txt,all);let top='';
+  if(S){const pipeish=['stmmh','sanmh','stmpipe','sanpipe','water'].includes(S.id),gradey=!['bm','cp','prop','limits','apier'].includes(S.id);
+   const items=[...(gradey?[['Cut or fill',has.grade],['What the grade is to',has.target||!has.grade]]:[]),['Offset or centerline',has.off||/\bCL\b/.test(txt)||['rg','env','limits','bm','cp','prop'].includes(S.id)],['ID, station, or point type',has.id||has.sta],...(pipeish?[['Pipe size',has.pipe]]:[]),...(gradey?[['Point number and hub EL on the back',bi.some(i=>i.k==='pt')&&bi.some(i=>i.k==='elev')]]:[])];
+   const miss=items.filter(x=>!x[1]).length;
+   top='<div class="explain"><div class="lbl">Looks like</div><p style="font-size:18px;font-weight:750;margin-bottom:6px">'+esc(S.name)+' <span style="font-weight:500;font-size:14px;color:var(--ink3)">(best guess)</span></p><ul class="ck">'+items.map(x=>'<li class="'+(x[1]?'y':'n')+'">'+(x[1]?IC.ok:IC.warn)+esc(x[0])+'</li>').join('')+'</ul>'+
+    (d.flag&&!S.flag.includes(d.flag)&&S.flag[0]!=='none'?'<p class="need" style="margin-top:8px">'+IC.warn+'In the book\'s system this stake is usually '+esc(flagNames(S.flag).toLowerCase())+', not '+COLORS[d.flag].n.toLowerCase()+'. Confirm the color scheme for this job.</p>':'')+
+    '<p style="margin-top:10px">'+(miss?'<b>'+miss+' thing'+(miss>1?'s':'')+' missing.</b> Ask the crew or check the cut sheet before building from it. ':'<b>Has the basics.</b> Still check it against the cut sheet. ')+'<a href="#stakes/'+S.id+'">See a typical '+esc(S.name.toLowerCase())+'</a></p></div>';}
+  else top='<div class="explain"><div class="lbl">Looks like</div><p>Could be any grade stake. If there is a line that names it (SAN, STM, W, TBC, MH, GRID...), add it.</p></div>';
+  $('#rout').innerHTML=top+sec('Front',fi)+sec('Back',bi);};
+ tf.oninput=draw;tb.oninput=draw;
+ main.querySelectorAll('[data-fc]').forEach(b=>b.onclick=()=>{d.flag=b.dataset.fc;main.querySelectorAll('[data-fc]').forEach(o=>o.setAttribute('aria-pressed',o===b?'true':'false'));draw();});
+ main.querySelectorAll('[data-ex]').forEach(b=>b.onclick=()=>{const e=EXAMPLES[+b.dataset.ex];tf.value=e[1];tb.value=e[2];d.flag=e[3];main.querySelectorAll('[data-fc]').forEach(o=>o.setAttribute('aria-pressed',o.dataset.fc===d.flag?'true':'false'));draw();});
+ draw();}
+/* ===== REQUEST LAYOUT ===== */
+function vRequest(){const f=ST.req||{type:'storm'};const P=()=>REQ.find(r=>r.id===f.type)||REQ[0];
+ const fill=(force)=>{const p=P();['purpose','acc','off','grade'].forEach(k=>{if(force||!f[k])f[k]=p[k];});if(force||!f.scope)f.scope=p.scope;if(force||!f.notes)f.notes=p.notes.slice();if(force||!f.deliv)f.deliv=p.deliv.slice();};fill(false);
+ main.innerHTML='<h1>Request layout</h1><p class="lede">"Stake it" is not a staking request. Fill in the six parts and send it. Vague requests produce vague results, and vague results get built.</p>'+
+ '<div class="detail rq"><form class="card" id="rf" onsubmit="return false">'+
+ '<div class="field"><label for="ty">Type of work</label><select id="ty">'+REQ.map(r=>'<option value="'+r.id+'"'+(r.id===f.type?' selected':'')+'>'+esc(r.n)+'</option>').join('')+'</select><span class="hintx">Picking a type fills in typical purpose, accuracy, offsets and notes from the book. Edit anything.</span></div>'+
+ '<div class="row2"><div class="field"><label for="pj">Project</label><input id="pj" data-k="project"></div><div class="field"><label for="wh">Your name</label><input id="wh" data-k="who"></div></div>'+
+ '<div class="field"><label for="ph">Phone</label><input id="ph" data-k="phone" inputmode="tel"></div>'+
+ '<fieldset><legend>The six parts</legend>'+
+ '<div class="field"><label for="sc">1. Scope <span class="req6" data-i="0"></span></label><textarea id="sc" data-k="scope" rows="2"></textarea><span class="hintx">Exactly which points, lines or elevations. Replace the [ ] blanks.</span></div>'+
+ '<div class="field"><label for="pu">2. Purpose <span class="req6" data-i="1"></span></label><input id="pu" data-k="purpose"></div>'+
+ '<div class="field"><label for="ac">3. Accuracy <span class="req6" data-i="2"></span></label><input id="ac" data-k="acc"></div>'+
+ '<div class="row2"><div class="field"><label for="nd">4. Stakes needed by <span class="req6" data-i="3"></span></label><input id="nd" data-k="need" type="date"></div><div class="field"><label for="sd">Work starts</label><input id="sd" data-k="start" type="date"></div></div><div id="tw"></div>'+
+ '<div class="field"><label for="of">5. Offsets <span class="req6" data-i="4"></span></label><input id="of" data-k="off"></div>'+
+ '<div class="field"><label for="dc">6. Current documents <span class="req6" data-i="5"></span></label><input id="dc" data-k="docs" placeholder="Sheets C4.1 to C4.3, issued 11/10/26"></div></fieldset>'+
+ '<div class="field"><label for="gr">Grades to</label><input id="gr" data-k="grade"></div>'+
+ '<fieldset><legend>Staking notes</legend><div id="nts"></div></fieldset>'+
+ '<fieldset><legend>Deliverables</legend><div id="dlv"></div></fieldset>'+
+ '<div class="field"><label for="si">Site notes</label><textarea id="si" data-k="site" rows="2" placeholder="Access, who to meet on site, hazards, equipment in the way"></textarea></div>'+
+ '<button type="button" class="btn" id="rst">Reset to the typical '+'values</button></form>'+
+ '<div><div class="explain" id="score"></div><div class="card"><h2 style="margin-top:0">Your request</h2><pre class="reqout" id="out" tabindex="0" aria-label="Request text"></pre><div class="acts"><button class="btn acc" id="cp">Copy</button><a class="btn" id="em">Email</a><a class="btn" id="tx">Text</a></div><p class="hintx" id="cpm" aria-live="polite"></p></div>'+
+ '<div class="sec" style="margin-top:12px"><h2>'+IC.warn+'Bad vs good</h2><p style="margin:0 0 6px"><b>Bad:</b> "Can you get out here and stake the sewer?"</p><p style="margin:0"><b>Good:</b> "Sanitary MH-1 to MH-4 including the tie in at existing MH-A. Pipe grade for installation. Inverts ±0.02 ft. Stakes by Tuesday, pipe crew starts Thursday. Offsets 10 ft east. Sheets C4.1 to C4.3 issued 11/10."</p></div></div></div>';
+ const set=()=>{main.querySelectorAll('[data-k]').forEach(i=>{i.value=f[i.dataset.k]||'';});drawLists();upd();};
+ const drawLists=()=>{const p=P();const all=[...new Set([...(p.notes||[]),...(f.notes||[])])];
+  $('#nts').innerHTML=all.length?all.map((n,i)=>'<label class="cb"><input type="checkbox" data-n="'+i+'"'+(f.notes.includes(n)?' checked':'')+'><span>'+esc(n)+'</span></label>').join(''):'<p class="hintx" style="margin:0">None for this type.</p>';
+  $('#nts').querySelectorAll('[data-n]').forEach(c=>c.onchange=()=>{const n=all[+c.dataset.n];f.notes=f.notes.filter(x=>x!==n);if(c.checked)f.notes.push(n);upd();});
+  $('#dlv').innerHTML=Object.entries(DELIV).map(([k,v])=>'<label class="cb"><input type="checkbox" data-d="'+k+'"'+(f.deliv.includes(k)?' checked':'')+'><span>'+esc(v)+'</span></label>').join('');
+  $('#dlv').querySelectorAll('[data-d]').forEach(c=>c.onchange=()=>{f.deliv=f.deliv.filter(x=>x!==c.dataset.d);if(c.checked)f.deliv.push(c.dataset.d);upd();});};
+ const upd=()=>{ST.req=f;save();const p=P(),txt=buildRequest(f,p),c=completeness(f),n=c.filter(Boolean).length;
+  $('#out').textContent=txt;main.querySelectorAll('.req6').forEach(s=>{const ok=c[+s.dataset.i];s.className='req6 '+(ok?'y':'n');s.textContent=ok?'done':'needed';});
+  const names=['scope','purpose','accuracy','timing','offsets','current documents'];
+  $('#score').innerHTML='<div class="lbl">Completeness</div><p style="font-size:18px;font-weight:750;margin:0 0 6px">'+n+' of 6</p><div class="prog" aria-hidden="true"><i style="width:'+(n/6*100)+'%"></i></div>'+(n<6?'<p style="margin:0">Still needed: '+names.filter((_,i)=>!c[i]).join(', ')+'.</p>':'<p style="margin:0">All six parts are in. Send it.</p>');
+  let w='';if(f.need&&f.start&&f.need>=f.start)w='<p class="need">'+IC.warn+'Stakes that show up the morning work starts leave no time to catch an error before concrete or pipe goes in. Ask your surveyor for their lead time.</p>';$('#tw').innerHTML=w;
+  const sub='Survey layout request'+(f.project?': '+f.project:'')+' ('+p.n+')';$('#em').href='mailto:?subject='+encodeURIComponent(sub)+'&body='+encodeURIComponent(txt);$('#tx').href='sms:?&body='+encodeURIComponent(txt);};
+ main.querySelectorAll('[data-k]').forEach(i=>i.addEventListener('input',()=>{f[i.dataset.k]=i.value;upd();}));
+ $('#ty').onchange=()=>{f.type=$('#ty').value;fill(true);set();};$('#rst').onclick=()=>{fill(true);set();};
+ $('#cp').onclick=()=>{const t=$('#out').textContent;const ok=()=>{$('#cpm').textContent='Copied. Paste it into an email or text.';};
+  try{navigator.clipboard.writeText(t).then(ok,()=>{selectOut();});}catch(e){selectOut();}};
+ const selectOut=()=>{try{const r=document.createRange();r.selectNodeContents($('#out'));const s=getSelection();s.removeAllRanges();s.addRange(r);$('#cpm').textContent='Selected. Use your phone\'s Copy.';}catch(e){}};
+ set();}
+/* ===== MORE (phone) ===== */
+function vMore(){main.innerHTML='<h1>More</h1><div class="grid">'+[['tools','Cut & Fill','Read a lath in feet and inches, figure a cut or fill, check a tolerance.'],['check','Field Check','A 10 question round on reading stakes.'],['rules','Field rules','Before you build from a stake, colors, 811 marks, accuracy.'],['read','All shorthand','Abbreviations you will see on a lath.']].map(x=>'<button class="scard" data-go="'+x[0]+'"><span><b>'+x[1]+'</b><span class="s">'+x[2]+'</span></span></button>').join('')+'</div>';
+ main.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>go(b.dataset.go));}
+
+/* ===== HOME: galaxy ring of stakes, CM in the middle ===== */
+const HOME=(function(){
+const gx=document.getElementById('gx');if(!gx)return null;
+const stage=$('#gxStage'),pw=$('#gxStakes'),cv=$('#gxStars'),ctx=cv.getContext('2d'),nameEl=$('#gxName'),cm=$('#gxCM'),line=$('#gxLine');
+const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const P=(d)=>'<path d="'+d+'"/>';
+const ITEMS=[
+ {id:'p:control',n:'Control and Boundary',fl:['pink'],bc:'#F06FA8',ic:'M12 3v4M12 17v4M3 12h4M17 12h4M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8z'},
+ {id:'p:earth',n:'Earthwork',fl:['orange'],bc:'#FF8A1F',ic:'M3 18l5-7 4 5 3-3 6 5z'},
+ {id:'p:util',n:'Underground Utilities',fl:['green','blue','yellow'],bc:'#2FA35A',ic:'M3 8h11v13M3 13h6v8'},
+ {id:'p:struct',n:'Foundations and Structure',fl:['pink'],bc:'#C2185B',ic:'M4 21V9l8-5 8 5v12M9 21v-6h6v6'},
+ {id:'p:flat',n:'Curb, Paving and Flatwork',fl:['orange','pink'],bc:'#D9A35B',ic:'M3 14h7l2-3h9M3 19h18'},
+ {id:'p:change',n:'Changes',fl:['white'],bc:'#8C98A4',ic:'M20 11a8 8 0 1 0-2.3 5.7M20 5v6h-6'},
+ {id:'t:read',n:'Read My Stake',fl:['orange'],bc:'#2F7FE0',ic:'M4 6h9M4 11h9M4 16h6M17 15a3 3 0 1 0 0 .01M19.5 17.5L22 20',sub:'Type what it says, get it decoded'},
+ {id:'t:request',n:'Request Layout',fl:['orange'],bc:'#14A38F',ic:'M4 4h16v12H8l-4 4zM8 9h8M8 12h5',sub:'Build a complete staking request'},
+ {id:'t:tools',n:'Cut and Fill',fl:['orange'],bc:'#E0362C',ic:'M12 3v18M8 7l4-4 4 4M8 17l4 4 4-4',sub:'Feet and inches, cut or fill, tolerance'},
+ {id:'t:check',n:'Field Check',fl:['orange'],bc:'#3FA34D',ic:'M5 12l5 5 9-10',sub:'Ten questions on reading stakes'},
+ {id:'t:rules',n:'Field Rules',fl:['orange'],bc:'#6B7C8F',ic:'M6 3h9l3 3v15H6zM9 10h6M9 14h6M9 18h4',sub:'Checklists, colors, 811, accuracy'}];
+ITEMS.forEach(it=>{if(it.id.startsWith('p:')){it.items=STAKES.filter(s=>s.ph===it.id.slice(2));it.sub=it.items.length+' stake'+(it.items.length>1?'s':'');}});
+const N=ITEMS.length,STEP=2*Math.PI/N,PH=2.6;
+const stakeSVG=(it,i)=>{const fl=it.fl.map((c,k)=>'<rect x="'+(13+k*5)+'" y="'+(2+k)+'" width="5" height="14" rx="1" fill="'+COLORS[c].c+'" stroke="rgba(0,0,0,.35)" stroke-width=".6" transform="rotate('+(k%2?8:-8)+' '+(15+k*5)+' 4)"/>').join('');
+ const marks=[[52,6],[56,8],[62,5],[65.5,7],[69,5],[75,8]].map(([y,w])=>'<rect x="'+(20-w/2)+'" y="'+y+'" width="'+w+'" height="1.6" rx=".5" fill="#3A2A14" opacity=".6"/>').join('');
+ return '<svg viewBox="0 0 40 104" aria-hidden="true"><defs><linearGradient id="wd'+i+'" x1="0" x2="1"><stop offset="0" stop-color="#C9A46C"/><stop offset=".5" stop-color="#ECD3A6"/><stop offset="1" stop-color="#C29C62"/></linearGradient></defs>'+
+  '<ellipse cx="20" cy="102" rx="12" ry="2.2" fill="rgba(0,0,0,.45)"/><path d="M13.5 12h13v80l-6.5 11-6.5-11z" fill="url(#wd'+i+')" stroke="#8C6A38" stroke-width=".8"/>'+fl+marks+
+  '<circle cx="20" cy="33" r="11" fill="'+it.bc+'" stroke="#F4F7FA" stroke-width="1.4"/><g transform="translate(14,27) scale(.5)" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="'+it.ic+'"/></g></svg>';};
+pw.innerHTML=ITEMS.map((it,i)=>'<button class="gx-st" data-i="'+i+'" aria-label="'+esc(it.n)+', '+esc(it.sub)+'">'+stakeSVG(it,i)+'</button>').join('');
+const els=[...pw.children];
+/* the construction manager: hard hat, hi-vis vest, tablet */
+cm.innerHTML='<svg viewBox="0 0 60 100" aria-hidden="true"><g id="cmBody">'+
+ '<ellipse cx="30" cy="98" rx="16" ry="2.6" fill="rgba(0,0,0,.45)"/>'+
+ '<path d="M23 64h6v30h-6zM31 64h6v30h-6z" fill="#2A3846"/><path d="M21.5 93h8v4.5h-9.5zM30.5 93h8l1.5 4.5h-9.5z" fill="#4A3424"/>'+
+ '<path d="M19 34q11-6 22 0l2 31H17z" fill="#3E5C7A"/>'+
+ '<path d="M21 33q9-4 18 0l1.6 31H19.4z" fill="#D4F21E"/><path d="M27 31v33M33 31v33" stroke="#F28C28" stroke-width="2.4"/><path d="M20 54h20M20.2 58h19.6" stroke="#C8CDD2" stroke-width="2"/><path d="M27.5 31l2.5 6 2.5-6" fill="#3E5C7A"/>'+
+ '<path d="M19 36q-5 8-1 14l5-1q-2-5 0-10z" fill="#3E5C7A"/><path d="M41 36q5 8 1 14l-5-1q2-5 0-10z" fill="#3E5C7A"/>'+
+ '<rect x="21" y="44" width="18" height="12" rx="1.6" fill="#1C2630" stroke="#55626E" stroke-width=".8" transform="rotate(-8 30 50)"/><rect x="23" y="46" width="14" height="8" rx=".8" fill="#5FD3FF" opacity=".85" transform="rotate(-8 30 50)"/>'+
+ '<circle cx="21" cy="51" r="2.3" fill="#C98F66"/><circle cx="39" cy="49" r="2.3" fill="#C98F66"/>'+
+ '<rect x="27.5" y="26" width="5" height="5" fill="#C98F66"/><circle cx="30" cy="21" r="7" fill="#D9A47C"/><circle cx="27.4" cy="21.5" r=".9" fill="#2A2420"/><circle cx="32.6" cy="21.5" r=".9" fill="#2A2420"/><path d="M27.6 25q2.4 1.6 4.8 0" stroke="#7A4A30" stroke-width=".8" fill="none"/>'+
+ '<path d="M21.5 18.5q0-9 8.5-9.5 8.5.5 8.5 9.5z" fill="#F7F8F9" stroke="#B8C0C8" stroke-width=".7"/><path d="M19 18.5h22q.6 1.6-1 1.9H20q-1.6-.3-1-1.9z" fill="#E6E9EC" stroke="#B8C0C8" stroke-width=".6"/><path d="M30 9.2v9.3" stroke="#D4D9DE" stroke-width="1.6"/>'+
+ '</g></svg>';
+let th=0,W=0,H=0,cx=0,cy=0,rx=0,ry=0,S=50,front=0,dpr=1,raf=0,anim=null,isOpen=false,CM={x:0,y:0,w:0,h:0};
+{const k=ITEMS.findIndex(it=>it.id===ST.hi);if(k>=0)th=-k*STEP;}
+let stars=[],shoot=null,lastShoot=0;
+function mkStars(){const n=Math.round(Math.min(420,W*H/2600));stars=[];for(let i=0;i<n;i++){const l=Math.random();stars.push({x:Math.random(),y:Math.random(),l:l<.6?0:l<.9?1:2,r:(l<.6?.5:l<.9?.9:1.4)*(.7+Math.random()*.6),ph:Math.random()*6.28,sp:.5+Math.random()*1.6,c:Math.random()<.12?'#FFD9A0':Math.random()<.18?'#A8C8FF':'#FFFFFF'});}}
+function drawStars(t){ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,W,H);const par=[.02,.05,.10];
+ for(const s of stars){let x=(s.x*W+th*par[s.l]*W)%W;if(x<0)x+=W;const tw=RM?1:.55+.45*Math.sin(t*.001*s.sp+s.ph);ctx.globalAlpha=(.35+.5*(s.l/2))*tw+.1;ctx.fillStyle=s.c;ctx.beginPath();ctx.arc(x,s.y*H,s.r,0,6.283);ctx.fill();}
+ if(!RM){if(!shoot&&t-lastShoot>6000+Math.random()*9000){lastShoot=t;const a=.35+Math.random()*.35;shoot={x:Math.random()*W*.8,y:Math.random()*H*.4,vx:Math.cos(a)*.9,vy:Math.sin(a)*.9,life:0};}
+  if(shoot){shoot.life+=16;const k=shoot.life,x=shoot.x+shoot.vx*k,y=shoot.y+shoot.vy*k,a=Math.max(0,1-k/900);const g=ctx.createLinearGradient(x,y,x-shoot.vx*120,y-shoot.vy*120);g.addColorStop(0,'rgba(255,255,255,'+a+')');g.addColorStop(1,'rgba(255,255,255,0)');ctx.globalAlpha=1;ctx.strokeStyle=g;ctx.lineWidth=1.4;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x-shoot.vx*120,y-shoot.vy*120);ctx.stroke();if(k>900)shoot=null;}}
+ ctx.globalAlpha=1;}
+function size(){W=gx.clientWidth;H=gx.clientHeight;dpr=Math.min(2,devicePixelRatio||1);cv.width=W*dpr;cv.height=H*dpr;
+ const tall=H>W*1.3,hint=gx.querySelector('.gx-hint'),tb=gx.querySelector('.gx-top');hint.style.display=H<520?'none':'';
+ const topY=tb.offsetHeight+6,hintH=H<520?0:hint.offsetHeight+14,nameH=104,botY=H-hintH-nameH-8,avail=Math.max(140,botY-topY);
+ S=Math.max(30,Math.min(Math.min(W,H)*(tall?.15:.11),80,avail*.16));
+ rx=Math.min(W*.40,440);ry=Math.max(24,Math.min(rx*(tall?.98:.44),(avail-(PH*S*.42+4))/2));S=Math.max(28,Math.min(S,ry/2.6));ry=Math.max(24,Math.min(rx*(tall?.98:.44),(avail-(PH*S*.42+4))/2));
+ const backUp=PH*S*.42+4;cx=W/2;cy=topY+backUp+ry+Math.max(0,(avail-(2*ry+backUp))/2);
+ Object.assign($('#gxOrb').style,{left:(cx-rx)+'px',top:(cy-ry)+'px',width:2*rx+'px',height:2*ry+'px'});
+ Object.assign($('#gxOrb2').style,{left:(cx-rx*1.32)+'px',top:(cy-ry*1.32)+'px',width:2.64*rx+'px',height:2.64*ry+'px'});
+ const Ih=Math.min(S*3.2,cy+S*.15-topY-2),Iw=Ih*.6,feet=cy+S*.15;CM={w:Iw,h:Ih,x:cx-Iw/2,y:feet-Ih,k:Iw/60};
+ Object.assign(cm.style,{width:Iw+'px',height:Ih+'px',left:CM.x+'px',top:CM.y+'px'});
+ const G=Ih*2.2;Object.assign($('#gxGlow').style,{width:G+'px',height:G+'px',left:(cx-G/2)+'px',top:(feet-Ih*.6-G/2)+'px'});
+ line.setAttribute('width',W);line.setAttribute('height',H);line.setAttribute('viewBox','0 0 '+W+' '+H);
+ nameEl.style.top=Math.min(cy+ry+10,botY+4)+'px';nameEl.innerHTML='';mkStars();place();}
+function place(){let best=-2,bi=0;
+ els.forEach((el,i)=>{const a=th+i*STEP,c=Math.cos(a),d=(c+1)/2,s=.45+.6*d,x=cx+rx*Math.sin(a),y=cy+ry*c;el._x=x;el._y=y;el._s=s;
+  el.style.fontSize=S+'px';el.style.transform='translate('+(x-S/2)+'px,'+(y-PH*S)+'px) scale('+s.toFixed(3)+')';el.style.zIndex=String(10+Math.round(d*80));el.style.opacity=(.42+.58*d).toFixed(3);el.style.filter=d<.5?'brightness('+(.55+.9*d).toFixed(2)+')':'';if(c>best){best=c;bi=i;}});
+ if(bi!==front||!nameEl.innerHTML){front=bi;const it=ITEMS[front];nameEl.innerHTML='<b>'+esc(it.n)+'</b><span>'+esc(it.sub)+' · tap the stake to open</span><div class="gx-dots" aria-hidden="true">'+ITEMS.map((_,i)=>'<i class="'+(i===front?'on':'')+'"></i>').join('')+'</div>';els.forEach((el,i)=>el.tabIndex=i===front?0:-1);}
+ const el=els[front],sx=el._x,sy=el._y-el._s*PH*S*(1-33/104),k=CM.k,hx=CM.x+30*k,hy=CM.y+49*k;
+ const lean=Math.max(-10,Math.min(10,(sx-hx)/(rx||1)*14));const b=document.getElementById('cmBody');if(b)b.setAttribute('transform','rotate('+lean.toFixed(2)+' 30 96)');
+ const off=Math.abs(((th+front*STEP)%(2*Math.PI)+3*Math.PI)%(2*Math.PI)-Math.PI),lock=Math.max(0,1-off/(STEP*.35));
+ line.innerHTML='<line x1="'+hx+'" y1="'+hy+'" x2="'+sx+'" y2="'+sy+'" stroke="#F2A900" stroke-width="2" stroke-dasharray="6 6" stroke-linecap="round" opacity="'+(.9*lock).toFixed(3)+'"/><circle cx="'+sx+'" cy="'+sy+'" r="'+(4+8*lock)+'" fill="none" stroke="#F2A900" stroke-width="2" opacity="'+(.8*lock).toFixed(3)+'"/>';}
+function loop(t){if(!isOpen)return;if(anim){const k=Math.min(1,(t-anim.t0)/anim.dur),e=1-Math.pow(1-k,3);th=anim.a+(anim.b-anim.a)*e;place();if(k>=1){const c=anim.cb;anim=null;ST.hi=ITEMS[front].id;save();if(c)c();}}
+ else if(Math.abs(vel)>0.00002&&!drag){th+=vel*16;vel*=0.94;place();if(Math.abs(vel)<=0.00025){vel=0;snap();}}drawStars(t);raf=requestAnimationFrame(loop);}
+function rotTo(b,cb,dur){anim={a:th,b,t0:performance.now(),dur:RM?1:(dur||460),cb};}
+function snap(cb){rotTo(Math.round(th/STEP)*STEP,cb);}
+function goTo(i,cb){const k=Math.round(th/STEP);let t=-i*STEP;const base=k*STEP;t+=Math.round((base-t)/(2*Math.PI))*2*Math.PI;if(Math.abs(t-th)>Math.PI+.01)t+=t>th?-2*Math.PI:2*Math.PI;rotTo(t,cb);}
+let drag=null,vel=0,moved=false;
+stage.addEventListener('pointerdown',e=>{if(gx.classList.contains('sheet'))return;drag={x:e.clientX,y:e.clientY,th,lx:e.clientX,lt:performance.now(),id:e.pointerId};moved=false;vel=0;anim=null;});
+stage.addEventListener('pointermove',e=>{if(!drag)return;const dx=e.clientX-drag.x;if(!moved&&(Math.abs(dx)>6||Math.abs(e.clientY-drag.y)>6)){moved=true;try{stage.setPointerCapture(drag.id);}catch(x){}}
+ th=drag.th+dx/(rx*1.05);const now=performance.now(),dt=now-drag.lt;if(dt>0)vel=(e.clientX-drag.lx)/(rx*1.05)/dt*.9+vel*.1;drag.lx=e.clientX;drag.lt=now;place();});
+const endDrag=()=>{if(!drag)return;const w=moved;drag=null;if(!w){vel=0;return;}if(Math.abs(vel)<0.0004){vel=0;snap();}vel=Math.max(-.012,Math.min(.012,vel));};
+stage.addEventListener('pointerup',endDrag);stage.addEventListener('pointercancel',endDrag);
+let wt=0;gx.addEventListener('wheel',e=>{if(gx.classList.contains('sheet'))return;e.preventDefault();const n=performance.now();if(n-wt<260)return;wt=n;const d=Math.abs(e.deltaX)>Math.abs(e.deltaY)?e.deltaX:e.deltaY;if(Math.abs(d)<4)return;step(d>0?1:-1);},{passive:false});
+function step(n){vel=0;const base=anim?anim.b:Math.round(th/STEP)*STEP;rotTo(base-n*STEP);}
+function activate(i){const it=ITEMS[i];if(it.id.startsWith('t:')){close(true);go(it.id.slice(2));}else openSheet(i);}
+pw.addEventListener('click',e=>{const b=e.target.closest('.gx-st');if(!b)return;if(moved){moved=false;return;}const i=+b.dataset.i;if(i===front&&!anim)activate(i);else goTo(i,()=>activate(i));});
+cm.addEventListener('click',()=>{if(moved){moved=false;return;}openSheet(-1);});
+const list=$('#gxList'),q=$('#gxQ');
+const row=(href,sw,t,d)=>'<button class="gx-item" data-href="'+href+'">'+sw+'<span class="tx"><span class="t">'+esc(t)+'</span><span class="d">'+esc(d)+'</span></span><svg class="ch" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>';
+function fillSearch(){const s=q.value.trim().toLowerCase();
+ const st=STAKES.filter(x=>!s||(x.name+' '+x.sum+' '+x.lines.map(l=>l.t).join(' ')+' '+flagNames(x.flag)).toLowerCase().includes(s)).map(x=>row('stakes/'+x.id,swatch(x.flag),x.name,x.sum));
+ const tl=ITEMS.filter(it=>it.id.startsWith('t:')&&(!s||(it.n+' '+it.sub).toLowerCase().includes(s))).map(it=>row(it.id.slice(2),'<span class="sw" aria-hidden="true"><i style="background:'+it.bc+'"></i></span>',it.n,it.sub));
+ const ab=s?ABBR.filter(a=>(a[0]+' '+a[1]).toLowerCase().includes(s)).slice(0,6).map(a=>row('read','<span class="sw" aria-hidden="true"><i style="background:#E7CB9C"></i></span>',a[0],a[1])):[];
+ const all=[...tl,...st,...ab];list.innerHTML=all.length?all.join(''):'<div class="gx-none">Nothing matches that.</div>';}
+function openSheet(i){const mini=$('#gxMini');
+ if(i<0){$('#gxShT').textContent='Everything';$('#gxShS').textContent=STAKES.length+' stakes, 5 tools, and the shorthand list';mini.innerHTML='';$('#gxSrch').hidden=false;q.value='';fillSearch();}
+ else{const it=ITEMS[i];$('#gxShT').textContent=it.n;$('#gxShS').textContent=it.sub;mini.innerHTML='<span class="sw">'+it.fl.map(c=>'<i style="background:'+COLORS[c].c+'"></i>').join('')+'</span>';$('#gxSrch').hidden=true;
+  list.innerHTML=it.items.map(x=>row('stakes/'+x.id,swatch(x.flag),x.name,x.sum)).join('');}
+ gx.classList.add('sheet');list.scrollTop=0;setTimeout(()=>{if(i<0&&matchMedia('(pointer:fine)').matches)q.focus();else{const f=list.querySelector('.gx-item');if(f)f.focus({preventScroll:true});}},RM?0:200);}
+function closeSheet(){if(!gx.classList.contains('sheet'))return;gx.classList.remove('sheet');const f=els[front];if(f)f.focus({preventScroll:true});}
+q.addEventListener('input',fillSearch);q.addEventListener('keydown',e=>{if(e.key==='Enter'){const b=list.querySelector('.gx-item');if(b)b.click();}});
+list.addEventListener('click',e=>{const b=e.target.closest('[data-href]');if(!b)return;close(true);go(b.dataset.href);});
+$('#gxShX').onclick=closeSheet;$('#gxScrim').onclick=closeSheet;$('#gxFind').onclick=()=>openSheet(-1);
+function open(){if(isOpen)return;isOpen=true;document.body.classList.add('gx-open');['header.top','nav.tabs','#main','footer'].forEach(s=>{const e=$(s);if(e)e.inert=true;});
+ $('#gxCloseT').textContent='Back';nameEl.innerHTML='';size();cancelAnimationFrame(raf);raf=requestAnimationFrame(loop);setTimeout(()=>gx.focus({preventScroll:true}),40);}
+function close(silent){if(!isOpen)return;isOpen=false;gx.classList.remove('sheet');document.body.classList.remove('gx-open');['header.top','nav.tabs','#main','footer'].forEach(s=>{const e=$(s);if(e)e.inert=false;});cancelAnimationFrame(raf);}
+$('#gxClose').onclick=()=>close();
+addEventListener('resize',()=>{if(isOpen)size();});
+document.addEventListener('keydown',e=>{if(!isOpen)return;const inS=gx.classList.contains('sheet');
+ if(e.key==='Escape'){e.preventDefault();e.stopImmediatePropagation();if(inS)closeSheet();else close();return;}if(inS)return;
+ if(e.key==='ArrowRight'||e.key==='ArrowDown'){e.preventDefault();step(1);setTimeout(()=>els[front]&&els[front].focus({preventScroll:true}),RM?0:480);}
+ else if(e.key==='ArrowLeft'||e.key==='ArrowUp'){e.preventDefault();step(-1);setTimeout(()=>els[front]&&els[front].focus({preventScroll:true}),RM?0:480);}
+ else if(e.key==='/'){e.preventDefault();openSheet(-1);}},true);
+return {open,close,openSheet,get front(){return ITEMS[front].id}};})();
+window.HOME=HOME;
+
+render(parse());
+if(!parse())HOME.open();
+
+})();
+
+</script>
+<script>
+try{if('serviceWorker' in navigator&&/^https?:$/.test(location.protocol)){addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){});});}}catch(e){}
+</script>
+</body>
+</html>
