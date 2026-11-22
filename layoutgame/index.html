@@ -1,0 +1,615 @@
+<!doctype html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Layout Game</title>
+<meta name="description" content="The Layout Game: check survey stakes against the plans and the cut sheet. Find missing stakes, wrong cuts, bad offsets, hubs in the wrong spot and disturbed hubs.">
+<meta name="theme-color" content="#0E2A3B">
+<meta name="robots" content="noindex,nofollow">
+<link rel="apple-touch-icon" sizes="180x180" href="icons/icon-180.png">
+<link rel="manifest" href="manifest.webmanifest">
+<style>
+:root{--bg:#F3F6F8;--card:#FFFFFF;--card2:#F7F9FB;--ink:#0B1B2B;--ink2:#3A4D60;--ink3:#5C6F82;--line:#D5DDE4;--brand:#0E2A3B;--acc:#F2A900;--accInk:#1F1500;
+ --ok:#177245;--okbg:#E3F4EA;--bad:#B42318;--badbg:#FDE8E6;--focus:#1D6FD8;--wood:#E7CB9C;--wood2:#D6B47E;--woodInk:#16110A;--sel:#FFE38A;--paper:#FBFAF4;--draw:#1B2A38;--dirt:#C9A77A;--dirt2:#B8946A;
+ --mono:ui-monospace,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;--sans:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;color-scheme:light}
+:root[data-theme="dark"]{--bg:#0B141C;--card:#13212D;--card2:#182A38;--ink:#EEF3F8;--ink2:#C3D0DC;--ink3:#A3B4C4;--line:#2A3D4E;--brand:#0A1F2D;
+ --ok:#5BD08F;--okbg:#123726;--bad:#FF8A80;--badbg:#3D1A18;--focus:#7FB8FF;--sel:#FFD45C;--paper:#101C26;--draw:#D7E3EE;--dirt:#5A4630;--dirt2:#4A3926;color-scheme:dark}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0B141C;--card:#13212D;--card2:#182A38;--ink:#EEF3F8;--ink2:#C3D0DC;--ink3:#A3B4C4;--line:#2A3D4E;--brand:#0A1F2D;
+ --ok:#5BD08F;--okbg:#123726;--bad:#FF8A80;--badbg:#3D1A18;--focus:#7FB8FF;--sel:#FFD45C;--paper:#101C26;--draw:#D7E3EE;--dirt:#5A4630;--dirt2:#4A3926;color-scheme:dark}}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.5}
+html.big{font-size:19px}
+html.big .lath3 .lm{font-size:18px}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.skip{position:absolute;left:-999px;top:8px;background:var(--acc);color:var(--accInk);padding:8px 12px;border-radius:8px;font-weight:700;z-index:50}
+.skip:focus{left:8px}
+header.app{background:var(--brand);color:#F1F5F8;display:flex;align-items:center;gap:12px;padding:10px 18px;position:sticky;top:0;z-index:20}
+.logo{width:40px;height:40px;border-radius:10px;background:var(--acc);display:grid;place-items:center;flex:none}
+.brand b{display:block;font-size:18px;line-height:1.2}
+.brand span{display:block;font-size:13px;color:#C9D8E4}
+.sp{flex:1}
+.hb{height:38px;padding:0 12px;border-radius:10px;border:1px solid #3B5A70;background:#163447;color:#F1F5F8;font:600 14px var(--sans);cursor:pointer}
+.hb[aria-pressed="true"]{background:var(--acc);color:var(--accInk);border-color:var(--acc)}
+main{max-width:1320px;margin:0 auto;padding:18px 16px 40px}
+h1{font-size:1.6rem;margin:0;line-height:1.2}
+h2{font-size:1.2rem;margin:0 0 10px}
+h3{font-size:1.02rem;margin:14px 0 6px}
+.sub{margin:4px 0 0;color:var(--ink2)}
+.small{font-size:.9rem;color:var(--ink2);margin:4px 0}
+.mono{font-family:var(--mono)}
+.topbar{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end;justify-content:space-between;margin-bottom:10px}
+.tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+select,input{font:inherit;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:10px;height:42px;padding:0 10px}
+input[aria-invalid="true"]{border-color:var(--bad)}
+.btn{height:42px;padding:0 16px;border-radius:10px;border:1px solid var(--acc);background:var(--acc);color:var(--accInk);font:700 15px var(--sans);cursor:pointer}
+.btn.ghost{background:var(--card);color:var(--ink);border-color:var(--line)}
+.btn.big{height:50px;font-size:17px;padding:0 22px}
+.btn:disabled{opacity:.55;cursor:not-allowed}
+.how{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:8px 14px;margin-bottom:14px}
+.how summary{cursor:pointer;font-weight:700}
+.how ol{margin:6px 0 4px;padding-left:22px}
+.grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:16px;align-items:start}
+@media (max-width:980px){.grid{grid-template-columns:minmax(0,1fr)}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}
+.plan{width:100%;height:auto;display:block;border:1px solid var(--line);border-radius:8px}
+.plan .pt{font:700 15px var(--mono);fill:var(--draw)}
+.plan .t{font:600 13px var(--mono);fill:var(--draw)}
+.plan .gt{font-size:12px;opacity:.75}
+.plan .pl{stroke:var(--draw);stroke-width:3;fill:none}
+.plan .pl2{stroke:var(--draw);stroke-width:1.5;fill:none}
+.plan .off{stroke:#D97706;stroke-width:2;stroke-dasharray:8 5}
+.plan .tk,.plan .lead{stroke:var(--draw);stroke-width:1.5;fill:none}
+.plan .sym{fill:var(--draw)}
+.plan .sym2{fill:var(--paper);stroke:var(--draw);stroke-width:2}
+.plan .gl{stroke:var(--draw);stroke-width:.6;opacity:.25}
+.plan .gr{stroke:#8A6A3C;stroke-width:2.5;fill:none}
+.plan .pipe{stroke:#1D6FD8;stroke-width:4}
+.plan .mh{fill:none;stroke:var(--draw);stroke-width:2}
+.plan .tb{fill:none;stroke:var(--draw);stroke-width:1.5}
+.plan .bc{stroke:var(--draw);stroke-width:3;fill:none}
+.plan .fl{stroke:var(--draw);stroke-width:1.5;fill:none}
+.plan .cl{stroke:#1D6FD8;stroke-width:1.5;stroke-dasharray:10 4 2 4;fill:none}
+.plan .water{stroke:#2F7FE0;stroke-width:4;fill:none}
+.plan .gl{stroke:var(--draw);stroke-width:1;stroke-dasharray:12 4 2 4}
+.plan .gl2{stroke:var(--draw);stroke-width:.6;opacity:.25}
+.plan .bldg{fill:rgba(120,140,160,.15);stroke:var(--draw);stroke-width:2.5}
+.plan .pad{fill:rgba(201,167,122,.25);stroke:var(--draw);stroke-width:2.5}
+.plan .bub{fill:var(--paper);stroke:var(--draw);stroke-width:1.5}
+.plan .vlv{fill:var(--draw)}
+.plan .rpm line{stroke:#B42318;stroke-width:2}
+.plan polyline.pipe{fill:none}
+table{border-collapse:collapse;width:100%;font-size:.95rem}
+caption{text-align:left;font-weight:700;padding:10px 0 6px}
+th,td{border-bottom:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+thead th{background:var(--card2);font-size:.85rem}
+.req{margin:0;padding-left:20px}
+.tabs{display:flex;gap:6px;margin:0 0 10px}
+.tab{height:40px;padding:0 14px;border-radius:10px;border:1px solid var(--line);background:var(--card2);color:var(--ink);font:700 15px var(--sans);cursor:pointer}
+.tab[aria-pressed="true"]{background:var(--brand);color:#fff;border-color:var(--brand)}
+.cs td,.cs th{white-space:nowrap}
+.fwrap{overflow-x:auto;border-radius:10px;border:1px solid var(--line)}
+.field{position:relative;width:100%;min-width:460px;background:repeating-linear-gradient(115deg,var(--dirt) 0 18px,var(--dirt2) 18px 22px)}
+.fsvg{position:absolute;inset:0;width:100%;height:100%}
+.fsvg .ff{fill:none;stroke:rgba(255,255,255,.55);stroke-width:2;stroke-dasharray:6 6}
+.fsvg circle.ff,.fsvg rect.ff,.fsvg path.ff{stroke:rgba(255,255,255,.55)}
+.eqband{min-width:460px;background:linear-gradient(#BFD9EC,#DCEAF3);height:74px;overflow:hidden;border-bottom:4px solid var(--dirt2)}
+:root[data-theme="dark"] .eqband{background:linear-gradient(#0E2236,#1A3550)}
+.equip{width:100%;height:74px;display:block}
+@media (prefers-reduced-motion:no-preference){.eq{animation:drive 14s ease-in-out infinite alternate}.e2{animation-duration:18s}.e3{animation-duration:11s}.e4{animation-duration:16s}}
+@keyframes drive{from{transform:translateX(-30px)}to{transform:translateX(40px)}}
+.fs{position:absolute;transform:translate(-50%,-100%);display:flex;flex-direction:column;align-items:center;background:transparent;border:2px solid transparent;border-radius:8px;padding:1px 2px;cursor:pointer;z-index:2}
+.fs svg{transform-origin:bottom center;display:block}
+.fs.lean svg{transform:rotate(16deg)}
+.fs .fl{order:-1;font:700 12px var(--mono);color:#1A140C;background:rgba(255,255,255,.85);padding:0 3px;border-radius:4px;margin-bottom:1px;white-space:nowrap}
+.fs:hover{border-color:rgba(0,0,0,.4)}
+.fs.sel{background:var(--sel);border-color:#7A5A00;z-index:3}
+.fs .bd{position:absolute;top:-8px;right:-10px;width:20px;height:20px;border-radius:50%;font:800 12px var(--sans);display:grid;place-items:center;background:#177245;color:#fff}
+.fs.flagged .bd{background:#B42318}
+.tape{margin-top:10px}
+.tape .row label{font-weight:600}
+.tlog{margin:4px 0 0;padding-left:20px}
+.tlog li:first-child{font-weight:700}
+.missrow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:12px 0 4px}
+.missrow label{font-weight:600}
+.chip{font:600 13px var(--sans);border:1px solid var(--line);background:var(--card2);color:var(--ink);border-radius:999px;padding:3px 10px;cursor:pointer}
+#panel{margin-top:12px;border-top:1px solid var(--line);padding-top:4px}
+.empty{color:var(--ink2);font-style:italic}
+.cond{font-weight:600}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:8px 0}
+.hint summary{cursor:pointer;color:var(--ink2);font-weight:600}
+.hint p{font-family:var(--mono);font-size:.92rem;background:var(--card2);border-radius:8px;padding:8px 10px;margin:6px 0}
+fieldset.call{border:1px solid var(--line);border-radius:10px;padding:8px 12px;margin:10px 0}
+fieldset.call legend{font-weight:700;padding:0 4px}
+fieldset.call label{display:flex;align-items:center;gap:8px;padding:5px 0;cursor:pointer}
+fieldset.call input{width:20px;height:20px;margin:0}
+.finish{margin-top:16px}
+.finish fieldset.q{display:inline-block;vertical-align:top;margin-right:10px;min-width:260px}
+.res{margin-top:16px;border-left:6px solid var(--acc)}
+.kpis{display:flex;flex-wrap:wrap;gap:10px;margin:6px 0 10px}
+.kpi{flex:1;min-width:150px;background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.kv{display:block;font:800 1.4rem var(--sans)}
+.kl{display:block;font-size:.85rem;color:var(--ink2)}
+.kpi.good .kv{color:var(--ok)} .kpi.bad .kv{color:var(--bad)}
+.calls{padding-left:20px}
+.calls li.y strong{color:var(--ok)} .calls li.n strong{color:var(--bad)}
+.tscroll{overflow-x:auto}
+.rt tr.y th{border-left:5px solid var(--ok)} .rt tr.n th{border-left:5px solid var(--bad)}
+.codebox{background:var(--card2);border:1px dashed var(--line);border-radius:10px;padding:10px 12px}
+.clean{background:var(--okbg);border-radius:10px;padding:10px 12px}
+footer{max-width:1320px;margin:0 auto;padding:0 16px 30px;color:var(--ink2);font-size:.9rem}
+footer details{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:8px 14px;margin-bottom:10px}
+footer summary{cursor:pointer;font-weight:700;color:var(--ink)}
+/* lath, same as Stake Reader */
+.stage{background:var(--card2);border:1px solid var(--line);border-radius:14px;padding:16px 12px 0;display:flex;flex-direction:column;align-items:center;overflow:hidden}
+.scene2{display:flex;align-items:stretch;justify-content:center;gap:22px;margin-bottom:-14px}
+.scene2.lean .lface{transform:rotate(5deg);transform-origin:bottom center}
+.lface{display:flex;flex-direction:column;align-items:center}
+.llab{font:800 12px var(--sans);letter-spacing:.12em;color:var(--ink2);margin-bottom:6px}
+.lath3{flex:1;width:84px;min-height:250px;background:linear-gradient(90deg,var(--wood2),var(--wood) 14%,var(--wood) 86%,var(--wood2));border:1px solid #9C7A45;border-bottom:0;border-radius:3px 3px 0 0;padding:8px 4px 16px;display:flex;flex-direction:column;align-items:center}
+.ztop,.zbody{display:flex;flex-direction:column;align-items:center;gap:2px;width:100%}
+.fband{width:116px;height:24px;margin:4px 0 6px}
+.fwave{width:116px;height:100%;overflow:visible}
+.lath3 .lm{color:var(--woodInk);font:800 16px/1.15 var(--mono);padding:3px 2px;display:flex;flex-direction:column;align-items:center;max-width:100%}
+.lath3 .lm.la{width:100%}
+.lath3 .lm .ac{display:block;text-align:center;overflow-wrap:anywhere}
+.lath3 .lm .circ{display:inline-flex;align-items:center;justify-content:center;min-width:34px;height:34px;padding:0 3px;border:2px solid var(--woodInk);border-radius:50%;font-size:14px}
+.lath3 .lm .vt{writing-mode:vertical-rl;text-orientation:mixed;white-space:nowrap;display:inline-block;padding:2px 0}
+.lath3 .lm .dc{font-size:12px;line-height:1;display:inline-block}
+.lath3 .lm .vt .dc{vertical-align:super;border-left:2px solid currentColor;padding-left:1px;margin-left:1px}
+.lath3 .lm .ac .dc{vertical-align:super;border-bottom:2px solid currentColor}
+.tip2{width:0;height:0;border-left:42px solid transparent;border-right:42px solid transparent;border-top:22px solid var(--wood2)}
+.hubbox{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:4px;padding-bottom:16px}
+.hublab{font-size:12px;font-weight:800;color:var(--ink2)}
+.hub{width:30px;height:24px;background:#C89B5E;border:2px solid #6E5230;border-radius:3px;position:relative}
+.hub::after{content:"";position:absolute;left:11px;top:7px;width:6px;height:6px;border-radius:50%;background:#555}
+.hub.chew{transform:rotate(-12deg);border-style:dashed}
+.ground{align-self:stretch;height:22px;background:repeating-linear-gradient(115deg,var(--dirt) 0 14px,var(--dirt2) 14px 18px)}
+@media (max-width:600px){h1{font-size:1.3rem}.brand span{display:none}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to the game</a>
+<header class="app">
+ <div class="logo" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#1F1500" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h10l4 4v12H4z"/><path d="M14 4v4h4"/><path d="M8 14l2.5 2.5L16 11"/></svg></div>
+ <div class="brand"><b>The Layout Game</b><span>Check the stakes against the plans</span></div>
+ <div class="sp"></div>
+ <button class="hb" id="bigB" aria-pressed="false">Big text</button>
+ <button class="hb" id="themeB">Dark</button>
+</header>
+<main id="main"></main>
+<footer>
+ <p>Developed by Jeff Weygandt, PLS. R&amp;R Engineers | Surveyors. Construction Management, Community College of Aurora and Metropolitan State University of Denver. Stake format follows Construction Layout &amp; Survey Control.</p>
+</footer>
+<script>
+/* ===== The Layout Game: check the stakes against the plans ===== */
+'use strict';
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const COLORS={pink:'#F06FA8',green:'#2FA35A',orange:'#FF8A1F',white:'#F4F4F2',blue:'#2F7FE0'};
+const f2=v=>(Math.round(v*100)/100).toFixed(2);
+const r2=v=>Math.round(v*100)/100;
+const staS=s=>{s=r2(s);const a=Math.floor(s/100),b=r2(s-a*100);return a+'+'+(b<10?'0':'')+(Number.isInteger(b)?String(b):b.toFixed(2));};
+const money=n=>'$'+Math.round(n).toLocaleString('en-US');
+const dist=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y);
+function rng(seed){let a=seed>>>0;return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+
+/* ===== lath drawing, same format as Stake Reader and the book ===== */
+const T=(r)=>({z:'top',r:[].concat(r)});
+const V=(t)=>({z:'body',r:[t]});
+const O=(ft)=>({z:'top',circ:true,r:[ft]});
+function decHTML(t){return esc(t).replace(/(\d)\.(\d{2,3})(?!\d)/g,'$1<span class="dc">$2</span>');}
+function waveSVG(c){const col=COLORS[c];return '<svg class="fwave" viewBox="0 0 120 18" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M2 8 C 22 1, 38 15, 60 8 S 98 1, 118 8" fill="none" stroke="#5A4A30" stroke-width="9" stroke-linecap="round" opacity=".35"/><path d="M2 8 C 22 1, 38 15, 60 8 S 98 1, 118 8" fill="none" stroke="'+col+'" stroke-width="7" stroke-linecap="round"/></svg>';}
+function topH(ms){return ms.filter(m=>m.z==='top').reduce((h,m)=>h+(m.circ?40:m.r.length*19+6),0);}
+function markHTML(m){const full=m.r.join(' ');let inner;
+ if(m.circ)inner='<span class="circ">'+esc(m.r[0])+'</span>';
+ else if(m.z==='top')inner=m.r.map(x=>'<span class="ac">'+decHTML(x)+'</span>').join('');
+ else inner='<span class="vt">'+decHTML(m.r[0])+'</span>';
+ return '<div class="lm '+(m.circ?'lc':m.z==='top'?'la':'lv')+'" role="text" aria-label="'+esc(full)+'">'+inner+'</div>';}
+function faceHTML(label,marks,flag,th){const top=marks.filter(m=>m.z==='top'),body=marks.filter(m=>m.z!=='top');
+ return '<div class="lface"><div class="llab">'+label+'</div><div class="lath3"><div class="ztop" style="min-height:'+th+'px">'+top.map(markHTML).join('')+'</div><div class="fband">'+waveSVG(flag)+'</div><div class="zbody">'+body.map(markHTML).join('')+'</div></div><div class="tip2" aria-hidden="true"></div></div>';}
+function stakeHTML(st,flag){const th=Math.max(topH(st.front),topH(st.back));
+ return '<div class="scene2'+(st.bumped?' lean':'')+'" role="group" aria-label="Lath for point '+st.pt+', '+esc(st.name)+', front and back">'+faceHTML('FRONT',st.front,flag,th)+faceHTML('BACK',st.back,flag,th)+'<div class="hubbox" aria-hidden="true"><span class="hublab">HUB</span><div class="hub'+(st.bumped?' chew':'')+'"></div></div></div><div class="ground" aria-hidden="true"></div>';}
+
+/* ===== styles and difficulty ===== */
+const STYLES=[
+ {id:'curb',name:'Curb and gutter',tag:'Curb return with a 20 ft radius'},
+ {id:'storm',name:'Storm drain',tag:'Pipe and an area inlet with four hubs'},
+ {id:'san',name:'Sanitary sewer',tag:'Manholes with two offset stakes each'},
+ {id:'water',name:'Waterline',tag:'Cut to top of pipe'},
+ {id:'grid',name:'Building grid',tag:'Offset hubs on grid lines, ±0.02 ft'},
+ {id:'pad',name:'Rough grade pad',tag:'RG corner and edge stakes'},
+ {id:'pond',name:'Pond slope stakes',tag:'Story calls and progressive calls'}
+];
+const DIFFS=[
+ {id:1,name:'Level 1',desc:'1 or 2 problems. Lath copied wrong or a stake missing. The cut sheet is right.',n:[1,2],types:['cut','missing','offset']},
+ {id:2,name:'Level 2',desc:'2 or 3 problems. Adds hubs set in the wrong spot and hubs that got hit. Bring the tape.',n:[2,3],types:['cut','missing','offset','bumped','tape','tape','mhcut']},
+ {id:3,name:'Level 3',desc:'3 or 4 problems. The cut sheet itself can be wrong, or built on an old revision.',n:[3,4],types:['cut','missing','offset','bumped','tape','mhcut','sheetcut','sheetcut','sheetpos','rev','rev']},
+ {id:4,name:'Wildcard',desc:'Any style, any level, and it might be clean.',n:[0,3],types:['cut','missing','offset','bumped','tape','mhcut','sheetcut','sheetpos','rev']}
+];
+const REASONS=[['ok','Looks good'],['cut','Cut or fill does not match the plan'],['offset','Offset does not match the request'],['tape','Hub is in the wrong spot (tapes wrong)'],['bumped','Hub was disturbed'],['rev','Built to an old plan revision']];
+const RNAME={cut:'Cut or fill does not match the plan',sheetcut:'Cut or fill does not match the plan',mhcut:'Cut or fill does not match the plan',offset:'Offset does not match the request',tape:'Hub is in the wrong spot',sheetpos:'Hub is in the wrong spot',bumped:'Hub was disturbed',rev:'Built to an old plan revision',missing:'Missing stake'};
+const COST={cut:6500,sheetcut:7500,mhcut:8500,offset:4200,tape:5800,sheetpos:7800,bumped:5200,rev:9000,missing:2400};
+const CALLBACK=350;
+const OKR={cut:['cut'],sheetcut:['cut'],mhcut:['cut'],offset:['offset'],tape:['tape','bumped'],sheetpos:['tape'],bumped:['bumped','tape'],rev:['rev','cut']};
+
+/* ===== stake builder ===== */
+let PT=100;
+function gtxt(d,label,curb){const v=f2(Math.abs(d));return curb?(d>0?'C-':'F+')+v+' '+label:(d>0?'C ':'F ')+v+' '+label;}
+/* o: {name,k,pos,sta,off,offTxt,top,grades:[{d,lab,des,rev}],extra,noEl,canMiss,tapeable,tref,curb,date} */
+function mk(R,o){const st=Object.assign({id:'s'+(++PT),pt:R.ptBase+(PT%100),hub:o.hub},o);
+ st.tpos={x:o.pos.x,y:o.pos.y};
+ st.grades=(o.grades||[]).map(g=>Object.assign({},g,{des:r2(g.des),cut:r2(o.hub-g.des)}));
+ st.front=[];if(o.offTxt!==null)st.front.push(O(o.offTxt||(o.off+"'")));st.front.push(T(o.top));
+ st.grades.forEach((g,i)=>{if(i&&o.sep)st.front.push(V(o.sep));g.mi=st.front.length;st.front.push(V(o.call?o.call(g,i):gtxt(g.cut,g.lab,o.curb)));});
+ st.back=[T(String(st.pt))];if(o.sta!=null)st.back.push(V(staS(o.sta)));(o.extra||[]).forEach(x=>st.back.push(V(x)));
+ if(st.grades.length&&!o.noEl)st.back.push(V('EL='+f2(o.hub)));if(o.date)st.back.push(V(o.date));
+ st.sheet=st.grades.map(g=>({d:g.d,des:g.des,cut:g.cut,shown:g.shownCut}));
+ R.stakes.push(st);return st;}
+
+/* ===== generators by style ===== */
+function gen(styleId,diff,code){
+ const r=rng(code*7919+STYLES.findIndex(s=>s.id===styleId)*104729+diff*7477+11);
+ const pick=a=>a[Math.floor(r()*a.length)];const U=(a,b)=>a+(b-a)*r();
+ PT=0;
+ const R={style:styleId,diff,code,stakes:[],errs:[],shots:3,rev:false,feat:[],labels:[],notes:[],design:[],request:[],tapes:[],ptBase:Math.floor(U(1,9))*1000,revNote:null};
+ GEN[styleId](R,r,pick,U);
+ R.req=R.stakes.map((s,i)=>({id:s.id,name:s.name,ord:i}));
+ const D=DIFFS.find(d=>d.id===diff);
+ const n=D.n[0]+Math.floor(r()*(D.n[1]-D.n[0]+1));
+ const types=D.types.filter(t=>R.allow.includes(t));
+ const used=new Set();
+ for(let i=0;i<n&&types.length;i++){
+  for(let tries=0;tries<50;tries++){const t=pick(types);if(plant(t,R,r,pick,U,used))break;}
+ }
+ R.stakes=R.stakes.filter(x=>!x.removed);
+ R.stakes.forEach((x,i)=>{x.i=i;x.mark=null;x.shot=null;});
+ R.sheetBad=R.errs.some(e=>['sheetcut','sheetpos','rev'].includes(e.t));
+ R.writeBad=R.errs.some(e=>['cut','mhcut','offset'].includes(e.t));
+ R.planBad=R.errs.some(e=>e.t!=='missing');
+ return R;}
+const GEN={
+ curb(R,r,pick,U){
+  const tbc0=r2(U(5406,5418)),g=-pick([0.006,0.008,0.010]),Rr=20,off=3,PC=100,L90=Math.PI*Rr/2,PTs=r2(PC+L90),inl=62.5;
+  const cen={x:PC,y:Rr};
+  const at=(s,o)=>{if(s<=PC)return{x:s,y:o};if(s<=PTs){const a=(s-PC)/Rr,rr=Rr-o;return{x:cen.x+rr*Math.sin(a),y:cen.y-rr*Math.cos(a)};}return{x:PC+Rr-o,y:Rr+(s-PTs)};};
+  const des=s=>r2(tbc0+g*s);
+  Object.assign(R,{title:'Curb and gutter, Main St at 1st Ave',flag:'orange',what:'TBC',curb:true,allow:['cut','missing','offset','bumped','tape','sheetcut','sheetpos'],
+   request:['Curb: 3 ft offset behind back of curb. Every 25 ft on tangents, plus the PC, mid curve and PT.','Radius point: set a hub at the RP of the curb return.','Inlet: one stake on the inlet centerline at 15 ft, graded to TBC.','Grade every curb stake to top back of curb (TBC).'],
+   notes:[['Curb return radius, to back of curb',' ','20.00 ft'],['PC',staS(PC),f2(des(PC))],['PT',staS(PTs),f2(des(PTs))],['Curb grade',' ',(g*100).toFixed(2)+'%'],['Curb inlet centerline',staS(inl),f2(des(inl))]]});
+  const pts=[];for(let s=0;s<=PTs+50;s+=0.5)pts.push(at(Math.min(s,PTs+50),0));
+  R.feat.push({pl:pts,c:'bc'},{pl:pts.map((p,i)=>at(Math.min(i*0.5,PTs+50),-2)),c:'fl'},{c:'rp',p:cen});
+  R.labels.push({p:{x:PC,y:-6},t:'PC '+staS(PC)},{p:{x:cen.x+Rr+6,y:Rr},t:'PT '+staS(PTs),a:'start'},{p:{x:cen.x-4,y:cen.y+4},t:'RP',a:'end'},{p:{x:cen.x+9,y:cen.y-8},t:'R=20\''},{p:{x:inl,y:-6},t:'INLET'});
+  const sts=[[0,'curb'],[25,'curb'],[50,'curb'],[75,'curb'],[PC,'pc'],[r2(PC+L90/2),'mc'],[PTs,'pt'],[150,'curb'],[175,'curb']];
+  const rp=mk(R,{name:'RP hub',k:'rp',pos:cen,sta:null,offTxt:null,top:['RP'],hub:r2(U(5410,5416)),tapeable:true});
+  sts.forEach(([s,k])=>{const hub=r2(des(s)+U(-1.0,0.6));
+   const st=mk(R,{name:(k==='pc'?'PC ':k==='mc'?'Mid curve ':k==='pt'?'PT ':'')+staS(s),k,pos:at(s,off),sta:s,off,top:k==='pc'?['TBC','PC']:k==='pt'?['TBC','PT']:k==='mc'?['TBC','MC']:['TBC'],
+    grades:[{d:k==='curb'?'TBC':'TBC '+k.toUpperCase(),lab:'TBC',des:des(s)}],hub,curb:true,canMiss:s>0&&s<175,tapeable:true});
+   if(['pc','mc','pt'].includes(k)){st.tref=rp.id;st.tdes=Rr-off;st.thint='RP to a curve stake should tape '+f2(Rr-off)+' ft: the 20.00 ft radius minus the 3 ft offset.';}});
+  const inst=mk(R,{name:'Inlet '+staS(inl),k:'inlet',pos:at(inl,15),sta:inl,off:15,top:['℄','INLET','ON','℄'],grades:[{d:'INLET TBC',lab:'TBC',des:des(inl)}],hub:r2(des(inl)+U(-1,0.5)),curb:true,canMiss:true,tapeable:true});
+  R.stakes.forEach(s=>{if(s.k==='curb'&&!s.tref){const nb=R.stakes.find(q=>q.k!=='rp'&&q.k!=='inlet'&&q!==s&&Math.abs(q.sta-s.sta)===25&&(q.sta<=PC)===(s.sta<=PC));if(nb){s.tref=nb.id;s.tdes=25;s.thint='Two curb stakes on the same tangent 25 ft apart should tape 25.00 ft.';}}});
+  inst.tref=R.stakes.find(q=>q.sta===50).id;inst.tdes=r2(Math.hypot(12.5,12));inst.thint='From the 0+50 curb stake to the inlet stake should tape '+f2(Math.hypot(12.5,12))+' ft: 12.5 ft along and 12 ft over (15 minus 3).';
+  R.prof={L:PTs+50,ser:[{pts:[[0,des(0)],[PTs+50,des(PTs+50)]],c:'pipe'}],lab:[{x:(PTs+50)*0.3,e:des((PTs+50)*0.3),t:'TBC '+(g*100).toFixed(2)+'%',dy:-12}],band:'TBC'};
+  R.design=R.stakes.filter(s=>s.grades.length).map(s=>({name:s.name,sta:s.sta,d:s.grades[0].d,des:s.grades[0].des}));
+ },
+ storm(R,r,pick,U){
+  const s=pick([0.005,0.008,0.010]),inv0=r2(U(5400,5412)),L=150,g0=inv0+U(7.5,9),gs=U(-0.004,0.01);
+  const ground=x=>g0+gs*x+0.3*Math.sin(x/31+R.code%5);const des=x=>r2(inv0+s*x);
+  const rim1=r2(ground(0)+U(0.2,0.6)),grate=r2(ground(L)+U(-0.3,0.1)),invI=des(L);
+  Object.assign(R,{title:'Storm drain, 18" RCP, MH 1 to area inlet A1',flag:'orange',what:'invert',allow:['cut','missing','offset','bumped','tape','mhcut','sheetcut','rev'],
+   request:['Pipe: 10 ft offset left, every 25 ft.','MH 1: offset stake with every invert and the rim.','Area inlet A1: four hubs at 10.00 ft on the inlet centerlines, cut to invert and fill or cut to grate.'],
+   notes:[['MH 1 rim',staS(0),f2(rim1)],['MH 1 invert in (from A1)',staS(0),f2(inv0)],['MH 1 invert out (existing)',staS(0),f2(inv0-0.10)],['Pipe slope',' ',(s*100).toFixed(2)+'%'],['Inlet A1 invert',staS(L),f2(invI)],['Inlet A1 grate',staS(L),f2(grate)]]});
+  R.revFix=()=>{const n=R.notes.find(x=>x[0]==='Inlet A1 grate');n[2]=f2(r2(grate+0.40));R.revNote='REV 2 11/20: A1 GRATE +0.40';return r2(grate+0.40);};
+  R.feat.push({pl:[{x:0,y:0},{x:L,y:0}],c:'pipe'},{c:'mh',p:{x:0,y:0}},{c:'box',p:{x:L,y:0}});
+  R.labels.push({p:{x:0,y:-8},t:'MH 1'},{p:{x:L,y:-16},t:'A1'},{p:{x:L*0.55,y:-6},t:'18" RCP'});
+  const m1=mk(R,{name:'MH 1',k:'mh1',pos:{x:0,y:10},sta:0,off:10,top:['SD','MH'],grades:[{d:'MH 1 INV IN E',lab:'INV IN E',des:inv0},{d:'MH 1 INV OUT W',lab:'INV OUT W',des:inv0-0.10},{d:'MH 1 RIM',lab:'RIM',des:rim1}],hub:r2(ground(0)+U(-0.2,0.3)),extra:['('+L+"' @ "+(s*100).toFixed(2)+'%)'],tapeable:true});
+  [25,50,75,100,125].forEach(x=>mk(R,{name:staS(x),k:'pipe',pos:{x,y:10},sta:x,off:10,top:['STORM'],grades:[{d:'INV',lab:'INV',des:des(x)}],hub:r2(ground(x)+U(-0.3,0.3)),canMiss:true,tapeable:true}));
+  const hubs=[['W',{x:L-10,y:0}],['E',{x:L+10,y:0}],['N',{x:L,y:10}],['S',{x:L,y:-10}]].map(([d,p])=>mk(R,{name:'A1 '+d+' hub',k:'inlet',pos:p,sta:L,off:10,top:['℄','INLET'],grades:[{d:'A1 INV',lab:'INV',des:invI},{d:'A1 GRATE',lab:'GRATE',des:grate,rev:true}],hub:r2(ground(L)+U(-0.25,0.25)),sep:'/',canMiss:true,tapeable:true}));
+  const opp={W:'E',E:'W',N:'S',S:'N'};hubs.forEach(h=>{const o=hubs.find(q=>q.name==='A1 '+opp[h.name.split(' ')[1]]+' hub');h.tref=o.id;h.tdes=20;h.thint='Opposite inlet hubs are each 10.00 ft from the inlet center, so they should tape 20.00 ft.';});
+  R.stakes.filter(x=>x.k==='pipe').forEach(p=>{const nb=R.stakes.find(q=>q.k==='pipe'&&q.sta===p.sta-25)||m1;p.tref=nb.id;p.tdes=25;p.thint='Pipe stakes 25 ft apart on the same offset line should tape 25.00 ft.';});
+  m1.tref=R.stakes.find(q=>q.sta===25).id;m1.tdes=25;m1.thint='MH 1 offset to the 0+25 pipe stake should tape 25.00 ft.';
+  R.prof={L,ser:[{pts:Array.from({length:16},(_,i)=>[i*10,ground(i*10)]),c:'gr'},{pts:[[0,inv0],[L,invI]],c:'pipe'}],lab:[{x:6,e:rim1,t:'RIM '+f2(rim1),dy:-6,a:'start'},{x:6,e:inv0,t:'INV '+f2(inv0),dy:18,a:'start'},{x:L-6,e:grate,t:'GRATE '+f2(grate),dy:-6,a:'end'},{x:L-6,e:invI,t:'INV '+f2(invI),dy:18,a:'end'}],mh:[[0,rim1,inv0],[L,grate,invI]],band:'INV'};
+  R.design=[0,25,50,75,100,125,L].map(x=>({name:x?x===L?'Inlet A1':staS(x):'MH 1',sta:x,d:'Invert',des:des(x)}));
+ },
+ san(R,r,pick,U){
+  const s=pick([0.006,0.008,0.010]),inv0=r2(U(5400,5412)),L=260,g0=inv0+U(8.5,10.5),gs=U(-0.004,0.012);
+  const ground=x=>g0+gs*x+0.35*Math.sin(x/37+R.code%7);const des=x=>r2(inv0+s*x);
+  const rim1=r2(ground(0)+U(0.2,0.6)),rim2=r2(ground(L)+U(0.2,0.6)),inv2=des(L);
+  Object.assign(R,{title:'Sanitary sewer, 8" PVC, MH 1 to MH 2',flag:'green',what:'invert',allow:['cut','missing','offset','bumped','tape','mhcut','sheetcut','rev'],date:'11/18',
+   request:['Pipe: 10 ft offset left. Every 25 ft for the first 100 ft out of MH 1, then every 50 ft.','Manholes: two offset stakes, 10 ft each side, on the manhole centerline square to the pipe. Every invert and the rim on each.'],
+   notes:[['MH 1 rim',staS(0),f2(rim1)],['MH 1 invert in (from MH 2)',staS(0),f2(inv0)],['MH 1 invert out (existing)',staS(0),f2(inv0-0.10)],['Pipe slope',' ',(s*100).toFixed(2)+'%'],['MH 2 invert out',staS(L),f2(inv2)],['MH 2 rim',staS(L),f2(rim2)]]});
+  R.revFix=()=>{const n=R.notes.find(x=>x[0]==='MH 2 rim');n[2]=f2(r2(rim2+0.40));R.revNote='REV 2 11/20: MH 2 RIM +0.40';return r2(rim2+0.40);};
+  R.feat.push({pl:[{x:0,y:0},{x:L,y:0}],c:'pipe'},{c:'mh',p:{x:0,y:0}},{c:'mh',p:{x:L,y:0}});
+  R.labels.push({p:{x:0,y:-16},t:'MH 1'},{p:{x:L,y:-16},t:'MH 2'},{p:{x:L*0.55,y:-6},t:'8" PVC'});
+  const mh=(nm,x,side,gr)=>mk(R,{name:nm+(side>0?' left':' right'),k:nm==='MH 1'?'mh1':'mh2',pos:{x,y:10*side},sta:x,off:10,top:['SAN','MH'],grades:gr,hub:r2(ground(x)+U(-0.2,0.3)),extra:nm==='MH 1'?['('+L+"' @ "+(s*100).toFixed(2)+'%)']:[],date:'11/18',tapeable:true});
+  const g1=[{d:'MH 1 INV IN E',lab:'INV IN E',des:inv0},{d:'MH 1 INV OUT W',lab:'INV OUT W',des:inv0-0.10},{d:'MH 1 RIM',lab:'RIM',des:rim1}],g2=[{d:'MH 2 INV OUT W',lab:'INV OUT W',des:inv2},{d:'MH 2 RIM',lab:'RIM',des:rim2,rev:true}];
+  const a=mh('MH 1',0,1,g1),b=mh('MH 1',0,-1,g1);
+  const xs=[25,50,75,100];for(let x=150;x<L;x+=50)xs.push(x);
+  xs.forEach(x=>mk(R,{name:staS(x),k:'pipe',pos:{x,y:10},sta:x,off:10,top:['SAN 8"'],grades:[{d:'INV',lab:'INV',des:des(x)}],hub:r2(ground(x)+U(-0.3,0.3)),date:'11/18',canMiss:true,tapeable:true}));
+  const c=mh('MH 2',L,1,g2),d=mh('MH 2',L,-1,g2);
+  [[a,b],[b,a],[c,d],[d,c]].forEach(([p,q])=>{p.tref=q.id;p.tdes=20;p.thint='The two offset stakes on a manhole are 10 ft each side of center, so they should tape 20.00 ft.';});
+  R.stakes.filter(x=>x.k==='pipe').forEach(p=>{const prev=R.stakes.filter(q=>(q.k==='pipe'||q===a)&&q.sta<p.sta).pop();p.tref=prev.id;p.tdes=r2(p.sta-prev.sta);p.thint='Stakes on the offset line '+f2(p.sta-prev.sta)+' ft apart by station should tape '+f2(p.sta-prev.sta)+' ft.';});
+  R.prof={L,ser:[{pts:Array.from({length:27},(_,i)=>[i*10,ground(i*10)]),c:'gr'},{pts:[[0,inv0],[L,inv2]],c:'pipe'}],lab:[{x:6,e:rim1,t:'RIM '+f2(rim1),dy:-6,a:'start'},{x:6,e:inv0,t:'INV '+f2(inv0),dy:18,a:'start'},{x:L-6,e:rim2,t:'RIM '+f2(rim2),dy:-6,a:'end'},{x:L-6,e:inv2,t:'INV '+f2(inv2),dy:18,a:'end'}],mh:[[0,rim1,inv0],[L,rim2,inv2]],band:'INV'};
+  R.design=[0,...xs,L].map(x=>({name:x===0?'MH 1':x===L?'MH 2':staS(x),sta:x,d:'Invert',des:des(x)}));
+ },
+ water(R,r,pick,U){
+  const L=300,g0=r2(U(5405,5420)),gs=U(-0.01,0.01),cover=5.5;
+  const fg=x=>g0+gs*x+0.6*Math.sin(x/53+R.code%3);const top=x=>r2(fg(x)-cover);
+  Object.assign(R,{title:'Waterline, 8" PVC C900, Sta 0+00 to 3+00',flag:'blue',what:'top of pipe',allow:['cut','missing','offset','bumped','tape','sheetcut'],
+   request:['Water: 6 ft offset left, every 50 ft and at every fitting.','Cut to top of pipe.'],
+   notes:[['Pipe','','8" PVC C900'],['Minimum cover to top of pipe',' ','5.0 ft'],['Design cover used',' ','5.5 ft'],['Gate valve',staS(150),'TOP '+f2(top(150))]]});
+  R.feat.push({pl:[{x:0,y:0},{x:L,y:0}],c:'water'},{c:'valve',p:{x:150,y:0}});
+  R.labels.push({p:{x:150,y:-8},t:'GV'},{p:{x:60,y:-8},t:'8" WATER'});
+  const xs=[0,50,100,150,200,250,300];let prev=null;
+  xs.forEach(x=>{const st=mk(R,{name:(x===150?'Valve ':'')+staS(x),k:x===150?'gv':'pipe',pos:{x,y:6},sta:x,off:6,top:x===150?['W 8"','GV']:['W 8"'],grades:[{d:x===150?'TOP AT GV':'TOP',lab:'TOP',des:top(x)}],hub:r2(fg(x)+U(-0.3,0.4)),canMiss:x>0&&x<L,tapeable:true});
+   if(prev){st.tref=prev.id;st.tdes=50;st.thint='Water stakes 50 ft apart on the 6 ft offset line should tape 50.00 ft.';}prev=st;});
+  R.stakes[0].tref=R.stakes[1].id;R.stakes[0].tdes=50;R.stakes[0].thint=R.stakes[1].thint;
+  R.prof={L,ser:[{pts:Array.from({length:31},(_,i)=>[i*10,fg(i*10)]),c:'gr'},{pts:Array.from({length:31},(_,i)=>[i*10,top(i*10)]),c:'water'}],lab:[{x:L*0.3,e:top(L*0.3),t:'8" WATER, TOP OF PIPE',dy:22},{x:L*0.3,e:fg(L*0.3),t:'FINISH GRADE',dy:-10}],band:'TOP'};
+  R.design=xs.map(x=>({name:(x===150?'Valve ':'')+staS(x),sta:x,d:'Top of pipe',des:top(x)}));
+ },
+ grid(R,r,pick,U){
+  const bx=30,nx=pick([3,4]),ny=2,off=10,W=bx*nx,H=bx*ny,letters='ABCDE'.slice(0,nx+1).split(''),nums=['1','2','3'];
+  Object.assign(R,{title:'Building A grid, offset hubs',flag:'pink',what:null,allow:['missing','offset','bumped','tape','sheetpos'],
+   request:['Offset hubs 10 ft outside the building on every grid line, both ends.','Hub and tack on line. Building layout tolerance ±0.02 ft.'],
+   notes:[['Grid lines '+letters.join(', '),' ','30.00 ft bays'],['Grid lines 1, 2, 3',' ','30.00 ft bays'],['Building, out to out of grid',' ',W+' ft x '+H+' ft'],['Offset to hubs',' ','10.00 ft'],['Tolerance',' ','±0.02 ft']]});
+  letters.forEach((l,i)=>R.feat.push({pl:[{x:i*bx,y:-4},{x:i*bx,y:H+4}],c:'gl'},{c:'bub',p:{x:i*bx,y:H+off+8},t:l}));
+  nums.forEach((n,j)=>R.feat.push({pl:[{x:-4,y:j*bx},{x:W+4,y:j*bx}],c:'gl'},{c:'bub',p:{x:-off-8,y:j*bx},t:n}));
+  R.feat.push({rect:[0,0,W,H],c:'bldg'});
+  for(let i=0;i<letters.length-1;i++)R.labels.push({p:{x:i*bx+bx/2,y:-off-6},t:"30.00'"});
+  const H_={};
+  letters.forEach((l,i)=>[['S',-off],['N',H+off]].forEach(([d,y])=>{H_[l+d]=mk(R,{name:l+' line, '+(d==='S'?'south':'north'),k:'grid',pos:{x:i*bx,y},sta:null,off,top:[l,'LINE'],grades:[],hub:0,canMiss:true,tapeable:true,ln:l,side:d});}));
+  nums.forEach((n,j)=>[['W',-off],['E',W+off]].forEach(([d,x])=>{H_[n+d]=mk(R,{name:n+' line, '+(d==='W'?'west':'east'),k:'grid',pos:{x,y:j*bx},sta:null,off,top:[n,'LINE'],grades:[],hub:0,canMiss:true,tapeable:true,ln:n,side:d});}));
+  R.stakes.forEach(s=>{let nb=null;
+   if(/[A-E]/.test(s.ln)){const i=letters.indexOf(s.ln);nb=H_[(letters[i-1]||letters[i+1])+s.side];s.tdes=30;s.thint='Hubs on neighboring grid lines, same side, should tape 30.00 ft, the bay width.';}
+   else{const j=nums.indexOf(s.ln);nb=H_[(nums[j-1]||nums[j+1])+s.side];s.tdes=30;s.thint='Hubs on neighboring grid lines, same side, should tape 30.00 ft, the bay width.';}
+   s.tref=nb.id;});
+  R.coords=true;R.prof=null;R.design=[];
+ },
+ pad(R,r,pick,U){
+  const W=pick([120,140]),H=pick([80,90]),o=5,sg=r2(U(5410,5420));
+  Object.assign(R,{title:'Building pad, rough grade to subgrade',flag:'orange',what:'subgrade',allow:['cut','missing','offset','bumped','tape','sheetcut','sheetpos'],
+   request:['RG stakes 5 ft outside the pad: each corner at 5 ft x 5 ft, plus the middle of each side.','Grade to pad subgrade. Rough grade tolerance ±0.10 ft.'],
+   notes:[['Pad subgrade (flat)',' ',f2(sg)],['Pad size',' ',W+' ft x '+H+' ft'],['Stake offset',' ','5.00 ft'],['Rough grade tolerance',' ','±0.10 ft']]});
+  R.feat.push({rect:[0,0,W,H],c:'pad'});R.labels.push({p:{x:W/2,y:H/2},t:'PAD SG '+f2(sg)},{p:{x:W/2,y:-12},t:W+'.00\''},{p:{x:W+14,y:H/2},t:H+'.00\'',a:'start'});
+  const C={};const spots=[['SW',-o,-o,1],['S',W/2,-o,0],['SE',W+o,-o,1],['E',W+o,H/2,0],['NE',W+o,H+o,1],['N',W/2,H+o,0],['NW',-o,H+o,1],['W',-o,H/2,0]];
+  spots.forEach(([n,x,y,cor])=>{C[n]=mk(R,{name:n+(cor?' corner':' side'),k:cor?'cor':'side',pos:{x,y},sta:null,off:5,offTxt:cor?"5'x5'":"5'",top:cor?['RG',n,'COR']:['RG',n],grades:[{d:'SG '+n,lab:'SG',des:sg}],hub:r2(sg+U(-1.2,1.2)),canMiss:!cor,tapeable:true});});
+  const T_={SW:['SE',W+10],SE:['NE',H+10],NE:['NW',W+10],NW:['SW',H+10],S:['SW',W/2+5],E:['SE',H/2+5],N:['NE',W/2+5],W:['NW',H/2+5]};
+  Object.entries(T_).forEach(([k,[q,d]])=>{C[k].tref=C[q].id;C[k].tdes=d;C[k].thint='Corner stakes sit 5 ft out both ways, so '+(C[k].k==='cor'?'corner to corner along a side tapes the pad side plus 10 ft: ':'a side stake to the corner tapes half the side plus 5 ft: ')+f2(d)+' ft.';});
+  R.coords=true;R.prof=null;R.design=[{name:'Whole pad',sta:null,d:'Subgrade',des:sg}];
+ },
+ pond(R,r,pick,U){
+  const tbk=r2(U(5410,5420)),Dp=pick([3,4]),toe=r2(tbk-Dp),Wb=25,cl=r2(toe-0.02*Wb),dT=5,dToe=5+4*Dp,dCL=dToe+Wb,L=150;
+  const prog=R.diff>=2&&r()<0.6;
+  Object.assign(R,{title:'Detention pond, north bank',flag:'orange',what:'grade',allow:['cut','missing','offset','bumped','sheetcut','tape'],prog,
+   request:['Hubs 5 ft outside top of bank every 25 ft.',prog?'Progressive calls, separated by //: each call starts where the last one ended.':'Standard calls, separated by /: every distance and cut from the hub.','Calls: TBK, TOE, CL.'],
+   notes:[['Top of bank (TBK)',' ',f2(tbk)],['Side slope',' ','4:1'],['Toe of slope',' ',f2(toe)],['Pond bottom at centerline',' ',f2(cl)+' (2% bottom, 25 ft)'],['Hub to TBK',' ','5.00 ft'],['Hub to toe',' ',f2(dToe)+' ft'],['Hub to CL',' ',f2(dCL)+' ft']]});
+  R.feat.push({pl:[{x:0,y:-dT},{x:L,y:-dT}],c:'bc'},{pl:[{x:0,y:-dToe},{x:L,y:-dToe}],c:'fl'},{pl:[{x:0,y:-dCL},{x:L,y:-dCL}],c:'cl'});
+  R.labels.push({p:{x:L+4,y:-dT},t:'TBK',a:'start'},{p:{x:L+4,y:-dToe},t:'TOE',a:'start'},{p:{x:L+4,y:-dCL},t:'CL POND',a:'start'});
+  const calls=(g,i,st)=>{const nm=['TBK','TOE','CL'][i],d=[dT,dToe,dCL][i],pd=[dT,dToe-dT,dCL-dToe][i];return nm+' '+(prog?pd:d)+"' ";};
+  for(let x=0;x<=L;x+=25){const hub=r2(tbk+U(0.2,0.8));
+   const st=mk(R,{name:staS(x),k:'pond',pos:{x,y:0},sta:x,off:5,top:['POND'],grades:[{d:'TBK',lab:'TBK',des:tbk},{d:'TOE',lab:'TOE',des:toe},{d:'CL',lab:'CL',des:cl}],hub,sep:prog?'//':'/',canMiss:x>0&&x<L,tapeable:true,
+    call:(g,i)=>{const prevDes=i===0?hub:[tbk,toe][i-1];const c=prog?r2(prevDes-g.des):g.cut;g.shownCut=c;return calls(g,i)+(c>0?'C ':'F ')+f2(Math.abs(c));}});
+   st.grades.forEach(g=>{g.prog=prog;});st.sheet=st.grades.map(g=>({d:g.d,des:g.des,cut:prog?g.shownCut:g.cut}));}
+  R.stakes.forEach((s,i)=>{const nb=R.stakes[i?i-1:1];s.tref=nb.id;s.tdes=25;s.thint='Pond hubs every 25 ft along the bank should tape 25.00 ft.';});
+  R.prof={L:dCL+8,x0:-3,ser:[{pts:[[-3,tbk+0.6],[0,tbk+0.5],[dT,tbk],[dToe,toe],[dCL,cl],[dCL+8,cl]],c:'pipe'}],lab:[{x:0,e:tbk+0.5,t:'HUB',dy:-10,a:'start'},{x:dT,e:tbk,t:'TBK',dy:-10},{x:dToe,e:toe,t:'TOE',dy:20},{x:dCL,e:cl,t:'CL',dy:-10}],band:'EL',bandPts:[[dT,tbk],[dToe,toe],[dCL,cl]],xlab:'FEET FROM HUB'};
+  R.design=[{name:'TBK',sta:null,d:'Top of bank',des:tbk},{name:'TOE',sta:null,d:'Toe of slope',des:toe},{name:'CL',sta:null,d:'Pond bottom at CL',des:cl}];
+ }
+};
+
+/* ===== plant a problem ===== */
+function wrongVal(v,r){const s=f2(Math.abs(v)),a=s.split('.');
+ if(a[1][0]!==a[1][1]&&r()<0.5)return {v:a[0]+'.'+a[1][1]+a[1][0],why:'Tenths and hundredths swapped, a transposed number.'};
+ if(r()<0.5){const w=Math.abs(v)+(r()<0.5?0.10:-0.10);if(w>0.05)return {v:f2(w),why:'Off by a tenth.'};}
+ return {v:f2(Math.abs(v)+1),why:'Off by a full foot.'};}
+function setMark(st,g,txt){st.front[g.mi]={z:'body',r:[txt]};}
+function callText(R,st,g,i,c){if(R.style!=='pond')return gtxt(c,g.lab,R.curb);const txt=st.front[g.mi].r[0];return txt.replace(/[CF] \d+\.\d\d$/,(c>0?'C ':'F ')+f2(Math.abs(c)));}
+function plant(t,R,r,pick,U,used){
+ const free=R.stakes.filter(x=>!used.has(x.id)&&!x.removed);
+ let c=[];
+ if(t==='missing')c=free.filter(x=>x.canMiss);
+ else if(t==='cut'||t==='sheetcut')c=free.filter(x=>x.grades.length&&x.k!=='mh1'&&x.k!=='mh2');
+ else if(t==='mhcut')c=free.filter(x=>x.k==='mh1');
+ else if(t==='offset')c=free.filter(x=>x.off&&x.offTxt!==null);
+ else if(t==='tape'||t==='bumped')c=free.filter(x=>x.tapeable&&x.tref&&!used.has(x.tref));
+ else if(t==='sheetpos')c=R.coords?free.filter(x=>x.tapeable&&x.tref&&!used.has(x.tref)):[];
+ else if(t==='rev')c=R.revFix&&!R.rev?free.filter(x=>x.grades.some(g=>g.rev)):[];
+ if(!c.length)return false;
+ const st=pick(c);let e={t,ids:[st.id],name:st.name,ord:R.stakes.indexOf(st),cost:COST[t]*(R.curb?0.5:1)};
+ const unit=R.what?R.what:'';
+ if(t==='missing'){st.removed=true;e.src='none';e.why='No stake at '+st.name+'. The request calls for one here, so there is nothing to build from.';}
+ if(t==='cut'){const gi=st.grades.length>1&&r()<0.5?1:0,g=st.grades[gi];const sc=g.shownCut!=null?g.shownCut:g.cut;
+  let wtxt,why;const flip=Math.abs(sc)>=0.05&&Math.abs(sc)<0.6&&r()<0.35;
+  if(flip){const wc=-sc;wtxt=callText(R,st,g,gi,wc);why='Cut and fill are flipped. The number is right, the letter is wrong.';}
+  else{const w=wrongVal(sc,r);wtxt=callText(R,st,g,gi,sc>0?+w.v:-w.v);why=w.why;}
+  const right=st.front[g.mi].r[0];setMark(st,g,wtxt);
+  e.src='lath';e.why='The cut sheet is right but the lath was copied wrong. Sheet and plan say '+right+', the lath says '+wtxt+'. '+why;}
+ if(t==='sheetcut'){const gi=st.grades.length>1?Math.floor(r()*Math.min(2,st.grades.length)):0,g=st.grades[gi];const bump=pick([0.10,-0.10,1.00,-1.00]);
+  const wd=r2(g.des+bump);const prevDes=R.style==='pond'&&R.prog?(gi===0?st.hub:st.grades[gi-1].des):st.hub;const wc=r2(prevDes-wd);
+  const right=st.front[g.mi].r[0];setMark(st,g,callText(R,st,g,gi,wc));st.sheet[gi].des=wd;st.sheet[gi].cut=wc;
+  e.src='sheet';e.why='The cut sheet itself is wrong, and the lath copied it, so the two agree. The sheet uses '+g.d+' '+f2(wd)+' but the plan says '+f2(g.des)+'. The lath should read '+right+'. Only the plan catches this one.';}
+ if(t==='mhcut'){const gIn=st.grades[0],gOut=st.grades[1];const w=r2(gIn.cut-0.12);setMark(st,gOut,gtxt(w,gOut.lab));
+  e.src='lath';e.why='The cut sheet is right but the lath was copied wrong. INV IN cut is '+f2(gIn.cut)+' and INV OUT says '+f2(w)+', so the outlet would sit 0.12 ft above the inlet. Correct INV OUT cut is '+f2(gOut.cut)+'.'+(R.style==='san'?' The other offset stake on this manhole has it right, so the two disagree.':'');}
+ if(t==='offset'){const right=st.offTxt||(st.off+"'");const w=/x/.test(right)?"3'x3'":st.off===10?"6'":st.off===3?"5'":st.off===5?"10'":st.off===6?"10'":"10'";st.front[0]=O(w);
+  e.src='lath';e.why='The request and the cut sheet say '+right.replace(/'/g,' ft')+'. This lath is written '+w.replace(/'/g,' ft')+'. Measure from the wrong offset and the work lands in the wrong place.';}
+ if(t==='tape'||t==='bumped'||t==='sheetpos'){const ref=R.stakes.find(q=>q.id===st.tref);
+  const mag=t==='sheetpos'?1.00:t==='bumped'?r2(U(0.15,0.4)):(R.style==='grid'?r2(U(0.05,0.15)):r2(U(0.35,0.9)));
+  const dx=st.pos.x-ref.pos.x,dy=st.pos.y-ref.pos.y,dd=Math.hypot(dx,dy)||1;const sgn=r()<0.5?1:-1;
+  st.tpos={x:st.pos.x+sgn*mag*dx/dd,y:st.pos.y+sgn*mag*dy/dd};used.add(ref.id);
+  const tt=r2(dist(st.tpos,ref.tpos));
+  if(t==='bumped'){st.bumped=true;st.trueHub=st.grades.length?r2(st.hub-r2(U(0.12,0.3))):null;}
+  if(t==='sheetpos'){st.sheetPos=Object.assign({},st.tpos);}
+  e.src=t==='sheetpos'?'sheet':'field';e.cost=COST[t]*(R.curb?0.5:1);
+  e.why=(t==='bumped'?'A machine hit this hub. It moved '+f2(mag)+' ft'+(st.trueHub!=null?' and dropped to '+f2(st.trueHub)+' (the back still says EL='+f2(st.hub)+')':'')+'. ':t==='sheetpos'?'The cut sheet has the wrong coordinates for this hub, so the crew set it '+f2(mag)+' ft off, right where the sheet said. ':'The lath is right, but the hub was set '+f2(mag)+' ft off its design spot. ')+st.thint+' It tapes '+f2(tt)+' ft to '+ref.name+'.';}
+ if(t==='rev'){R.rev=true;const nd=R.revFix();const hits=R.stakes.filter(x=>x.grades.some(g=>g.rev));
+  hits.forEach(h=>{used.add(h.id);});e.ids=hits.map(h=>h.id);const g=st.grades.find(g=>g.rev);
+  e.src='sheet';e.why='The plan is Rev 2 ('+R.revNote.replace('REV 2 ','')+'). The cut sheet was run on Rev 1 and the lath matches the sheet, so the two agree and are both wrong. '+g.d+' should be '+f2(nd)+', the lath grades to '+f2(g.des)+'.';e.name=hits.map(h=>h.name).join(' and ');}
+ e.ids.forEach(id=>used.add(id));st.err=e;if(t==='rev')R.stakes.filter(x=>e.ids.includes(x.id)).forEach(x=>x.err=e);
+ R.errs.push(e);return true;}
+
+/* ===== plan sheet drawing ===== */
+function fitXY(pts,x0,x1,y0,y1){let a=Infinity,b=-Infinity,c=Infinity,d=-Infinity;pts.forEach(p=>{a=Math.min(a,p.x);b=Math.max(b,p.x);c=Math.min(c,p.y);d=Math.max(d,p.y);});
+ const k=Math.min((x1-x0)/((b-a)||1),(y1-y0)/((d-c)||1));const ox=x0+((x1-x0)-(b-a)*k)/2,oy=y1-((y1-y0)-(d-c)*k)/2;return {k,X:x=>ox+(x-a)*k,Y:y=>oy-(y-c)*k};}
+function featPts(R){const P=[];R.feat.forEach(f=>{if(f.pl)P.push(...f.pl);if(f.p)P.push(f.p);if(f.rect)P.push({x:f.rect[0],y:f.rect[1]},{x:f.rect[2],y:f.rect[3]});});R.stakes.forEach(s=>P.push(s.pos));R.labels.forEach(l=>P.push(l.p));return P;}
+function drawFeat(R,F,mode){let o='';const cls=mode==='field'?'ff ':'';
+ R.feat.forEach(f=>{
+  if(f.pl)o+='<polyline class="'+cls+f.c+'" points="'+f.pl.map(p=>F.X(p.x).toFixed(1)+','+F.Y(p.y).toFixed(1)).join(' ')+'"/>';
+  if(f.rect){const x=F.X(f.rect[0]),y=F.Y(f.rect[3]);o+='<rect class="'+cls+f.c+'" x="'+x+'" y="'+y+'" width="'+(F.X(f.rect[2])-x)+'" height="'+(F.Y(f.rect[1])-y)+'"/>';}
+  if(f.c==='mh')o+='<circle class="'+cls+'mh" cx="'+F.X(f.p.x)+'" cy="'+F.Y(f.p.y)+'" r="'+Math.max(6,2.5*F.k)+'"/>';
+  if(f.c==='box'){const s=Math.max(10,3*F.k);o+='<rect class="'+cls+'mh" x="'+(F.X(f.p.x)-s/2)+'" y="'+(F.Y(f.p.y)-s/2)+'" width="'+s+'" height="'+s+'"/>';}
+  if(f.c==='valve')o+='<path class="'+cls+'vlv" d="M'+(F.X(f.p.x)-7)+' '+(F.Y(f.p.y)-6)+' l14 12 l0 -12 l-14 12 z"/>';
+  if(f.c==='rp'&&mode!=='field')o+='<g class="rpm"><line x1="'+(F.X(f.p.x)-6)+'" y1="'+F.Y(f.p.y)+'" x2="'+(F.X(f.p.x)+6)+'" y2="'+F.Y(f.p.y)+'"/><line x1="'+F.X(f.p.x)+'" y1="'+(F.Y(f.p.y)-6)+'" x2="'+F.X(f.p.x)+'" y2="'+(F.Y(f.p.y)+6)+'"/></g>';
+  if(f.c==='bub'&&mode!=='field')o+='<circle class="bub" cx="'+F.X(f.p.x)+'" cy="'+F.Y(f.p.y)+'" r="11"/><text class="t" x="'+F.X(f.p.x)+'" y="'+(F.Y(f.p.y)+5)+'" text-anchor="middle">'+f.t+'</text>';});
+ return o;}
+function planSVG(R){
+ const W=760,hasP=!!R.prof,H=hasP?566:430;let o='<rect x="0" y="0" width="'+W+'" height="'+H+'" fill="var(--paper)"/><text x="20" y="28" class="pt">PLAN</text>';
+ const F=fitXY(featPts(R),70,700,R.style==='grid'?78:56,hasP?236:400);
+ o+=drawFeat(R,F,'plan');
+ R.labels.forEach(l=>{o+='<text class="t" x="'+F.X(l.p.x)+'" y="'+(F.Y(l.p.y)+4)+'" text-anchor="'+(l.a||'middle')+'">'+esc(l.t)+'</text>';});
+ if(hasP){const P=R.prof,x0p=P.x0||0;o+='<text x="20" y="262" class="pt">'+(R.style==='pond'?'SECTION':'PROFILE')+'</text>';
+  let lo=Infinity,hi=-Infinity;P.ser.forEach(s=>s.pts.forEach(p=>{lo=Math.min(lo,p[1]);hi=Math.max(hi,p[1]);}));lo-=1;hi+=1;
+  const X=x=>70+630*(x-x0p)/(P.L-x0p),Y=e=>452-176*(e-lo)/(hi-lo);
+  const st=(hi-lo)>6?2:1;for(let e=Math.ceil(lo);e<=hi;e+=st)o+='<line class="gl2" x1="70" y1="'+Y(e)+'" x2="700" y2="'+Y(e)+'"/><text class="t gt" x="64" y="'+(Y(e)+4)+'" text-anchor="end">'+e+'</text>';
+  P.ser.forEach(s=>o+='<polyline class="'+s.c+'" points="'+s.pts.map(p=>X(p[0]).toFixed(1)+','+Y(p[1]).toFixed(1)).join(' ')+'"/>');
+  (P.mh||[]).forEach(m=>o+='<rect class="mh" x="'+(X(m[0])-6)+'" y="'+Y(m[1])+'" width="12" height="'+(Y(m[2])-Y(m[1])+4)+'"/>');
+  P.lab.forEach(l=>o+='<text class="t" x="'+X(l.x)+'" y="'+(Y(l.e)+(l.dy||0))+'" text-anchor="'+(l.a||'middle')+'">'+esc(l.t)+'</text>');
+  const band=P.bandPts||R.design.filter(d=>d.sta!=null).map(d=>[d.sta,d.des]);
+  o+='<line class="tk" x1="70" y1="470" x2="700" y2="470"/><text class="t gt" x="64" y="484" text-anchor="end">'+P.band+'</text>';
+  band.forEach(b=>{const x=X(b[0]);o+='<line class="tk" x1="'+x+'" y1="466" x2="'+x+'" y2="474"/><text class="t" transform="translate('+(x+5)+' 478) rotate(90)">'+f2(b[1])+'</text>';});
+  if(P.xlab)o+='<text class="t gt" x="385" y="560" text-anchor="middle">'+P.xlab+'</text>';}
+ o+='<rect x="520" y="10" width="230" height="'+(R.revNote?60:40)+'" class="tb"/><text x="530" y="32" class="t">SHEET C4.1  '+(R.rev?'REV 2':'REV 1')+'</text>'+(R.revNote?'<text x="530" y="52" class="t">'+esc(R.revNote)+'</text>':'');
+ return '<svg class="plan" viewBox="0 0 '+W+' '+H+'" role="img" aria-labelledby="planT planD"><title id="planT">Plan sheet: '+esc(R.title)+'</title><desc id="planD">Design values and dimensions are also listed in the Plan notes and Design grades tables below the drawing.</desc>'+o+'</svg>';}
+
+/* ===== field view: 2D, with equipment working in the background ===== */
+const EQUIP='<svg class="equip" viewBox="0 0 900 70" preserveAspectRatio="xMidYMax meet" aria-hidden="true" focusable="false">'+
+ '<g class="eq e1"><rect x="20" y="46" width="120" height="16" rx="8" fill="#2B2B2B"/><circle cx="36" cy="54" r="6" fill="#555"/><circle cx="124" cy="54" r="6" fill="#555"/><rect x="40" y="24" width="70" height="24" rx="3" fill="#F2A900"/><rect x="84" y="10" width="26" height="20" rx="2" fill="#F2A900" stroke="#1F1500" stroke-width="2"/><rect x="88" y="13" width="18" height="11" fill="#9CC7E4"/><path d="M110 30 L150 8 L172 26" stroke="#E0A000" stroke-width="7" fill="none" stroke-linecap="round"/><path d="M168 22 l14 6 l-6 14 l-14 -4 z" fill="#555"/></g>'+
+ '<g class="eq e2"><rect x="330" y="46" width="110" height="16" rx="8" fill="#2B2B2B"/><rect x="345" y="26" width="70" height="22" rx="3" fill="#F2A900"/><rect x="390" y="10" width="26" height="20" fill="#F2A900" stroke="#1F1500" stroke-width="2"/><rect x="394" y="13" width="18" height="11" fill="#9CC7E4"/><path d="M330 30 L314 30 L310 62 L326 62" stroke="#3A3A3A" stroke-width="6" fill="none"/></g>'+
+ '<g class="eq e3"><rect x="610" y="30" width="80" height="20" rx="3" fill="#F2A900"/><rect x="650" y="12" width="24" height="20" fill="#F2A900" stroke="#1F1500" stroke-width="2"/><rect x="654" y="15" width="16" height="10" fill="#9CC7E4"/><rect x="580" y="40" width="40" height="22" rx="11" fill="#777"/><circle cx="676" cy="54" r="10" fill="#2B2B2B"/></g>'+
+ '<g class="eq e4"><rect x="780" y="34" width="70" height="20" rx="3" fill="#F2A900"/><rect x="790" y="16" width="26" height="20" fill="#F2A900" stroke="#1F1500" stroke-width="2"/><rect x="794" y="19" width="18" height="10" fill="#9CC7E4"/><path d="M850 40 l26 0 l0 16 l-10 0" fill="none" stroke="#3A3A3A" stroke-width="5"/><circle cx="796" cy="58" r="7" fill="#2B2B2B"/><circle cx="836" cy="58" r="7" fill="#2B2B2B"/></g></svg>';
+function fieldBox(R){const P=R.stakes.map(s=>s.tpos).concat(R.req?[]:[]);R.feat.forEach(f=>{if(f.pl)P.push(...f.pl);if(f.rect)P.push({x:f.rect[0],y:f.rect[1]},{x:f.rect[2],y:f.rect[3]});if(f.p&&f.c!=='bub')P.push(f.p);});
+ let a=Math.min(...P.map(p=>p.x))-16,b=Math.max(...P.map(p=>p.x))+16,c=Math.min(...P.map(p=>p.y))-14,d=Math.max(...P.map(p=>p.y))+14;
+ let w=b-a,h=d-c;if(h<w/2.6){const add=(w/2.6-h)/2;c-=add;d+=add;h=d-c;}if(w<h*1.25){const add=(h*1.25-w)/2;a-=add;b+=add;w=b-a;}
+ return {a,b,c,d,w,h};}
+function fieldHTML(R){const B=fieldBox(R);const F={k:900/B.w,X:x=>(x-B.a)/B.w*900,Y:y=>(B.d-y)/B.h*(900*B.h/B.w)};
+ const VH=900*B.h/B.w;
+ let o='<div class="field" id="field" style="aspect-ratio:'+(B.w/B.h).toFixed(3)+'"><svg class="fsvg" viewBox="0 0 900 '+VH.toFixed(1)+'" preserveAspectRatio="none" aria-hidden="true" focusable="false">'+drawFeat(R,F,'field')+'</svg>';
+ R.stakes.forEach(st=>{const L=(st.tpos.x-B.a)/B.w*100,Tp=(B.d-st.tpos.y)/B.h*100;
+  o+='<button class="fs'+(st.bumped?' lean':'')+(st.mark&&st.mark!=='ok'?' flagged':'')+(st.mark==='ok'?' okd':'')+(G.sel===st.i?' sel':'')+'" style="left:'+L.toFixed(2)+'%;top:'+Tp.toFixed(2)+'%" data-i="'+st.i+'" aria-pressed="'+(G.sel===st.i)+'" aria-label="Point '+st.pt+', '+esc(st.name)+(st.mark?', marked '+(st.mark==='ok'?'looks good':'problem'):'')+'">'+
+  '<svg viewBox="0 0 16 40" width="16" height="40" aria-hidden="true" focusable="false"><rect x="5" y="1" width="6" height="36" fill="#E7CB9C" stroke="#9C7A45"/><rect x="2" y="11" width="12" height="4" fill="'+COLORS[R.flag]+'"/><rect x="4" y="35" width="8" height="5" fill="#C89B5E" stroke="#6E5230"/></svg><span class="fl">'+st.pt+'</span>'+(st.mark?'<span class="bd">'+(st.mark==='ok'?'✓':'!')+'</span>':'')+'</button>';});
+ return '<div class="eqband">'+EQUIP+'</div>'+o+'</div>';}
+
+/* ===== state and views ===== */
+const G={tab:'plan',R:null,sel:null,missing:[],calls:{},big:false,style:'curb',diff:1};
+function newRound(style,diff,code){
+ if(code==null)code=1000+Math.floor(Math.random()*9000);
+ let st=style,df=diff;
+ if(diff===4){const rr=rng(code*31+7);st=STYLES[Math.floor(rr()*STYLES.length)].id;}
+ G.style=style;G.diff=diff;
+ G.R=gen(st,diff,code);G.R.pickStyle=style;G.sel=null;G.missing=[];G.calls={};
+ try{localStorage.setItem('layoutgame.sd',style+'|'+diff);}catch(e){}
+ render();const h=$('#roundH');if(h)h.focus();}
+function render(){const R=G.R,S=STYLES.find(s=>s.id===R.style),D=DIFFS.find(d=>d.id===R.diff);
+ $('#main').innerHTML=
+ '<div class="topbar"><div><h1 id="roundH" tabindex="-1">'+esc(S.name)+', '+esc(D.name)+'</h1><p class="sub">'+esc(R.title)+'. '+esc(D.desc)+' Round code <strong class="mono">'+R.code+'</strong></p></div>'+
+ '<div class="tools"><label class="sr" for="stSel">Staking style</label><select id="stSel">'+STYLES.map(s=>'<option value="'+s.id+'"'+(s.id===G.style?' selected':'')+'>'+esc(s.name)+'</option>').join('')+'</select>'+
+ '<label class="sr" for="dfSel">Difficulty</label><select id="dfSel">'+DIFFS.map(d=>'<option value="'+d.id+'"'+(d.id===G.diff?' selected':'')+'>'+esc(d.name)+'</option>').join('')+'</select><button class="btn" id="newB">New round</button>'+
+ '<label class="sr" for="codeIn">Play a round code</label><input id="codeIn" inputmode="numeric" maxlength="4" placeholder="Code" size="5"><button class="btn ghost" id="codeB">Play code</button></div></div>'+
+ '<details class="how"><summary>How to play</summary><ol><li>Read the plan sheet, the staking request and the crew\'s cut sheet. The cut sheet can be wrong too.</li><li>Tap each stake in the field. Read the front and back, then make your call on it.</li><li>Tape between two hubs to check the layout. Compare it to the dimensions on the plan.</li><li>Use a level shot to check a hub that looks wrong. You get 3.</li><li>Mark any stake the request calls for that is not there.</li><li>Answer the five calls and finish. Every problem you miss costs rework. Every false alarm costs a crew callback ('+money(CALLBACK)+').</li></ol></details>'+
+ '<div class="grid"><section class="card planc" aria-labelledby="planH"><h2 id="planH">Plans and cut sheet</h2><div class="tabs"><button class="tab" id="tabP" aria-pressed="'+(G.tab!=='cs')+'" aria-controls="paneP">Plan sheet</button><button class="tab" id="tabC" aria-pressed="'+(G.tab==='cs')+'" aria-controls="paneC">Crew\'s cut sheet</button></div>'+
+ '<div id="paneC"'+(G.tab==='cs'?'':' hidden')+'>'+sheetHTML(R)+'</div><div id="paneP"'+(G.tab==='cs'?' hidden':'')+'>'+planSVG(R)+
+ '<table class="notes"><caption>Plan notes, '+esc(R.title)+(R.rev?', revision 2':'')+'</caption><thead><tr><th scope="col">Design item</th><th scope="col">Station</th><th scope="col">Value</th></tr></thead><tbody>'+R.notes.map(n=>'<tr><th scope="row">'+esc(n[0])+'</th><td>'+esc(n[1]||' ')+'</td><td class="mono">'+esc(n[2])+'</td></tr>').join('')+'</tbody></table>'+
+ (R.design.length?'<table class="notes"><caption>Design grades</caption><thead><tr><th scope="col">Where</th><th scope="col">Item</th><th scope="col">Design</th></tr></thead><tbody>'+R.design.map(d=>'<tr><th scope="row">'+esc(d.name)+'</th><td>'+esc(d.d)+'</td><td class="mono">'+f2(d.des)+'</td></tr>').join('')+'</tbody></table>':'')+
+ '<h3>Staking request</h3><ul class="req">'+R.request.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul></div></section>'+
+ '<section class="card fieldc" aria-labelledby="fieldH"><h2 id="fieldH">In the field</h2><p class="small">'+R.stakes.length+' stakes set. Tap a stake to read it. Labels are point numbers. Level shots left: <strong id="shotsN">'+R.shots+'</strong></p><div class="fwrap">'+fieldHTML(R)+'</div>'+
+ '<div class="tape"><h3>Tape a distance</h3><div class="row"><label for="tA">From</label><select id="tA">'+stakeOpts()+'</select><label for="tB">To</label><select id="tB">'+stakeOpts(1)+'</select><button class="btn ghost" id="tapeB">Tape it</button></div><ul id="tapeLog" class="tlog" aria-live="polite">'+tapeLog()+'</ul></div>'+
+ '<div class="missrow"><label for="missSel">Missing stake</label><select id="missSel">'+R.req.map(q=>'<option value="'+q.id+'">'+esc(q.name)+'</option>').join('')+'</select><button class="btn ghost" id="missB">Mark missing</button></div>'+
+ '<div id="missList" aria-live="polite">'+missListHTML()+'</div><div id="panel">'+panelHTML()+'</div></section></div>'+
+ '<section class="card finish" aria-labelledby="finH"><h2 id="finH">Your calls</h2>'+callsHTML()+'<div class="row"><button class="btn big" id="finB">Finish the check</button><span class="small" id="finMsg" aria-live="polite"></span></div></section><div id="results"></div>';
+ wire();}
+function stakeOpts(sel){return G.R.stakes.map((s,i)=>'<option value="'+i+'"'+(sel&&i===1?' selected':'')+'>'+s.pt+', '+esc(s.name)+'</option>').join('');}
+function tapeLog(){return G.R.tapes.map(t=>'<li><span class="mono">'+f2(t.d)+' ft</span> '+esc(t.a)+' to '+esc(t.b)+'</li>').join('');}
+function sheetHTML(R){const rows=[];const co=!!R.coords;
+ R.stakes.forEach(st=>{const p=st.sheetPos||st.pos;const base='<th scope="row">'+st.pt+'</th><td>'+esc(st.name)+'</td><td>'+(st.offTxt||st.off+"'")+'</td>';
+  if(!st.grades.length){rows.push('<tr>'+base+(co?'<td class="mono">'+f2(p.x+1000)+'</td><td class="mono">'+f2(p.y+5000)+'</td>':'')+'<td>'+esc(st.top.join(' '))+'</td><td></td><td></td></tr>');return;}
+  st.sheet.forEach((l,j)=>rows.push('<tr>'+(j?'<th scope="row"><span class="sr">'+st.pt+'</span></th><td></td><td></td>':base)+(co?(j?'<td></td><td></td>':'<td class="mono">'+f2(p.x+1000)+'</td><td class="mono">'+f2(p.y+5000)+'</td>'):'')+'<td>'+esc(l.d)+'</td><td class="mono">'+f2(l.des)+(j?'':' / '+f2(st.hub))+'</td><td class="mono">'+(l.cut>0?'C ':'F ')+f2(Math.abs(l.cut))+'</td></tr>'));});
+ return '<p class="small">The crew\'s cut sheet for this layout. Is it right? And does each lath match it?'+(co?' Coordinates are local: east and north in feet.':'')+'</p><div class="tscroll"><table class="notes cs"><caption>Crew\'s cut sheet, '+esc(R.title)+(R.date?', run '+R.date:'')+'</caption><thead><tr><th scope="col">Point</th><th scope="col">Stake</th><th scope="col">Offset</th>'+(co?'<th scope="col">East</th><th scope="col">North</th>':'')+'<th scope="col">Description</th><th scope="col">Design / hub EL</th><th scope="col">Cut or fill</th></tr></thead><tbody>'+rows.join('')+'</tbody></table></div>';}
+function missListHTML(){return G.missing.length?'<p class="small">Marked missing: '+G.missing.map(id=>{const q=G.R.req.find(x=>x.id===id);return '<button class="chip" data-unmiss="'+id+'" aria-label="Remove missing mark at '+esc(q.name)+'">'+esc(q.name)+' ✕</button>';}).join(' ')+'</p>':'';}
+function panelHTML(){const R=G.R;if(G.sel==null)return '<p class="empty">Tap a stake in the field to read it.</p>';const st=R.stakes[G.sel];
+ let h='<h3>Point '+st.pt+', '+esc(st.name)+'</h3><div class="stage">'+stakeHTML(st,R.flag)+'</div>';
+ h+='<p class="small cond">'+(st.bumped?'The lath is leaning and the hub looks chewed up by a tire.':'Lath is straight. Hub looks solid.')+'</p>';
+ if(st.grades.length)h+='<div class="row"><button class="btn ghost" id="shotB"'+(st.shot!=null||R.shots<=0?' disabled':'')+'>Take a level shot on the hub</button><span id="shotOut" class="mono" aria-live="polite">'+(st.shot!=null?shotText(st):'')+'</span></div>';
+ h+='<fieldset class="call"><legend>Your call on this stake</legend>'+REASONS.map(a=>'<label><input type="radio" name="mk" value="'+a[0]+'"'+(st.mark===a[0]?' checked':'')+'> '+esc(a[1])+'</label>').join('')+'</fieldset>';
+ return h;}
+function shotText(st){return 'Level shot '+f2(st.shot)+'. Back says EL='+f2(st.hub)+'. Difference '+f2(Math.abs(st.shot-st.hub))+' ft.';}
+function callsHTML(){const Q=[['enough','Do we have enough stakes to build it?',['Yes','No']],['sheet','Is the crew\'s cut sheet correct?',['Yes','No']],['written','Was every lath written the way the cut sheet says?',['Yes','No']],['match','Do the stakes match the plan, grades and dimensions?',['Yes','No']],['go','What do you tell the foreman?',['Build it','Stop and call the surveyor']]];
+ return Q.map(q=>'<fieldset class="call q"><legend>'+esc(q[1])+'</legend>'+q[2].map((a,j)=>'<label><input type="radio" name="q_'+q[0]+'" value="'+j+'"'+(G.calls[q[0]]===j?' checked':'')+'> '+esc(a)+'</label>').join('')+'</fieldset>').join('');}
+function wire(){
+ const tb=t=>{G.tab=t;$('#paneC').hidden=t!=='cs';$('#paneP').hidden=t==='cs';$('#tabC').setAttribute('aria-pressed',String(t==='cs'));$('#tabP').setAttribute('aria-pressed',String(t!=='cs'));};$('#tabP').onclick=()=>tb('plan');$('#tabC').onclick=()=>tb('cs');
+ $('#newB').onclick=()=>newRound($('#stSel').value,+$('#dfSel').value);
+ $('#stSel').onchange=()=>{if(+$('#dfSel').value===4)$('#dfSel').value='1';newRound($('#stSel').value,+$('#dfSel').value);};
+ $('#dfSel').onchange=()=>newRound($('#stSel').value,+$('#dfSel').value);
+ $('#codeB').onclick=()=>{const c=parseInt($('#codeIn').value,10);if(c>=1000&&c<=9999)newRound($('#stSel').value,+$('#dfSel').value,c);else{$('#codeIn').setAttribute('aria-invalid','true');$('#codeIn').focus();}};
+ $('#tapeB').onclick=()=>{const a=G.R.stakes[+$('#tA').value],b=G.R.stakes[+$('#tB').value];if(a===b)return;const noise=[0,0.01,-0.01][Math.floor(Math.random()*3)];
+  G.R.tapes.unshift({a:a.pt+' '+a.name,b:b.pt+' '+b.name,d:r2(dist(a.tpos,b.tpos)+noise)});G.R.tapes=G.R.tapes.slice(0,8);$('#tapeLog').innerHTML=tapeLog();};
+ $('#missB').onclick=()=>{const id=$('#missSel').value;if(!G.missing.includes(id))G.missing.push(id);$('#missList').innerHTML=missListHTML();wireMiss();};
+ wireMiss();wireField();wirePanel();
+ document.querySelectorAll('input[name^="q_"]').forEach(i=>i.onchange=()=>{G.calls[i.name.slice(2)]=+i.value;});
+ $('#finB').onclick=finish;}
+function wireMiss(){document.querySelectorAll('[data-unmiss]').forEach(b=>b.onclick=()=>{G.missing=G.missing.filter(s=>s!==b.dataset.unmiss);$('#missList').innerHTML=missListHTML();wireMiss();$('#missSel').focus();});}
+function wireField(){document.querySelectorAll('.fs').forEach(b=>b.onclick=()=>{G.sel=+b.dataset.i;refreshField();$('#panel').innerHTML=panelHTML();wirePanel();const st=G.R.stakes[G.sel];if($('#tA').value!==String(G.sel)){$('#tB').value=$('#tA').value;$('#tA').value=String(G.sel);}const h=$('#panel h3');if(h){h.setAttribute('tabindex','-1');h.focus({preventScroll:true});$('#panel').scrollIntoView({block:'nearest',behavior:'smooth'});}});}
+function refreshField(){const w=document.querySelector('.fwrap'),sl=w.scrollLeft;w.innerHTML=fieldHTML(G.R);w.scrollLeft=sl;wireField();}
+function wirePanel(){const st=G.R.stakes[G.sel];if(!st)return;
+ const sb=$('#shotB');if(sb)sb.onclick=()=>{if(G.R.shots<=0||st.shot!=null)return;G.R.shots--;const tru=st.trueHub!=null?st.trueHub:st.hub;st.shot=r2(tru+(st.trueHub!=null?0:[0,0.01,-0.01][Math.floor(Math.random()*3)]));$('#shotOut').textContent=shotText(st);$('#shotsN').textContent=G.R.shots;sb.disabled=true;};
+ document.querySelectorAll('input[name="mk"]').forEach(i=>i.onchange=()=>{st.mark=i.value;refreshField();});}
+
+/* ===== scoring ===== */
+function finish(){const R=G.R;
+ const miss=['enough','sheet','written','match','go'].filter(k=>G.calls[k]==null);
+ if(miss.length){$('#finMsg').textContent='Answer all five calls first.';document.querySelector('input[name="q_'+miss[0]+'"]').focus();return;}
+ const unread=R.stakes.filter(s=>!s.mark).length;
+ const rows=[];let caught=0,reasonOK=0,lost=0,saved=0,falseN=0;
+ R.errs.forEach(e=>{const src=e.src==='sheet'?'Bad cut sheet':e.src==='field'?'Set or moved in the field':e.src==='none'?'Never staked':'Lath copied wrong';
+  if(e.t==='missing'){const hit=G.missing.includes(e.ids[0]);rows.push({ord:e.ord,name:e.name,src,what:'Missing stake',why:e.why,call:hit?'Marked missing':'Not marked',ok:hit,cost:e.cost});if(hit){caught++;reasonOK++;saved+=e.cost;}else lost+=e.cost;return;}
+  const sts=R.stakes.filter(s=>e.ids.includes(s.id));const ms=sts.map(s=>s.mark).filter(m=>m&&m!=='ok');const hit=ms.length>0;const rOK=hit&&ms.some(m=>(OKR[e.t]||[]).includes(m));
+  const m0=ms[0]||sts.map(s=>s.mark).find(Boolean);
+  rows.push({ord:e.ord,name:e.name,src,what:RNAME[e.t],why:e.why,call:!m0?'No call':m0==='ok'?'Looks good':RNAME[m0]+(rOK?'':' (right stake, different reason)'),ok:hit,cost:e.cost});
+  if(hit){caught++;saved+=e.cost;if(rOK)reasonOK++;}else lost+=e.cost;});
+ R.stakes.forEach(st=>{if(!st.err&&st.mark&&st.mark!=='ok'){falseN++;rows.push({ord:R.req.findIndex(q=>q.id===st.id),name:st.name,src:'',what:'Nothing wrong',why:'This stake checks against the plan, the sheet and the tape.',call:RNAME[st.mark],ok:false,cost:CALLBACK,fa:true});}});
+ G.missing.forEach(id=>{if(!R.errs.some(e=>e.t==='missing'&&e.ids[0]===id)){falseN++;const q=R.req.find(x=>x.id===id);rows.push({ord:q.ord,name:q.name,src:'',what:'Nothing missing',why:'There is a stake at '+q.name+'.',call:'Marked missing',ok:false,cost:CALLBACK,fa:true});}});
+ const ans={enough:R.errs.some(e=>e.t==='missing')?1:0,sheet:R.sheetBad?1:0,written:R.writeBad?1:0,match:R.planBad?1:0,go:R.errs.length?1:0};
+ const keys=['enough','sheet','written','match','go'];const callsOK=keys.map(k=>G.calls[k]===ans[k]);
+ const nE=R.errs.length;
+ let score=nE?60*caught/nE+10*reasonOK/nE:70;score+=6*callsOK.filter(Boolean).length;score-=5*falseN;score=Math.max(0,Math.min(100,Math.round(score)));
+ const cb=falseN*CALLBACK+(G.calls.go===1&&!nE?CALLBACK:0);
+ rows.sort((a,b)=>a.ord-b.ord);
+ const missNames=R.errs.filter(e=>e.t==='missing').map(e=>e.name);
+ const txt=[['Enough stakes to build it?',ans.enough?'No, '+missNames.join(', ')+(missNames.length>1?' are':' is')+' missing.':'Yes, every required stake is there.'],['Is the cut sheet correct?',ans.sheet?'No. The sheet itself has a bad number, and the field followed it.':'Yes. The sheet matches the plan.'],['Was every lath written the way the sheet says?',ans.written?'No. At least one lath was copied wrong from the sheet.':'Yes. Every lath matches the sheet.'+(ans.sheet?' That does not make them right.':'')],['Do the stakes match the plan?',ans.match?'No. See the problems below.':'Yes.'],['What do you tell the foreman?',ans.go?'Stop and call the surveyor.':'Build it.']];
+ $('#results').innerHTML='<section class="card res" aria-labelledby="resH"><h2 id="resH" tabindex="-1">Results: '+score+' out of 100</h2>'+
+ '<div class="kpis"><div class="kpi"><span class="kv">'+caught+' of '+nE+'</span><span class="kl">problems caught</span></div><div class="kpi good"><span class="kv">'+money(saved)+'</span><span class="kl">rework avoided</span></div><div class="kpi bad"><span class="kv">'+money(lost)+'</span><span class="kl">rework you would pay for</span></div><div class="kpi"><span class="kv">'+money(cb)+'</span><span class="kl">crew callbacks</span></div></div>'+
+ (nE?'':'<p class="clean"><strong>This round was clean.</strong> Every stake checked. Calling the surveyor out on a clean layout costs a callback and a day.</p>')+
+ '<h3>The five calls</h3><ul class="calls">'+txt.map((c,i)=>'<li class="'+(callsOK[i]?'y':'n')+'"><strong>'+(callsOK[i]?'Right. ':'Missed. ')+'</strong>'+esc(c[0])+' '+esc(c[1])+'</li>').join('')+'</ul>'+
+ (rows.length?'<div class="tscroll"><table class="rt"><caption>Problems and false alarms</caption><thead><tr><th scope="col">Stake</th><th scope="col">Where it went wrong</th><th scope="col">What was there</th><th scope="col">Your call</th><th scope="col">Result</th><th scope="col">Cost</th></tr></thead><tbody>'+
+ rows.map(x=>'<tr class="'+(x.ok?'y':'n')+'"><th scope="row">'+esc(x.name)+'</th><td>'+esc(x.src||'Nothing wrong')+'</td><td><strong>'+esc(x.what)+'.</strong> '+esc(x.why)+'</td><td>'+esc(x.call)+'</td><td>'+(x.ok?'Caught':x.fa?'False alarm':'Missed')+'</td><td class="mono">'+(x.ok?'saved '+money(x.cost):money(x.cost))+'</td></tr>').join('')+'</tbody></table></div>':'')+
+ (unread?'<p class="small">'+unread+' stake'+(unread>1?'s':'')+' never got a call.</p>':'')+
+ '<div class="row"><button class="btn big" id="againB">Next round</button><button class="btn ghost" id="sameB">Replay this round</button>'+(R.diff<3&&score>=80?'<button class="btn ghost" id="upB">Try '+esc(DIFFS[R.diff].name)+'</button>':'')+'</div></section>';
+ $('#againB').onclick=()=>newRound(G.style,G.diff);$('#sameB').onclick=()=>newRound(G.style,G.diff,R.code);
+ const up=$('#upB');if(up)up.onclick=()=>newRound(G.style,R.diff+1);
+ const h=$('#resH');h.focus();h.scrollIntoView({behavior:'smooth',block:'start'});}
+/* ===== boot ===== */
+function boot(){
+ let sd='curb|1';try{sd=localStorage.getItem('layoutgame.sd')||sd;}catch(e){}
+ let [st,df]=sd.split('|');df=+df;if(!STYLES.some(s=>s.id===st))st='curb';if(!(df>=1&&df<=4))df=1;
+ const th=$('#themeB'),root=document.documentElement;
+ const setT=t=>{root.setAttribute('data-theme',t);th.textContent=t==='dark'?'Light':'Dark';th.setAttribute('aria-label','Switch to '+(t==='dark'?'light':'dark')+' mode');try{localStorage.setItem('layoutgame.theme',t);}catch(e){}};
+ let t=null;try{t=localStorage.getItem('layoutgame.theme');}catch(e){}
+ setT(t||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'));
+ th.onclick=()=>setT(root.getAttribute('data-theme')==='dark'?'light':'dark');
+ const bb=$('#bigB');bb.onclick=()=>{G.big=!G.big;root.classList.toggle('big',G.big);bb.setAttribute('aria-pressed',String(G.big));};
+ newRound(st,df,null);window.scrollTo(0,0);}
+if(typeof document!=='undefined')document.addEventListener('DOMContentLoaded',boot);
+if(typeof module!=='undefined')module.exports={gen,STYLES,DIFFS,staS,dist};
+
+</script>
+<script>if('serviceWorker' in navigator&&/^https?:$/.test(location.protocol)){addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){});});}</script>
+</body>
+</html>
